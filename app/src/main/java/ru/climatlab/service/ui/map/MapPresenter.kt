@@ -9,6 +9,8 @@ import ru.climatlab.service.ui.BasePresenter
 class MapPresenter : BasePresenter<MapView>() {
     override fun onFirstViewAttach() {
         ClimatLabRepositoryProvider.instance.getRequests()
-            .addSchedulers().subscribe({ t -> viewState.showRequests(t) })
+            .addSchedulers().subscribe({
+                viewState.showRequests(it)
+            }, this::handleError)
     }
 }

@@ -7,6 +7,7 @@ import com.arellomobile.mvp.MvpPresenter
  */
 open class BasePresenter<View : BaseMvpView> : MvpPresenter<View>() {
     fun handleError(e: Throwable) {
+        e.printStackTrace()
         viewState.showError(e.message)
     }
 }
