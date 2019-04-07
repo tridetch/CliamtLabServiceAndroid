@@ -6,4 +6,7 @@
     <string name="laclimat_ru">laclimat.ru</string>
     <string name="phone">Телефон</string>
     <string name="password">Пароль</string>
+    <string name="login">Войти</string>
+    <string name="loading_message">Загрузка...</string>
+    <string name="error">Ошибка</string>
 </resources>
