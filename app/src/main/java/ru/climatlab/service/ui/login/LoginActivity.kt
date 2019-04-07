@@ -6,6 +6,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
 import ru.climatlab.service.ui.BaseActivity
+import ru.climatlab.service.ui.map.MapActivity
 
 class LoginActivity : BaseActivity(), LoginView {
 
@@ -19,6 +20,6 @@ class LoginActivity : BaseActivity(), LoginView {
     }
 
     override fun showNextScreen() {
-//        startActivity()
+        startActivity<MapActivity>()
     }
 }
