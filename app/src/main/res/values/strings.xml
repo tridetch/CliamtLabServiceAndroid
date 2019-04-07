@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Cliamt Lab Service</string>
+
+    <!--Login screen-->
+    <string name="app_title">Лаборатория\nклимата</string>
+    <string name="laclimat_ru">laclimat.ru</string>
+    <string name="phone">Телефон</string>
+    <string name="password">Пароль</string>
 </resources>
