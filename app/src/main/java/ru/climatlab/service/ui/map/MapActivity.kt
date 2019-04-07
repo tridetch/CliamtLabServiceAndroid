@@ -179,7 +179,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         map.uiSettings.isMyLocationButtonEnabled = true
         map.uiSettings.isZoomControlsEnabled = true
 
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.06, 43.04), 16f))
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.055, 43.055), 14f))
 
         isGoogleMapReady = true
         mvpDelegate.onAttach()
