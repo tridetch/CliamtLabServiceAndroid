@@ -3,7 +3,6 @@ package ru.climatlab.service.ui.map
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Menu
@@ -106,22 +105,13 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
+            R.id.nav_all_requests -> {
                 // Handle the camera action
             }
-            R.id.nav_gallery -> {
+            R.id.nav_accepted_requests -> {
 
             }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
+            R.id.nav_exit -> {
 
             }
         }
