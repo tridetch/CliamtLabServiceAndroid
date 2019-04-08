@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.request_list_item.view.*
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.RequestType
 
 class RequestsRecyclerViewAdapter(
     private var requestItems: MutableList<RequestModel>,
@@ -47,6 +48,11 @@ class RequestsRecyclerViewAdapter(
             itemView.officeTitleNameTextView.text = request.office
             itemView.equipmentTextView.text = request.equipmentId
             itemView.addressTextView.text = request.address
+            itemView.typeTextView.text = when(request.type){
+                RequestType.Mounting -> itemView.context.getString(R.string.request_type_mounting)
+                RequestType.Service -> itemView.context.getString(R.string.request_type_service)
+                RequestType.OrderEquipment -> itemView.context.getString(R.string.request_type_order)
+            }
             itemView.setOnClickListener { interactionListener.onClick(request) }
         }
     }

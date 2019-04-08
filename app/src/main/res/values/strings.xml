@@ -38,4 +38,9 @@
     <!--Requests list screen-->
     <string name="title_activity_requests">Заявки</string>
 
+    <!--Request types-->
+    <string name="request_type_mounting">Монтаж</string>
+    <string name="request_type_service">Обслуживание</string>
+    <string name="request_type_order">Покупка</string>
+
 </resources>
