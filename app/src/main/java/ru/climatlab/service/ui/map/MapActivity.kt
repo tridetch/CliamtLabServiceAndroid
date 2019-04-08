@@ -27,9 +27,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_drawer.*
 import kotlinx.android.synthetic.main.request_bottom_sheet.*
 import kotlinx.android.synthetic.main.request_bottom_sheet.view.*
+import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestStatus
+import ru.climatlab.service.ui.requestsList.RequestsListActivity
 
 class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
@@ -96,9 +98,9 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -106,7 +108,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_all_requests -> {
-                // Handle the camera action
+                startActivity<RequestsListActivity>()
             }
             R.id.nav_accepted_requests -> {
 

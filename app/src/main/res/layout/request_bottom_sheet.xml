@@ -9,6 +9,7 @@
     app:behavior_peekHeight="0dp"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
+    android:clickable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <androidx.constraintlayout.widget.ConstraintLayout
