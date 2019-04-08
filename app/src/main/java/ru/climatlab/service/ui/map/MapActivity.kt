@@ -2,13 +2,17 @@ package ru.climatlab.service.ui.map
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.arellomobile.mvp.MvpDelegate
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -16,14 +20,17 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_drawer.*
+import kotlinx.android.synthetic.main.request_bottom_sheet.*
+import kotlinx.android.synthetic.main.request_bottom_sheet.view.*
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.RequestStatus
 
 class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
@@ -38,6 +45,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
     lateinit var loadingDialog: ProgressDialog
     private var errorAlert: AlertDialog? = null
 
+    lateinit var requestBottomSheetBehavior: BottomSheetBehavior<View>
 
     companion object {
         private const val KEY_MAP_VIEW_OUT_STATE = "mapview_state"
@@ -50,18 +58,31 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        )
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
-
         nav_view.setNavigationItemSelectedListener(this)
-
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(R.id.map) as SupportMapFragment
         isGoogleMapReady = false
         mapFragment.getMapAsync(this)
+
+        requestBottomSheetBehavior = BottomSheetBehavior.from(requestInfoCard)
+        requestBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> presenter.onRequestSelected(null)
+                    else -> {
+                    }
+                }
+            }
+        })
     }
 
     override fun onBackPressed() {
@@ -181,6 +202,11 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.055, 43.055), 14f))
 
+        map.setOnMarkerClickListener {
+            presenter.onRequestSelected(it.tag as RequestModel)
+            true
+        }
+
         isGoogleMapReady = true
         mvpDelegate.onAttach()
     }
@@ -203,9 +229,35 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
     override fun showRequests(requests: List<RequestModel>) {
         map.clear()
         requests.forEach {
-            val requestMarker = map.addMarker(MarkerOptions()
-                .position(LatLng(it.coordinates.latitude, it.coordinates.longitude)))
+            val requestMarker = map.addMarker(
+                MarkerOptions()
+                    .position(LatLng(it.coordinates.latitude, it.coordinates.longitude))
+            )
                 .setTag(it)
         }
+    }
+
+    override fun showRequestBottomCard(selectedRequest: RequestModel) {
+        requestInfoCard.clientFullNameTextView.text = selectedRequest.clientId
+        requestInfoCard.officeTitleNameTextView.text = selectedRequest.office
+        requestInfoCard.equipmentTextView.text = selectedRequest.equipmentId
+        requestInfoCard.addressTextView.text = selectedRequest.address
+        when (selectedRequest.status) {
+            RequestStatus.NewRequest -> {
+                requestInfoCard.requestActionButton.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.SRC_ATOP)
+                requestInfoCard.requestActionButton.text = getString(R.string.accept_request_button_label)
+            }
+            RequestStatus.InWork -> {
+                requestInfoCard.requestActionButton.background.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP)
+                requestInfoCard.requestActionButton.text = getString(R.string.cancel_request_button_label)
+            }
+            else -> {
+            }
+        }
+        requestBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    override fun hideRequestBottomCard() {
+        requestBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 }

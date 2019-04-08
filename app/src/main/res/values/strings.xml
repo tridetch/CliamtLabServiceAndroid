@@ -17,4 +17,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="client_label">Клиент:</string>
+    <string name="office_label">Офис:</string>
+    <string name="equipment_label">Оборудование:</string>
+    <string name="address_label">Адрес:</string>
+    <string name="accept_request_button_label">Принять</string>
+    <string name="cancel_request_button_label">Отказаться</string>
 </resources>
