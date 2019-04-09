@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="8dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="8dp"
+    tools:context=".ui.requestDetailsInfo.RequestDetailsActivity">
+
+    <TextView
+        android:id="@+id/clientFullNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="viewStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@+id/descriptionLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/description_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clientFullNameTextView" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionLabelTextView"
+        tools:text="@tools:sample/lorem" />
+    
+    <TextView
+        android:id="@+id/equipmentLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/equipment_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
+
+    <TextView
+        android:id="@+id/equipmentTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/equipmentLabelTextView"
+        tools:text="@tools:sample/lorem" />
+    
+    <TextView
+        android:id="@+id/addressLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/address_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/equipmentTextView" />
+
+    <TextView
+        android:id="@+id/addressTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressLabelTextView"
+        tools:text="@tools:sample/lorem" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

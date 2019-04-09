@@ -8,4 +8,5 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 interface BaseMvpView: MvpView {
     fun showLoading(needShow: Boolean)
     fun showError(message: String?)
+    fun closeScreen()
 }

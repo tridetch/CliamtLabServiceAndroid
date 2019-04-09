@@ -6,4 +6,6 @@ import ru.climatlab.service.ui.BaseMvpView
 interface RequestsListView: BaseMvpView {
 
     fun updateData(requests: List<RequestModel>)
+    fun showRequestDetailsScreen(request: RequestModel)
+    fun showRequestReportScreen(request: RequestModel)
 }

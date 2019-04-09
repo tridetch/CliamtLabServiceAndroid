@@ -20,7 +20,7 @@ class LoginActivity : BaseActivity(), LoginView {
     }
 
     override fun showNextScreen() {
-        finish()
+        closeScreen()
         startActivity<MapActivity>()
     }
 }

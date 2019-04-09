@@ -252,4 +252,8 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
     override fun hideRequestBottomCard() {
         requestBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
+
+    override fun closeScreen() {
+        finish()
+    }
 }

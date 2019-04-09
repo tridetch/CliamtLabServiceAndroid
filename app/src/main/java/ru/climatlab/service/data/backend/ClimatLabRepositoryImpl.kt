@@ -12,6 +12,8 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 class ClimatLabRepositoryImpl : ClimatLabRepository {
+    private var cachedRequests = listOf<RequestModel>()
+
     override fun login(login: String, password: String): Completable {
         return ClimatLabApiClient.climatLabService.login(login, password).map {
             PreferencesRepository.putToken(it.token)
@@ -20,7 +22,7 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
 
     override fun getRequests(): Single<List<RequestModel>> {
         val random = Random
-        return Single.just(List(20) {
+        cachedRequests = List(20) {
             RequestModel(
                 id = UUID.randomUUID().toString(),
                 clientId = "ClientId $it",
@@ -35,7 +37,8 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
                     43.05 + random.nextDouble() / 100
                 )
             )
-        })
+        }
+        return Single.just(cachedRequests)
 /*
         return ClimatLabApiClient.climatLabService.getRequests()
             .map { requests ->
@@ -49,5 +52,9 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
                 }
             }
 */
+    }
+
+    override fun getRequest(requestId: String?): RequestModel? {
+        return cachedRequests.firstOrNull { it.id == requestId }
     }
 }

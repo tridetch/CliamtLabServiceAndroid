@@ -37,4 +37,8 @@ open class BaseActivity : MvpAppCompatActivity(), BaseMvpView {
                 .setTitle(R.string.error)
                 .setMessage(message).show()
     }
+
+    override fun closeScreen() {
+        finish()
+    }
 }
