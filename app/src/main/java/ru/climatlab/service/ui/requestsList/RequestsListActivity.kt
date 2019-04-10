@@ -9,6 +9,7 @@ import ru.climatlab.service.R
 import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
+import ru.climatlab.service.ui.requestReport.RequestReportActivity
 
 class RequestsListActivity : BaseActivity(), RequestsListView {
 
@@ -39,6 +40,6 @@ class RequestsListActivity : BaseActivity(), RequestsListView {
     }
 
     override fun showRequestReportScreen(request: RequestModel) {
-
+        startActivity(intentFor<RequestReportActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
     }
 }

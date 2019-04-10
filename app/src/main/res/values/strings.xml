@@ -45,4 +45,12 @@
     <string name="request_type_order">Покупка</string>
     <string name="request_not_found_error_message">Заявка не найдена</string>
 
+    <!-- Request report-->
+    <string name="boilerTitle">Котел</string>
+    <string name="modelLabel">Модель:</string>
+    <string name="brandLabel">Марка:</string>
+    <string name="serialNumberLabel">Серийный номер:</string>
+    <string name="voltageLabel">Напряжение в сети В</string>
+    <string name="grounding">Заземление</string>
+
 </resources>
