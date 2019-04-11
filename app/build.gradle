@@ -48,6 +48,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.6.1'
     // The library allows to format user input on the fly according to the provided mask and to extract valuable characters.
     implementation 'com.redmadrobot:inputmask:2.3.0'
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'

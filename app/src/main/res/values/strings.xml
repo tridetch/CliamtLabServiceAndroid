@@ -52,5 +52,20 @@
     <string name="serialNumberLabel">Серийный номер:</string>
     <string name="voltageLabel">Напряжение в сети В</string>
     <string name="grounding">Заземление</string>
+    <string name="stabilizer">Стабилизатор</string>
+    <string name="dielectric_coupling">Диэлектрическая муфта</string>
+    <string name="inletGasPressureLabel">Давление газа на входе</string>
+    <string name="minGasLabel">Минимум газа на котле</string>
+    <string name="maxGasLabel">Максимум газа на котле</string>
+    <string name="CoLabel">CO ппм</string>
+    <string name="Co2Label">CO2 %</string>
+    <string name="recommendationsHint">Рекомендации</string>
+    <string name="summaryTitle">Расчет</string>
+    <string name="summaryToPayLabel">Сумма к оплате</string>
+    <string name="summaryForRoadLabel">Сумма за дорогу</string>
+    <string name="summaryForPartsLabel">Стоимость запчастей</string>
+    <string name="confirmButtonLabel">Подтвердить</string>
+    <string name="photosTitle">Фотографии</string>
+    <string name="resultTitle">Результат</string>
 
 </resources>

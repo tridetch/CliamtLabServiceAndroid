@@ -24,7 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.requestReport.RequestReportActivity"></activity>
+        <activity
+            android:name=".ui.requestReport.RequestReportActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.requestDetailsInfo.RequestDetailsActivity" />
         <activity
             android:name=".ui.requestsList.RequestsListActivity"
