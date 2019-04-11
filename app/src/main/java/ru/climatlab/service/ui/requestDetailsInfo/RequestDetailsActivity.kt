@@ -1,5 +1,6 @@
 package ru.climatlab.service.ui.requestDetailsInfo
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -27,7 +28,7 @@ class RequestDetailsActivity : BaseActivity(), RequestDetailsView {
     override fun showRequestNotFoundError() {
         AlertDialog.Builder(this)
             .setMessage(R.string.request_not_found_error_message)
-            .setPositiveButton(android.R.string.ok, null)
+            .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> this@RequestDetailsActivity.finish()}
             .show()
     }
 
