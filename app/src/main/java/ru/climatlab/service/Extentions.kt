@@ -17,7 +17,7 @@ class BreadcrumbException : Exception()
 fun <T> Observable<T>.addSchedulers(): Observable<T> {
     return this.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .dropBreadcrumb()
+//            .dropBreadcrumb()
 }
 
 @Suppress("NOTHING_TO_INLINE")
@@ -31,7 +31,7 @@ inline fun <T> Observable<T>.dropBreadcrumb(): Observable<T> {
 fun <T> Single<T>.addSchedulers(): Single<T> {
     return this.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .dropBreadcrumb()
+//            .dropBreadcrumb()
 }
 
 @Suppress("NOTHING_TO_INLINE")
@@ -45,7 +45,7 @@ inline fun <T> Single<T>.dropBreadcrumb(): Single<T> {
 fun <T> Flowable<T>.addSchedulers(): Flowable<T> {
     return this.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .dropBreadcrumb()
+//            .dropBreadcrumb()
 }
 
 @Suppress("NOTHING_TO_INLINE")
@@ -59,7 +59,7 @@ inline fun <T> Flowable<T>.dropBreadcrumb(): Flowable<T> {
 fun Completable.addSchedulers(): Completable {
     return this.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .dropBreadcrumb()
+//            .dropBreadcrumb()
 }
 
 @Suppress("NOTHING_TO_INLINE")

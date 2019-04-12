@@ -10,7 +10,7 @@ class RequestDetailsPresenter : BasePresenter<RequestDetailsView>() {
 
     private lateinit var request: RequestModel
 
-    fun onAttach(requestId: String?) {
+    fun onAttach(requestId: String) {
         val cachedRequest = ClimatLabRepositoryProvider.instance.getRequest(requestId)
         if (cachedRequest == null) {
             viewState.showRequestNotFoundError()

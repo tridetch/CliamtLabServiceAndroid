@@ -5,12 +5,12 @@ import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestReport
 import ru.climatlab.service.ui.BasePresenter
 
-class RequestReportPresenter: BasePresenter<RequestReportView>() {
+class RequestReportPresenter : BasePresenter<RequestReportView>() {
 
     private lateinit var request: RequestModel
     private var requestReport = RequestReport()
 
-    fun onAttach(requestId: String?) {
+    fun onAttach(requestId: String) {
         val cachedRequest = ClimatLabRepositoryProvider.instance.getRequest(requestId)
         if (cachedRequest == null) {
             viewState.showRequestNotFoundError()
@@ -20,25 +20,27 @@ class RequestReportPresenter: BasePresenter<RequestReportView>() {
 
     }
 
-    fun onReportConfirm(model: String = requestReport.model,
-                        brand: String = requestReport.brand,
-                        serialNumber: String = requestReport.serialNumber,
-                        presenceOfPickup: String = requestReport.presenceOfPickup,
-                        voltage: String = requestReport.voltage,
-                        grounding: Boolean = requestReport.grounding,
-                        stabilizer: Boolean = requestReport.stabilizer,
-                        dielectricCoupling: Boolean = requestReport.dielectricCoupling,
-                        inletGasPressure: String = requestReport.inletGasPressure,
-                        minimumGasOnTheBoiler: String = requestReport.minimumGasOnTheBoiler,
-                        maximumGasOnTheBoiler: String = requestReport.maximumGasOnTheBoiler,
-                        co: String = requestReport.co,
-                        co2: String = requestReport.co2,
-                        recommendations: String = requestReport.recommendations,
-                        amountToPay: String = requestReport.amountToPay,
-                        amountForTheRoad: String = requestReport.amountForTheRoad,
-                        amountOfPart: String = requestReport.amountOfPart,
-                        boilerPhoto: String = requestReport.boilerPhoto,
-                        resultPhoto: String = requestReport.resultPhoto) {
+    fun onReportConfirm(
+        model: String = requestReport.model,
+        brand: String = requestReport.brand,
+        serialNumber: String = requestReport.serialNumber,
+        presenceOfPickup: String = requestReport.presenceOfPickup,
+        voltage: String = requestReport.voltage,
+        grounding: Boolean = requestReport.grounding,
+        stabilizer: Boolean = requestReport.stabilizer,
+        dielectricCoupling: Boolean = requestReport.dielectricCoupling,
+        inletGasPressure: String = requestReport.inletGasPressure,
+        minimumGasOnTheBoiler: String = requestReport.minimumGasOnTheBoiler,
+        maximumGasOnTheBoiler: String = requestReport.maximumGasOnTheBoiler,
+        co: String = requestReport.co,
+        co2: String = requestReport.co2,
+        recommendations: String = requestReport.recommendations,
+        amountToPay: String = requestReport.amountToPay,
+        amountForTheRoad: String = requestReport.amountForTheRoad,
+        amountOfPart: String = requestReport.amountOfPart,
+        boilerPhoto: String = requestReport.boilerPhoto,
+        resultPhoto: String = requestReport.resultPhoto
+    ) {
         requestReport = requestReport.copy(
             model = model,
             brand = brand,
@@ -60,11 +62,13 @@ class RequestReportPresenter: BasePresenter<RequestReportView>() {
             boilerPhoto = boilerPhoto,
             resultPhoto = resultPhoto
         )
+        ClimatLabRepositoryProvider.instance.sendRequestReport(requestReport)
     }
 
     fun onBoilerPhotoTaken(boilerPhotoBase64: String) {
         requestReport = requestReport.copy(boilerPhoto = boilerPhotoBase64)
     }
+
     fun onResultPhotoTaken(resultPhotoBase64: String) {
         requestReport = requestReport.copy(resultPhoto = resultPhotoBase64)
     }

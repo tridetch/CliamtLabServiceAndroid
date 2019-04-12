@@ -20,8 +20,8 @@ object ClimatLabApiClient {
                 .retryOnConnectionFailure(true)
                 .addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT).apply { level = HttpLoggingInterceptor.Level.BODY })
                 .addInterceptor(AuthInterceptor())
+                .addInterceptor(ErrorHandlerInterceptor())
                 .build()
-
 
         val retrofitBuilder = Retrofit.Builder()
                 .addConverterFactory(

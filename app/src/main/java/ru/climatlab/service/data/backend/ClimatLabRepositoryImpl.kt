@@ -3,10 +3,7 @@ package ru.climatlab.service.data.backend
 import io.reactivex.Completable
 import io.reactivex.Single
 import ru.climatlab.service.data.PreferencesRepository
-import ru.climatlab.service.data.model.MapCoordinates
-import ru.climatlab.service.data.model.RequestModel
-import ru.climatlab.service.data.model.RequestStatus
-import ru.climatlab.service.data.model.RequestType
+import ru.climatlab.service.data.model.*
 import java.util.*
 import kotlin.random.Random
 import kotlin.random.nextInt
@@ -17,11 +14,12 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
     override fun login(login: String, password: String): Completable {
         return ClimatLabApiClient.climatLabService.login(login, password).map {
             PreferencesRepository.putToken(it.token)
-        }.toCompletable()
+        }.ignoreElement()
     }
 
     override fun getRequests(): Single<List<RequestModel>> {
         val random = Random
+/*
         cachedRequests = List(20) {
             RequestModel(
                 id = UUID.randomUUID().toString(),
@@ -39,7 +37,7 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
             )
         }
         return Single.just(cachedRequests)
-/*
+*/
         return ClimatLabApiClient.climatLabService.getRequests()
             .map { requests ->
                 requests.map {
@@ -51,10 +49,14 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
                     )
                 }
             }
-*/
     }
 
-    override fun getRequest(requestId: String?): RequestModel? {
+    override fun sendRequestReport(requestReport: RequestReport) {
+        return ClimatLabApiClient.climatLabService.sendRequestReport(requestReport = requestReport)
+    }
+
+    override fun getRequest(requestId: String): RequestModel? {
         return cachedRequests.firstOrNull { it.id == requestId }
     }
+
 }
