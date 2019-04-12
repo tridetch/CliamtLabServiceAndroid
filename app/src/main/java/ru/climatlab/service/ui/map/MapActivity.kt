@@ -223,7 +223,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         requests.forEach {
             val requestMarker = map.addMarker(
                 MarkerOptions()
-                    .position(LatLng(it.coordinates.latitude, it.coordinates.longitude))
+                    .position(LatLng(it.coordinates!!.latitude, it.coordinates.longitude))
             )
                 .setTag(it)
         }
