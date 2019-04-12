@@ -224,54 +224,54 @@
             app:layout_constraintTop_toBottomOf="@id/minGasEditText" />
 
         <TextView
-            android:id="@+id/CoLabel"
+            android:id="@+id/coLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/CoLabel"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            app:layout_constraintBaseline_toBaselineOf="@+id/CoEditText"
+            app:layout_constraintBaseline_toBaselineOf="@+id/coEditText"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/CoEditText" />
+            app:layout_constraintRight_toLeftOf="@id/coEditText" />
 
         <EditText
-            android:id="@+id/CoEditText"
+            android:id="@+id/coEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:inputType="textCapSentences"
             android:maxLines="1"
             app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintLeft_toRightOf="@id/CoLabel"
+            app:layout_constraintLeft_toRightOf="@id/coLabel"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/maxGasEditText" />
 
         <TextView
-            android:id="@+id/Co2Label"
+            android:id="@+id/co2Label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/Co2Label"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            app:layout_constraintBaseline_toBaselineOf="@+id/Co2EditText"
+            app:layout_constraintBaseline_toBaselineOf="@+id/co2EditText"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/Co2EditText" />
+            app:layout_constraintRight_toLeftOf="@id/co2EditText" />
 
         <EditText
-            android:id="@+id/Co2EditText"
+            android:id="@+id/co2EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:inputType="textCapSentences"
             android:maxLines="1"
             app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintLeft_toRightOf="@id/Co2Label"
+            app:layout_constraintLeft_toRightOf="@id/co2Label"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/CoEditText" />
+            app:layout_constraintTop_toBottomOf="@id/coEditText" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/recommendationsInputLayout"
@@ -281,7 +281,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/Co2EditText">
+            app:layout_constraintTop_toBottomOf="@id/co2EditText">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
