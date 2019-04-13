@@ -10,7 +10,7 @@ import ru.climatlab.service.ui.BasePresenter
 class MapPresenter : BasePresenter<MapView>() {
     private var selectedRequest: RequestModel? = null
 
-    override fun onFirstViewAttach() {
+    fun onResume() {
         ClimatLabRepositoryProvider.instance.getRequests()
             .addSchedulers().subscribe({
                 viewState.showRequests(it)
@@ -34,6 +34,28 @@ class MapPresenter : BasePresenter<MapView>() {
             .doFinally { viewState.showLoading(false) }
             .subscribe({
                 viewState.showLoginScreen()
-            },this::handleError)
+            }, this::handleError)
+    }
+
+    fun onAcceptRequest(selectedRequest: RequestModel) {
+        ClimatLabRepositoryProvider.instance.acceptRequest(selectedRequest)
+            .addSchedulers()
+            .doOnSubscribe { viewState.showLoading(true) }
+            .doFinally { viewState.showLoading(false) }
+            .subscribe({
+                viewState.showMessage(MapView.Message.RequestAccepted)
+                viewState.showRequestDetails(selectedRequest)
+            }, this::handleError)
+    }
+
+    fun onCancelRequest(selectedRequest: RequestModel, comment: String) {
+     ClimatLabRepositoryProvider.instance.cancelRequest(selectedRequest, comment)
+         .addSchedulers()
+         .doOnSubscribe { viewState.showLoading(true) }
+         .doFinally { viewState.showLoading(false) }
+         .subscribe({
+             viewState.hideRequestBottomCard()
+             viewState.showMessage(MapView.Message.RequestCanceled)
+         }, this::handleError)
     }
 }

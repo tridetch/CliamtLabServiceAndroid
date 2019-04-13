@@ -9,6 +9,8 @@ interface ClimatLabRepository {
     fun login(login: String, password: String): Completable
     fun getRequests(): Single<List<RequestModel>>
     fun getRequest(requestId: String): RequestModel?
-    fun sendRequestReport(requestReport: RequestReport)
+    fun sendRequestReport(requestReport: RequestReport): Completable
     fun logOut():Completable
+    fun acceptRequest(request: RequestModel): Completable
+    fun cancelRequest(request: RequestModel, comment: String): Completable
 }

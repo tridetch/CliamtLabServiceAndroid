@@ -67,5 +67,9 @@
     <string name="confirmButtonLabel">Подтвердить</string>
     <string name="photosTitle">Фотографии</string>
     <string name="resultTitle">Результат</string>
+    <string name="request_cancel_reason_hint">Причина</string>
+    <string name="cancel_request_confirmation_dialog_title">Подтвердите отказ от заявки</string>
+    <string name="request_accepted_message">Заявка принята</string>
+    <string name="request_canceled_message">Заявка отменена</string>
 
 </resources>

@@ -12,7 +12,7 @@ data class RequestModel(
     @SerializedName("equipment")val equipmentId: String?,
     val type: RequestType?,
     val office: String?,
-    val address: String?,
+    @SerializedName("adress") val address: String?,
     val description: String?,
     val status: RequestStatus?
 )

@@ -26,28 +26,9 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
 
     override fun getRequests(): Single<List<RequestModel>> {
         val random = Random
-/*
-        cachedRequests = List(20) {
-            RequestModel(
-                id = UUID.randomUUID().toString(),
-                clientId = "ClientId $it",
-                address = "Address $it",
-                description = "Description $it",
-                equipmentId = "EquipmentId $it",
-                office = "Office $it",
-                type = RequestType.values()[random.nextInt(0..2)],
-                status = RequestStatus.values()[random.nextInt(0..3)],
-                coordinates = MapCoordinates(
-                    44.05 + random.nextDouble() / 100,
-                    43.05 + random.nextDouble() / 100
-                )
-            )
-        }
-        return Single.just(cachedRequests)
-*/
         return ClimatLabApiClient.climatLabService.getRequests()
             .map { requests ->
-                requests.map {
+                cachedRequests = requests.map {
                     it.copy(
                         coordinates = MapCoordinates(
                             44.05 + random.nextDouble() / 100,
@@ -55,10 +36,11 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
                         )
                     )
                 }
+                cachedRequests
             }
     }
 
-    override fun sendRequestReport(requestReport: RequestReport) {
+    override fun sendRequestReport(requestReport: RequestReport): Completable {
         return ClimatLabApiClient.climatLabService.sendRequestReport(requestReport = requestReport)
     }
 
@@ -66,4 +48,11 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
         return cachedRequests.firstOrNull { it.id == requestId }
     }
 
+    override fun acceptRequest(request: RequestModel): Completable {
+        return ClimatLabApiClient.climatLabService.acceptRequest(requestId = request.id)
+    }
+
+    override fun cancelRequest(request: RequestModel, comment: String): Completable {
+        return ClimatLabApiClient.climatLabService.cancelRequest(requestId = request.id, comment = comment)
+    }
 }

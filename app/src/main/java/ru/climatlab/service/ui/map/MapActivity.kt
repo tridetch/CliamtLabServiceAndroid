@@ -8,6 +8,7 @@ import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -25,13 +26,16 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_drawer.*
+import kotlinx.android.synthetic.main.cancel_request_confirmation_dialog.view.*
 import kotlinx.android.synthetic.main.request_bottom_sheet.*
 import kotlinx.android.synthetic.main.request_bottom_sheet.view.*
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestStatus
 import ru.climatlab.service.ui.login.LoginActivity
+import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
 import ru.climatlab.service.ui.requestsList.RequestsListActivity
 
 class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
@@ -152,6 +156,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         if (isGoogleMapReady) {
             mvpDelegate.onAttach()
         }
+        presenter.onResume()
     }
 
     override fun onStart() {
@@ -243,11 +248,37 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         requestInfoCard.addressTextView.text = selectedRequest.address
         when (selectedRequest.status) {
             RequestStatus.NewRequest -> {
-                requestInfoCard.requestActionButton.background.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.SRC_ATOP)
+                requestInfoCard.requestActionButton.background.setTint(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.colorAccent
+                    )
+                )
                 requestInfoCard.requestActionButton.text = getString(R.string.accept_request_button_label)
+                requestInfoCard.requestActionButton.setOnClickListener { presenter.onAcceptRequest(selectedRequest) }
             }
             RequestStatus.InWork -> {
-                requestInfoCard.requestActionButton.background.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP)
+                requestInfoCard.requestActionButton.setOnClickListener {
+                    val cancelRequestConfirmationDialog =
+                        layoutInflater.inflate(R.layout.cancel_request_confirmation_dialog, null)
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.cancel_request_confirmation_dialog_title)
+                        .setView(cancelRequestConfirmationDialog)
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
+                            presenter.onCancelRequest(
+                                selectedRequest,
+                                cancelRequestConfirmationDialog.reasonInputLayout.editText!!.text.toString()
+                            )
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
+                }
+                requestInfoCard.requestActionButton.background.setColorFilter(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.colorPrimary
+                    ), PorterDuff.Mode.SRC_ATOP
+                )
                 requestInfoCard.requestActionButton.text = getString(R.string.cancel_request_button_label)
             }
             else -> {
@@ -256,16 +287,28 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         requestBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
+    override fun showMessage(message: MapView.Message) {
+        val resId = when (message) {
+            MapView.Message.RequestAccepted -> R.string.request_accepted_message
+            MapView.Message.RequestCanceled -> R.string.request_canceled_message
+        }
+        Toast.makeText(this, resId, Toast.LENGTH_LONG).show()
+    }
+
     override fun hideRequestBottomCard() {
         requestBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    override fun closeScreen() {
-        finish()
+    override fun showRequestDetails(selectedRequest: RequestModel) {
+        startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to selectedRequest.id))
     }
 
     override fun showLoginScreen() {
         finish()
         startActivity<LoginActivity>()
+    }
+
+    override fun closeScreen() {
+        finish()
     }
 }

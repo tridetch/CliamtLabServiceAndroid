@@ -12,17 +12,24 @@ class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
         var request = chain.request()
+        val requestBuilder = request.newBuilder().addHeader(
+            "Accept-Language",
+            "${Locale.getDefault().language}-${Locale.getDefault().language.toUpperCase()}"
+        )
         if (!request.url().encodedPath().contains("/api/login.php")) {
             val token: String = PreferencesRepository.getToken()
-            request = request.newBuilder()
-                .addHeader("token", token)
+            requestBuilder.addHeader("token", token)
                 .addHeader(
                     "Accept-Language",
                     "${Locale.getDefault().language}-${Locale.getDefault().language.toUpperCase()}"
                 )
-                .url("${request.url()}?token=${PreferencesRepository.getToken()}")
-                .build()
+                .apply {
+                    if (request.url().toString().contains("?")) url("${request.url()}&token=${PreferencesRepository.getToken()}") else url(
+                        "${request.url()}?token=${PreferencesRepository.getToken()}"
+                    )
+                }
         }
+        request = requestBuilder.build()
 
         return chain.proceed(request)
     }
