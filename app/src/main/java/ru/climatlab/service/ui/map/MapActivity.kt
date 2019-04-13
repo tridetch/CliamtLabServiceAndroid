@@ -63,6 +63,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         mvpDelegate.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        supportActionBar!!.title = getString(R.string.title_activity_map)
 
         loadingDialog = ProgressDialog(this).apply {
             isIndeterminate = true
@@ -310,6 +311,10 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
     override fun showRequestDetails(selectedRequest: RequestModel) {
         startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to selectedRequest.id))
+    }
+
+    override fun showRequestReportScreen(selectedRequest: RequestModel) {
+        startActivity(intentFor<RequestReportActivity>(RequestReportActivity.EXTRA_KEY_REQUEST_ID to selectedRequest.id))
     }
 
     override fun showLoginScreen() {

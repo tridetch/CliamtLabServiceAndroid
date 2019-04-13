@@ -15,6 +15,7 @@ interface MapView: BaseMvpView {
     fun hideRequestBottomCard()
     fun showLoginScreen()
     fun showRequestDetails(selectedRequest: RequestModel)
+    fun showRequestReportScreen(selectedRequest: RequestModel)
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showMessage(message: MapView.Message)
 }

@@ -44,7 +44,7 @@ class MapPresenter : BasePresenter<MapView>() {
             .doFinally { viewState.showLoading(false) }
             .subscribe({
                 viewState.showMessage(MapView.Message.RequestAccepted)
-                viewState.showRequestDetails(selectedRequest)
+                viewState.showRequestReportScreen(selectedRequest)
             }, this::handleError)
     }
 

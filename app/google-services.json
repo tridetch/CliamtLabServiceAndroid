@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "476063151494",
+    "firebase_url": "https://climat-lab-service.firebaseio.com",
+    "project_id": "climat-lab-service",
+    "storage_bucket": "climat-lab-service.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476063151494:android:adc546041d9b131f",
+        "android_client_info": {
+          "package_name": "ru.climatlab.service"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476063151494-eiitgunf6q5t2oqpj3a5k8c31nuadc0e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYb0rHmA4Y7evEDQIKxF4gKomKYUr0EbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476063151494-eiitgunf6q5t2oqpj3a5k8c31nuadc0e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476063151494:android:10095b80657840fe",
+        "android_client_info": {
+          "package_name": "ru.laclimat.climatlabservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476063151494-eiitgunf6q5t2oqpj3a5k8c31nuadc0e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYb0rHmA4Y7evEDQIKxF4gKomKYUr0EbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476063151494-eiitgunf6q5t2oqpj3a5k8c31nuadc0e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
