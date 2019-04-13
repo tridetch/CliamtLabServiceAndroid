@@ -1,12 +1,17 @@
 package ru.climatlab.service.ui.login
 
 import android.os.Bundle
+import android.text.Editable
+import androidx.core.widget.addTextChangedListener
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.redmadrobot.inputmask.MaskedTextChangedListener
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.map.MapActivity
+
+
 
 class LoginActivity : BaseActivity(), LoginView {
 
@@ -16,7 +21,22 @@ class LoginActivity : BaseActivity(), LoginView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        loginButton.setOnClickListener { presenter.login(phoneInputLayout.editText!!.text.toString(), passwordInputLayout.editText!!.text.toString()) }
+        val phoneEditText = phoneInputLayout.editText!!
+        val listener = MaskedTextChangedListener.installOn(
+            phoneEditText,
+            "+7 ([000]) [000]-[00]-[00]",
+            object : MaskedTextChangedListener.ValueListener {
+                override fun onTextChanged(maskFilled: Boolean, extractedValue: String, formattedValue: String) {
+                    presenter.onLoginChanged(extractedValue)
+                }
+            }
+        )
+        phoneEditText.addTextChangedListener(listener)
+        phoneEditText.onFocusChangeListener = listener
+
+        passwordInputLayout.editText!!.addTextChangedListener(afterTextChanged = { presenter.onPasswordChanged(it.toString()) })
+
+        loginButton.setOnClickListener { presenter.login() }
     }
 
     override fun showNextScreen() {

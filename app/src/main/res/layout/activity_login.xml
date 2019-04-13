@@ -40,8 +40,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="12"
         app:layout_constraintBottom_toTopOf="@id/passwordInputLayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -54,7 +52,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/phone"
             android:inputType="phone"
-            android:maxLength="12"
             android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
