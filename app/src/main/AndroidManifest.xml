@@ -26,6 +26,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ui.requestReport.RequestReportActivity"
+            android:label="@string/request_report_activity_title"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.requestDetailsInfo.RequestDetailsActivity" />
         <activity
