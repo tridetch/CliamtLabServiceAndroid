@@ -4,10 +4,12 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestReport
+import ru.climatlab.service.data.model.RequestStatus
+import ru.climatlab.service.data.model.RequestType
 
 interface ClimatLabRepository {
     fun login(login: String, password: String): Completable
-    fun getRequests(): Single<List<RequestModel>>
+    fun getRequests(requestFilter: RequestStatus? = null): Single<List<RequestModel>>
     fun getRequest(requestId: String): RequestModel?
     fun sendRequestReport(requestReport: RequestReport): Completable
     fun logOut():Completable

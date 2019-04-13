@@ -6,6 +6,7 @@ import ru.climatlab.service.data.PreferencesRepository
 import ru.climatlab.service.data.model.MapCoordinates
 import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestReport
+import ru.climatlab.service.data.model.RequestStatus
 import kotlin.random.Random
 
 class ClimatLabRepositoryImpl : ClimatLabRepository {
@@ -24,18 +25,19 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
         }
     }
 
-    override fun getRequests(): Single<List<RequestModel>> {
+    override fun getRequests(requestFilter: RequestStatus?): Single<List<RequestModel>> {
         val random = Random
         return ClimatLabApiClient.climatLabService.getRequests()
             .map { requests ->
-                cachedRequests = requests.map {
-                    it.copy(
-                        coordinates = MapCoordinates(
-                            44.05 + random.nextDouble() / 100,
-                            43.05 + random.nextDouble() / 100
+                cachedRequests = requests.filter { if (requestFilter != null) it.status == requestFilter else true }
+                    .map {
+                        it.copy(
+                            coordinates = MapCoordinates(
+                                44.05 + random.nextDouble() / 100,
+                                43.05 + random.nextDouble() / 100
+                            )
                         )
-                    )
-                }
+                    }
                 cachedRequests
             }
     }

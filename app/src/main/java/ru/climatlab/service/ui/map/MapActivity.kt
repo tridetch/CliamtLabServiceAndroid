@@ -33,6 +33,7 @@ import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestStatus
+import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.ui.login.LoginActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
 import ru.climatlab.service.ui.requestReport.RequestReportActivity
@@ -122,7 +123,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                 startActivity<RequestsListActivity>()
             }
             R.id.nav_accepted_requests -> {
-
+                startActivity(intentFor<RequestsListActivity>(RequestsListActivity.EXTRA_REQUESTS_FILTER to RequestStatus.InWork))
             }
             R.id.nav_exit -> {
                 presenter.onLogoutClick()

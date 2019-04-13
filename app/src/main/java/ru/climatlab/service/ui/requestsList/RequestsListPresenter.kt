@@ -5,13 +5,15 @@ import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
 import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestStatus
+import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.ui.BasePresenter
 
 @InjectViewState
 class RequestsListPresenter : BasePresenter<RequestsListView>() {
-    override fun onFirstViewAttach() {
+
+    fun onAttach(requestFilter: RequestStatus?) {
         ClimatLabRepositoryProvider.instance
-            .getRequests()
+            .getRequests(requestFilter)
             .addSchedulers()
             .doOnSubscribe { viewState.showLoading(true) }
             .doFinally { viewState.showLoading(false) }

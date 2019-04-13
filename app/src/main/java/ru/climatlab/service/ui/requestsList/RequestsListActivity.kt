@@ -7,11 +7,17 @@ import kotlinx.android.synthetic.main.activity_requests_list.*
 import org.jetbrains.anko.intentFor
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.RequestStatus
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
 import ru.climatlab.service.ui.requestReport.RequestReportActivity
 
 class RequestsListActivity : BaseActivity(), RequestsListView {
+
+    companion object {
+        /** Must be one of {@link RequestStatus} or empty if filter disabled*/
+        const val EXTRA_REQUESTS_FILTER = "EXTRA_REQUESTS_FILTER"
+    }
 
     @InjectPresenter
     lateinit var presenter: RequestsListPresenter
@@ -29,6 +35,8 @@ class RequestsListActivity : BaseActivity(), RequestsListView {
                 }
             })
         requestsRecyclerView.adapter = requestsAdapter
+        val requestFilter = intent.getSerializableExtra(EXTRA_REQUESTS_FILTER) as RequestStatus?
+        presenter.onAttach(requestFilter)
     }
 
     override fun updateData(requests: List<RequestModel>) {
