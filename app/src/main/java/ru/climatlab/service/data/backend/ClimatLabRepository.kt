@@ -10,4 +10,5 @@ interface ClimatLabRepository {
     fun getRequests(): Single<List<RequestModel>>
     fun getRequest(requestId: String): RequestModel?
     fun sendRequestReport(requestReport: RequestReport)
+    fun logOut():Completable
 }

@@ -25,4 +25,15 @@ class MapPresenter : BasePresenter<MapView>() {
             viewState.hideRequestBottomCard()
         }
     }
+
+    fun onLogoutClick() {
+        ClimatLabRepositoryProvider.instance
+            .logOut()
+            .addSchedulers()
+            .doOnSubscribe { viewState.showLoading(true) }
+            .doFinally { viewState.showLoading(false) }
+            .subscribe({
+                viewState.showLoginScreen()
+            },this::handleError)
+    }
 }

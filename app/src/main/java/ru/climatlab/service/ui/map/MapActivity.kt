@@ -31,6 +31,7 @@ import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestStatus
+import ru.climatlab.service.ui.login.LoginActivity
 import ru.climatlab.service.ui.requestsList.RequestsListActivity
 
 class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
@@ -58,12 +59,18 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        loadingDialog = ProgressDialog(this).apply {
+            isIndeterminate = true
+            setCancelable(false)
+            setMessage(getString(R.string.loading_message))
+        }
+
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
-        drawer_layout.addDrawerListener(toggle)
+        drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        nav_view.setNavigationItemSelectedListener(this)
+        navView.setNavigationItemSelectedListener(this)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -87,8 +94,8 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -114,11 +121,11 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
             }
             R.id.nav_exit -> {
-
+                presenter.onLogoutClick()
             }
         }
 
-        drawer_layout.closeDrawer(GravityCompat.START)
+        drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
@@ -255,5 +262,10 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
     override fun closeScreen() {
         finish()
+    }
+
+    override fun showLoginScreen() {
+        finish()
+        startActivity<LoginActivity>()
     }
 }

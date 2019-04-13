@@ -3,10 +3,10 @@ package ru.climatlab.service.data.backend
 import io.reactivex.Completable
 import io.reactivex.Single
 import ru.climatlab.service.data.PreferencesRepository
-import ru.climatlab.service.data.model.*
-import java.util.*
+import ru.climatlab.service.data.model.MapCoordinates
+import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.RequestReport
 import kotlin.random.Random
-import kotlin.random.nextInt
 
 class ClimatLabRepositoryImpl : ClimatLabRepository {
     private var cachedRequests = listOf<RequestModel>()
@@ -15,6 +15,13 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
         return ClimatLabApiClient.climatLabService.login(login, password).map {
             PreferencesRepository.putToken(it.token)
         }.ignoreElement()
+    }
+
+    override fun logOut(): Completable {
+        return Completable.create {
+            PreferencesRepository.putToken("")
+            it.onComplete()
+        }
     }
 
     override fun getRequests(): Single<List<RequestModel>> {
