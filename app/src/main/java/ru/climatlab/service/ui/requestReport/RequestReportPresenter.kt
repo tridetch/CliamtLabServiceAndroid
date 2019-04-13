@@ -1,5 +1,6 @@
 package ru.climatlab.service.ui.requestReport
 
+import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
 import ru.climatlab.service.data.model.RequestModel
@@ -7,6 +8,7 @@ import ru.climatlab.service.data.model.RequestReport
 import ru.climatlab.service.ui.BasePresenter
 import java.util.*
 
+@InjectViewState
 class RequestReportPresenter : BasePresenter<RequestReportView>() {
 
     private lateinit var request: RequestModel
@@ -18,6 +20,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             viewState.showRequestNotFoundError()
         } else {
             request = cachedRequest
+            requestReport = requestReport.copy(requestId = cachedRequest.id)
         }
 
     }
