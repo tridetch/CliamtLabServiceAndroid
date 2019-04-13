@@ -1,8 +1,10 @@
 package ru.climatlab.service.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class RequestReport(
+    @SerializedName("dateTime") val date: Date = Date(),
     @SerializedName("model") val model: String = "",
     @SerializedName("brand") val brand: String = "",
     @SerializedName("serialNumber") val serialNumber: String = "",

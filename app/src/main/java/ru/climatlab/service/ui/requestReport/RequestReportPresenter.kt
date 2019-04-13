@@ -1,9 +1,11 @@
 package ru.climatlab.service.ui.requestReport
 
+import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
 import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestReport
 import ru.climatlab.service.ui.BasePresenter
+import java.util.*
 
 class RequestReportPresenter : BasePresenter<RequestReportView>() {
 
@@ -42,6 +44,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         resultPhoto: String = requestReport.resultPhoto
     ) {
         requestReport = requestReport.copy(
+            date = Date(),
             model = model,
             brand = brand,
             serialNumber = serialNumber,
@@ -62,7 +65,15 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             boilerPhoto = boilerPhoto,
             resultPhoto = resultPhoto
         )
-        ClimatLabRepositoryProvider.instance.sendRequestReport(requestReport)
+        ClimatLabRepositoryProvider.instance
+            .sendRequestReport(requestReport)
+            .addSchedulers()
+            .doOnSubscribe { viewState.showLoading(true) }
+            .doFinally { viewState.showLoading(false) }
+            .subscribe({
+                viewState.showMessage(RequestReportView.Message.ReportSent)
+                viewState.closeScreen()
+            }, this::handleError)
     }
 
     fun onBoilerPhotoTaken(boilerPhotoBase64: String) {
@@ -72,6 +83,4 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
     fun onResultPhotoTaken(resultPhotoBase64: String) {
         requestReport = requestReport.copy(resultPhoto = resultPhotoBase64)
     }
-
-
 }

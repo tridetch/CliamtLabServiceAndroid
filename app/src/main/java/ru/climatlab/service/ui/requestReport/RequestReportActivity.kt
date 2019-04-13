@@ -138,4 +138,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             .show()
     }
 
+    override fun showMessage(reportSent: RequestReportView.Message) {
+        Toast.makeText(this, R.string.request_report_successfully_sent_mwssage, Toast.LENGTH_LONG).show()
+    }
 }
