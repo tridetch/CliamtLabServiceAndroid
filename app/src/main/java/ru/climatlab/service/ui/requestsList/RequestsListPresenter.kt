@@ -5,7 +5,6 @@ import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
 import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestStatus
-import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.ui.BasePresenter
 
 @InjectViewState
@@ -22,8 +21,8 @@ class RequestsListPresenter : BasePresenter<RequestsListView>() {
 
     fun onRequestClick(request: RequestModel) {
         when (request.status) {
-            RequestStatus.InWork -> viewState.showRequestDetailsScreen(request)
-            else -> viewState.showRequestReportScreen(request)
+            RequestStatus.InWork -> viewState.showRequestReportScreen(request)
+            else -> viewState.showRequestDetailsScreen(request)
         }
     }
 }
