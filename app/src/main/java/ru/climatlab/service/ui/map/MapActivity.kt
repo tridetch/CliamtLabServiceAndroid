@@ -2,7 +2,6 @@ package ru.climatlab.service.ui.map
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Menu
@@ -36,6 +35,7 @@ import ru.climatlab.service.data.model.RequestModel
 import ru.climatlab.service.data.model.RequestStatus
 import ru.climatlab.service.ui.login.LoginActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
+import ru.climatlab.service.ui.requestReport.RequestReportActivity
 import ru.climatlab.service.ui.requestsList.RequestsListActivity
 
 class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
@@ -241,12 +241,12 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         }
     }
 
-    override fun showRequestBottomCard(selectedRequest: RequestModel) {
-        requestInfoCard.clientFullNameTextView.text = selectedRequest.clientId
-        requestInfoCard.officeTitleNameTextView.text = selectedRequest.office
-        requestInfoCard.equipmentTextView.text = selectedRequest.equipmentId
-        requestInfoCard.addressTextView.text = selectedRequest.address
-        when (selectedRequest.status) {
+    override fun showRequestBottomCard(request: RequestModel) {
+        requestInfoCard.clientFullNameTextView.text = request.clientId
+        requestInfoCard.officeTitleNameTextView.text = request.office
+        requestInfoCard.equipmentTextView.text = request.equipmentId
+        requestInfoCard.addressTextView.text = request.address
+        when (request.status) {
             RequestStatus.NewRequest -> {
                 requestInfoCard.requestActionButton.background.setTint(
                     ContextCompat.getColor(
@@ -255,7 +255,10 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                     )
                 )
                 requestInfoCard.requestActionButton.text = getString(R.string.accept_request_button_label)
-                requestInfoCard.requestActionButton.setOnClickListener { presenter.onAcceptRequest(selectedRequest) }
+                requestInfoCard.requestActionButton.setOnClickListener { presenter.onAcceptRequest(request) }
+                requestInfoCard.openRequestImageButton.setOnClickListener {
+                    startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
+                }
             }
             RequestStatus.InWork -> {
                 requestInfoCard.requestActionButton.setOnClickListener {
@@ -266,20 +269,25 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                         .setView(cancelRequestConfirmationDialog)
                         .setPositiveButton(android.R.string.ok) { _, _ ->
                             presenter.onCancelRequest(
-                                selectedRequest,
+                                request,
                                 cancelRequestConfirmationDialog.reasonInputLayout.editText!!.text.toString()
                             )
                         }
                         .setNegativeButton(android.R.string.cancel, null)
                         .show()
                 }
-                requestInfoCard.requestActionButton.background.setColorFilter(
+                requestInfoCard.requestActionButton.background.setTint(
                     ContextCompat.getColor(
                         this,
                         R.color.colorPrimary
-                    ), PorterDuff.Mode.SRC_ATOP
+                    )
                 )
                 requestInfoCard.requestActionButton.text = getString(R.string.cancel_request_button_label)
+                requestInfoCard.openRequestImageButton.setOnClickListener {
+                    requestInfoCard.openRequestImageButton.setOnClickListener {
+                        startActivity(intentFor<RequestReportActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
+                    }
+                }
             }
             else -> {
             }
