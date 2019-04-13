@@ -100,8 +100,6 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                         .into(boilerPhotoImageView)
                 } else if (resultCode == ImagePicker.RESULT_ERROR) {
                     Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
                 }
             }
             REQUEST_CODE_RESULT_PHOTO->{
@@ -128,8 +126,6 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                         .into(resultPhotoImageView)
                 } else if (resultCode == ImagePicker.RESULT_ERROR) {
                     Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
                 }
             }
         }
