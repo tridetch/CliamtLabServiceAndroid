@@ -16,7 +16,7 @@ class AuthInterceptor : Interceptor {
             "Accept-Language",
             "${Locale.getDefault().language}-${Locale.getDefault().language.toUpperCase()}"
         )
-        if (!request.url().encodedPath().contains("/api/login.php")) {
+        if (!request.url().toString().contains("/api/login.php")) {
             val token: String = PreferencesRepository.getToken()
             requestBuilder.addHeader("token", token)
                 .addHeader(
