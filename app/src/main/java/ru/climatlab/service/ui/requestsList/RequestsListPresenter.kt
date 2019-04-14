@@ -3,7 +3,7 @@ package ru.climatlab.service.ui.requestsList
 import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
-import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.data.model.RequestStatus
 import ru.climatlab.service.ui.BasePresenter
 
@@ -19,8 +19,8 @@ class RequestsListPresenter : BasePresenter<RequestsListView>() {
             .subscribe({ viewState.updateData(it) }, this::handleError)
     }
 
-    fun onRequestClick(request: RequestModel) {
-        when (request.status) {
+    fun onRequestClick(request: Request) {
+        when (request.requestInfo.status) {
             RequestStatus.InWork -> viewState.showRequestReportScreen(request)
             else -> viewState.showRequestDetailsScreen(request)
         }

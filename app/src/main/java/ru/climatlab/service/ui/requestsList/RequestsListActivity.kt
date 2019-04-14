@@ -6,7 +6,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import kotlinx.android.synthetic.main.activity_requests_list.*
 import org.jetbrains.anko.intentFor
 import ru.climatlab.service.R
-import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.data.model.RequestStatus
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
@@ -30,7 +30,7 @@ class RequestsListActivity : BaseActivity(), RequestsListView {
         requestsRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         requestsAdapter =
             RequestsRecyclerViewAdapter(mutableListOf(), object : RequestsRecyclerViewAdapter.InteractionListener {
-                override fun onClick(request: RequestModel) {
+                override fun onClick(request: Request) {
                     presenter.onRequestClick(request)
                 }
             })
@@ -39,15 +39,15 @@ class RequestsListActivity : BaseActivity(), RequestsListView {
         presenter.onAttach(requestFilter)
     }
 
-    override fun updateData(requests: List<RequestModel>) {
+    override fun updateData(requests: List<Request>) {
         requestsAdapter.updateDataSet(requests)
     }
 
-    override fun showRequestDetailsScreen(request: RequestModel) {
-        startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
+    override fun showRequestDetailsScreen(request: Request) {
+        startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
     }
 
-    override fun showRequestReportScreen(request: RequestModel) {
-        startActivity(intentFor<RequestReportActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
+    override fun showRequestReportScreen(request: Request) {
+        startActivity(intentFor<RequestReportActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
     }
 }

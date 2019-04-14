@@ -1,6 +1,5 @@
 package ru.climatlab.service.ui.login
 
-import android.text.Editable
 import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.PreferencesRepository
@@ -16,16 +15,22 @@ class LoginPresenter : BasePresenter<LoginView>() {
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         if (PreferencesRepository.getToken().isNotBlank()) {
-            viewState.showNextScreen()
+            ClimatLabRepositoryProvider.instance.updateData().addSchedulers()
+                .doOnSubscribe { viewState.showLoading(true) }
+                .doFinally { viewState.showLoading(false) }
+                .subscribe({
+                    viewState.showNextScreen()
+                }, this::handleError)
         }
     }
 
     fun login() {
         ClimatLabRepositoryProvider.instance.login(login, password)
-                .addSchedulers()
-                .doOnSubscribe { viewState.showLoading(true) }
-                .doFinally { viewState.showLoading(false) }
-                .subscribe({ viewState.showNextScreen() }, this::handleError)
+            .andThen { ClimatLabRepositoryProvider.instance.updateData() }
+            .addSchedulers()
+            .doOnSubscribe { viewState.showLoading(true) }
+            .doFinally { viewState.showLoading(false) }
+            .subscribe({ viewState.showNextScreen() }, this::handleError)
     }
 
     fun onLoginChanged(login: String) {

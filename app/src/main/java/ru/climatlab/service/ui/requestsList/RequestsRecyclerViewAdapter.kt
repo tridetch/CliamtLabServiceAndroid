@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.request_list_item.view.*
 import ru.climatlab.service.R
-import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.Request
+import ru.climatlab.service.data.model.RequestResponseModel
 import ru.climatlab.service.data.model.RequestType
 
 class RequestsRecyclerViewAdapter(
-    private var requestItems: MutableList<RequestModel>,
+    private var requestItems: MutableList<Request>,
     private val interactionListener: InteractionListener
 ) : RecyclerView.Adapter<RequestsRecyclerViewAdapter.RequestViewHolder>() {
 
@@ -27,28 +28,28 @@ class RequestsRecyclerViewAdapter(
         holder.bindItem(requestItems[position])
     }
 
-    fun updateDataSet(orders: List<RequestModel>) {
+    fun updateDataSet(requests: List<Request>) {
         val lastItem = requestItems.size
-        requestItems.addAll(orders)
+        requestItems.addAll(requests)
         notifyItemRangeInserted(lastItem, requestItems.size)
     }
 
     interface InteractionListener {
-        fun onClick(request: RequestModel)
+        fun onClick(request: Request)
     }
 
     class RequestViewHolder(itemView: View, private val interactionListener: InteractionListener) :
         RecyclerView.ViewHolder(itemView) {
 
-        lateinit var request: RequestModel
+        lateinit var request: Request
 
-        fun bindItem(request: RequestModel) {
+        fun bindItem(request: Request) {
             this.request = request
-            itemView.clientFullNameTextView.text = request.clientId
-            itemView.officeTitleNameTextView.text = request.office
-            itemView.equipmentTextView.text = request.equipmentId
-            itemView.addressTextView.text = request.address
-            itemView.typeTextView.text = when(request.type){
+            itemView.clientFullNameTextView.text = request.clientResponseModel.fullName()
+            itemView.officeTitleNameTextView.text = request.requestInfo.office
+            itemView.equipmentTextView.text = request.requestInfo.equipmentId
+            itemView.addressTextView.text = request.requestInfo.address
+            itemView.typeTextView.text = when(request.requestInfo.type){
                 RequestType.Mounting -> itemView.context.getString(R.string.request_type_mounting)
                 RequestType.Service -> itemView.context.getString(R.string.request_type_service)
                 RequestType.OrderEquipment -> itemView.context.getString(R.string.request_type_order)

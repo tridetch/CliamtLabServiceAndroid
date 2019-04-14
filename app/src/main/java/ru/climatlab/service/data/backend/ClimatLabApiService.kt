@@ -6,7 +6,8 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
-import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.ClientResponseModel
+import ru.climatlab.service.data.model.RequestResponseModel
 import ru.climatlab.service.data.model.RequestReport
 import ru.climatlab.service.data.model.TokenResponse
 import java.util.*
@@ -19,7 +20,7 @@ interface ClimatLabApiService {
     fun login(@Query("login") login: String, @Query("password") password: String): Single<TokenResponse>
 
     @GET("/api/requests.php")
-    fun getRequests(): Single<List<RequestModel>>
+    fun getRequests(): Single<List<RequestResponseModel>>
 
     @POST("/api/request.php")
     fun sendRequestReport(@Query("updateRequest") updateRequest: String = "1", @Body requestReport: RequestReport): Completable
@@ -29,5 +30,8 @@ interface ClimatLabApiService {
 
     @POST("/api/request.php")
     fun cancelRequest(@Query("requestId") requestId: String, @Query("comment") comment: String): Completable
+
+    @POST("/api/clients.php")
+    fun getClients(): Single<List<ClientResponseModel>>
 
 }

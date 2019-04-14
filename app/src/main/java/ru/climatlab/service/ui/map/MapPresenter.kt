@@ -3,12 +3,12 @@ package ru.climatlab.service.ui.map
 import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
-import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.ui.BasePresenter
 
 @InjectViewState
 class MapPresenter : BasePresenter<MapView>() {
-    private var selectedRequest: RequestModel? = null
+    private var selectedRequest: Request? = null
 
     fun onResume() {
         ClimatLabRepositoryProvider.instance.getRequests()
@@ -17,10 +17,10 @@ class MapPresenter : BasePresenter<MapView>() {
             }, this::handleError)
     }
 
-    fun onRequestSelected(request: RequestModel?) {
+    fun onRequestSelected(request: Request?) {
         selectedRequest = request
         if (selectedRequest != null) {
-            viewState.showRequestBottomCard(selectedRequest!!)
+            viewState.showRequestBottomCard(request!!)
         } else {
             viewState.hideRequestBottomCard()
         }
@@ -37,19 +37,19 @@ class MapPresenter : BasePresenter<MapView>() {
             }, this::handleError)
     }
 
-    fun onAcceptRequest(selectedRequest: RequestModel) {
-        ClimatLabRepositoryProvider.instance.acceptRequest(selectedRequest)
+    fun onAcceptRequest(request: Request) {
+        ClimatLabRepositoryProvider.instance.acceptRequest(request.requestInfo)
             .addSchedulers()
             .doOnSubscribe { viewState.showLoading(true) }
             .doFinally { viewState.showLoading(false) }
             .subscribe({
                 viewState.showMessage(MapView.Message.RequestAccepted)
-                viewState.showRequestReportScreen(selectedRequest)
+                viewState.showRequestReportScreen(request)
             }, this::handleError)
     }
 
-    fun onCancelRequest(selectedRequest: RequestModel, comment: String) {
-     ClimatLabRepositoryProvider.instance.cancelRequest(selectedRequest, comment)
+    fun onCancelRequest(request: Request, comment: String) {
+     ClimatLabRepositoryProvider.instance.cancelRequest(request.requestInfo, comment)
          .addSchedulers()
          .doOnSubscribe { viewState.showLoading(true) }
          .doFinally { viewState.showLoading(false) }

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by tridetch on 07.04.2019. CliamtLabService
  */
-data class RequestModel(
+data class RequestResponseModel(
     @SerializedName("id") val id: String,
     val coordinates: MapCoordinates?,
     @SerializedName("client")val clientId: String?,

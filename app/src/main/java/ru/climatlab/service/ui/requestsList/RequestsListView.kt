@@ -1,11 +1,12 @@
 package ru.climatlab.service.ui.requestsList
 
-import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.Request
+import ru.climatlab.service.data.model.RequestResponseModel
 import ru.climatlab.service.ui.BaseMvpView
 
 interface RequestsListView: BaseMvpView {
 
-    fun updateData(requests: List<RequestModel>)
-    fun showRequestDetailsScreen(request: RequestModel)
-    fun showRequestReportScreen(request: RequestModel)
+    fun updateData(requests: List<Request>)
+    fun showRequestDetailsScreen(request: Request)
+    fun showRequestReportScreen(request: Request)
 }

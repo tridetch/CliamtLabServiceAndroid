@@ -6,7 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import com.arellomobile.mvp.presenter.InjectPresenter
 import kotlinx.android.synthetic.main.activity_request_details.*
 import ru.climatlab.service.R
-import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.ui.BaseActivity
 
 class RequestDetailsActivity : BaseActivity(), RequestDetailsView {
@@ -32,10 +32,10 @@ class RequestDetailsActivity : BaseActivity(), RequestDetailsView {
             .show()
     }
 
-    override fun showRequestDetailsInfo(request: RequestModel) {
-        clientFullNameTextView.text = request.clientId
-        descriptionTextView.text = request.description
-        equipmentTextView.text = request.description
-        addressTextView.text = request.address
+    override fun showRequestDetailsInfo(request: Request) {
+        clientFullNameTextView.text = request.clientResponseModel.fullName()
+        descriptionTextView.text = request.requestInfo.description
+        equipmentTextView.text = request.requestInfo.equipmentId
+        addressTextView.text = request.requestInfo.address
     }
 }

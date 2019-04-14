@@ -31,9 +31,8 @@ import kotlinx.android.synthetic.main.request_bottom_sheet.view.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
-import ru.climatlab.service.data.model.RequestModel
+import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.data.model.RequestStatus
-import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.ui.login.LoginActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
 import ru.climatlab.service.ui.requestReport.RequestReportActivity
@@ -209,7 +208,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.055, 43.055), 14f))
 
         map.setOnMarkerClickListener {
-            presenter.onRequestSelected(it.tag as RequestModel)
+            presenter.onRequestSelected(it.tag as Request)
             true
         }
 
@@ -232,23 +231,23 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
             .setMessage(message).show()
     }
 
-    override fun showRequests(requests: List<RequestModel>) {
+    override fun showRequests(requests: List<Request>) {
         map.clear()
         requests.forEach {
             val requestMarker = map.addMarker(
                 MarkerOptions()
-                    .position(LatLng(it.coordinates!!.latitude, it.coordinates.longitude))
+                    .position(LatLng(it.requestInfo.coordinates!!.latitude, it.requestInfo.coordinates.longitude))
             )
                 .setTag(it)
         }
     }
 
-    override fun showRequestBottomCard(request: RequestModel) {
-        requestInfoCard.clientFullNameTextView.text = request.clientId
-        requestInfoCard.officeTitleNameTextView.text = request.office
-        requestInfoCard.equipmentTextView.text = request.equipmentId
-        requestInfoCard.addressTextView.text = request.address
-        when (request.status) {
+    override fun showRequestBottomCard(request: Request) {
+        requestInfoCard.clientFullNameTextView.text = request.clientResponseModel.fullName()
+        requestInfoCard.officeTitleNameTextView.text = request.requestInfo.office
+        requestInfoCard.equipmentTextView.text = request.requestInfo.equipmentId
+        requestInfoCard.addressTextView.text = request.requestInfo.address
+        when (request.requestInfo.status) {
             RequestStatus.NewRequest -> {
                 requestInfoCard.requestActionButton.background.setTint(
                     ContextCompat.getColor(
@@ -259,7 +258,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                 requestInfoCard.requestActionButton.text = getString(R.string.accept_request_button_label)
                 requestInfoCard.requestActionButton.setOnClickListener { presenter.onAcceptRequest(request) }
                 requestInfoCard.openRequestImageButton.setOnClickListener {
-                    startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
+                    startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
                 }
             }
             RequestStatus.InWork -> {
@@ -286,9 +285,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                 )
                 requestInfoCard.requestActionButton.text = getString(R.string.cancel_request_button_label)
                 requestInfoCard.openRequestImageButton.setOnClickListener {
-                    requestInfoCard.openRequestImageButton.setOnClickListener {
-                        startActivity(intentFor<RequestReportActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
-                    }
+                    startActivity(intentFor<RequestReportActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
                 }
             }
             else -> {
@@ -309,12 +306,12 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         requestBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    override fun showRequestDetails(selectedRequest: RequestModel) {
-        startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to selectedRequest.id))
+    override fun showRequestDetails(request: Request) {
+        startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
     }
 
-    override fun showRequestReportScreen(selectedRequest: RequestModel) {
-        startActivity(intentFor<RequestReportActivity>(RequestReportActivity.EXTRA_KEY_REQUEST_ID to selectedRequest.id))
+    override fun showRequestReportScreen(request: Request) {
+        startActivity(intentFor<RequestReportActivity>(RequestReportActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
     }
 
     override fun showLoginScreen() {
