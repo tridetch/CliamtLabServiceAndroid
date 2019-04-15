@@ -11,6 +11,10 @@ class MapPresenter : BasePresenter<MapView>() {
     private var selectedRequest: Request? = null
 
     fun onResume() {
+        updateRequests()
+    }
+
+    private fun updateRequests() {
         ClimatLabRepositoryProvider.instance.getRequests()
             .addSchedulers().subscribe({
                 viewState.showRequests(it)
@@ -44,18 +48,20 @@ class MapPresenter : BasePresenter<MapView>() {
             .doFinally { viewState.showLoading(false) }
             .subscribe({
                 viewState.showMessage(MapView.Message.RequestAccepted)
+                viewState.hideRequestBottomCard()
                 viewState.showRequestReportScreen(request)
             }, this::handleError)
     }
 
     fun onCancelRequest(request: Request, comment: String) {
-     ClimatLabRepositoryProvider.instance.cancelRequest(request.requestInfo, comment)
-         .addSchedulers()
-         .doOnSubscribe { viewState.showLoading(true) }
-         .doFinally { viewState.showLoading(false) }
-         .subscribe({
-             viewState.hideRequestBottomCard()
-             viewState.showMessage(MapView.Message.RequestCanceled)
-         }, this::handleError)
+        ClimatLabRepositoryProvider.instance.cancelRequest(request.requestInfo, comment)
+            .addSchedulers()
+            .doOnSubscribe { viewState.showLoading(true) }
+            .doFinally { viewState.showLoading(false) }
+            .subscribe({
+                viewState.hideRequestBottomCard()
+                viewState.showMessage(MapView.Message.RequestCanceled)
+                updateRequests()
+            }, this::handleError)
     }
 }
