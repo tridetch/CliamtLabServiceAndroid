@@ -24,5 +24,6 @@ data class RequestReport(
     @SerializedName("amountForTheRoad") val amountForTheRoad: String = "",
     @SerializedName("amountOfPart") val amountOfPart: String = "",
     @SerializedName("boilerPhoto") val boilerPhoto: String = "",
-    @SerializedName("resultPhoto") val resultPhoto: String = ""
+    @SerializedName("resultPhoto") val resultPhoto: String = "",
+    @SerializedName("requestType") val requestType: RequestType = RequestType.Mounting
 )

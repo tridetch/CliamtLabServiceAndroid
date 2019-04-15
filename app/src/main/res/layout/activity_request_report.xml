@@ -377,6 +377,30 @@
             app:layout_constraintTop_toBottomOf="@id/summaryForRoadEditText" />
 
         <TextView
+            android:id="@+id/requestTypeLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/request_type_selector_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/requestTypeSpinner"
+            app:layout_constraintTop_toBottomOf="@id/summaryForPartsEditText" />
+
+        <Spinner
+            android:id="@+id/requestTypeSpinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="0dp"
+            app:layout_constraintHorizontal_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/requestTypeLabel"
+            app:layout_constraintLeft_toRightOf="@id/requestTypeLabel"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/requestTypeLabel" />
+
+        <TextView
             android:id="@+id/photosTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -385,7 +409,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/summaryForPartsEditText" />
+            app:layout_constraintTop_toBottomOf="@id/requestTypeLabel" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/boilerPhotoCard"
@@ -404,19 +428,19 @@
 
             <ImageView
                 android:id="@+id/boilerPhotoImageView"
-                android:scaleType="centerCrop"
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/boilerPhotoPlaceholder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -448,19 +472,19 @@
 
             <ImageView
                 android:id="@+id/resultPhotoImageView"
-                android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/resultPhotoPlaceholder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="visible"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <ImageView
                     android:layout_width="wrap_content"

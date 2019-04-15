@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.android.synthetic.main.activity_request_report.*
 import ru.climatlab.service.R
+import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
 import java.io.ByteArrayOutputStream
@@ -68,9 +70,22 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 recommendations = recommendationsInputLayout.editText!!.text.toString(),
                 amountToPay = summaryToPayEditText.text.toString(),
                 amountForTheRoad = summaryForRoadEditText.text.toString(),
-                amountOfPart = summaryForPartsEditText.text.toString()
+                amountOfPart = summaryForPartsEditText.text.toString(),
+                requestType = RequestType.values()[requestTypeSpinner.selectedItemPosition]
             )
         }
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.request_types_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            requestTypeSpinner.adapter = adapter
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

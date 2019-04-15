@@ -73,5 +73,11 @@
     <string name="request_accepted_message">Заявка принята</string>
     <string name="request_canceled_message">Заявка отменена</string>
     <string name="request_report_successfully_sent_mwssage">Акт успешно отправлен</string>
+    <string name="request_type_selector_label">Тип работ</string>
 
+    <!--RequestType names-->
+    <string-array name="request_types_array">
+        <item>Монтаж</item>
+        <item>Обслуживание</item>
+    </string-array>
 </resources>

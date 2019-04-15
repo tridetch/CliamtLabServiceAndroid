@@ -4,8 +4,8 @@ import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
 import ru.climatlab.service.data.model.Request
-import ru.climatlab.service.data.model.RequestResponseModel
 import ru.climatlab.service.data.model.RequestReport
+import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.ui.BasePresenter
 import java.util.*
 
@@ -45,7 +45,8 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         amountForTheRoad: String = requestReport.amountForTheRoad,
         amountOfPart: String = requestReport.amountOfPart,
         boilerPhoto: String = requestReport.boilerPhoto,
-        resultPhoto: String = requestReport.resultPhoto
+        resultPhoto: String = requestReport.resultPhoto,
+        requestType: RequestType = requestReport.requestType
     ) {
         requestReport = requestReport.copy(
             date = Date(),
@@ -67,7 +68,8 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             amountForTheRoad = amountForTheRoad,
             amountOfPart = amountOfPart,
             boilerPhoto = boilerPhoto,
-            resultPhoto = resultPhoto
+            resultPhoto = resultPhoto,
+            requestType = requestType
         )
         ClimatLabRepositoryProvider.instance
             .sendRequestReport(requestReport)

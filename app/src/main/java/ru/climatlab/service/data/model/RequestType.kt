@@ -10,6 +10,4 @@ enum class RequestType {
     Mounting,
     @SerializedName("1")
     Service,
-    @SerializedName("2")
-    OrderEquipment
 }

@@ -52,7 +52,6 @@ class RequestsRecyclerViewAdapter(
             itemView.typeTextView.text = when(request.requestInfo.type){
                 RequestType.Mounting -> itemView.context.getString(R.string.request_type_mounting)
                 RequestType.Service -> itemView.context.getString(R.string.request_type_service)
-                RequestType.OrderEquipment -> itemView.context.getString(R.string.request_type_order)
                 null -> ""
             }
             itemView.setOnClickListener { interactionListener.onClick(request) }
