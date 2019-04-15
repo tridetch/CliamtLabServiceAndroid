@@ -23,11 +23,6 @@ class AuthInterceptor : Interceptor {
                     "Accept-Language",
                     "${Locale.getDefault().language}-${Locale.getDefault().language.toUpperCase()}"
                 )
-                .apply {
-                    if (request.url().toString().contains("?")) url("${request.url()}&token=${PreferencesRepository.getToken()}") else url(
-                        "${request.url()}?token=${PreferencesRepository.getToken()}"
-                    )
-                }
         }
         request = requestBuilder.build()
 

@@ -57,11 +57,11 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
     }
 
     override fun acceptRequest(request: RequestResponseModel): Completable {
-        return ClimatLabApiClient.climatLabService.acceptRequest(requestId = request.id)
+        return ClimatLabApiClient.climatLabService.acceptRequest(acceptRequestBody = AcceptRequestBody(requestId = request.id))
     }
 
     override fun cancelRequest(request: RequestResponseModel, comment: String): Completable {
-        return ClimatLabApiClient.climatLabService.cancelRequest(requestId = request.id, comment = comment)
+        return ClimatLabApiClient.climatLabService.cancelRequest(cancelRequestBody = CancelRequestBody(requestId = request.id, comment = comment))
     }
 
     override fun getClients(): Single<List<ClientResponseModel>> {

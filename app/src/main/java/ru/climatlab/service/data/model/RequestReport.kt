@@ -6,8 +6,8 @@ import java.util.*
 data class RequestReport(
     @SerializedName("requestId") val requestId: String = "",
     @SerializedName("dateTime") val date: Date = Date(),
-    @SerializedName("model") val model: String = "",
-    @SerializedName("brand") val brand: String = "",
+    @SerializedName("boilerModel") val model: String = "",
+    @SerializedName("boilerBrand") val brand: String = "",
     @SerializedName("serialNumber") val serialNumber: String = "",
     @SerializedName("presenceOfPickup") val presenceOfPickup: String = "",
     @SerializedName("voltage") val voltage: String = "",

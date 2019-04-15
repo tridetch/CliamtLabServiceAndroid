@@ -6,11 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
-import ru.climatlab.service.data.model.ClientResponseModel
-import ru.climatlab.service.data.model.RequestResponseModel
-import ru.climatlab.service.data.model.RequestReport
-import ru.climatlab.service.data.model.TokenResponse
-import java.util.*
+import ru.climatlab.service.data.model.*
 
 /**
  * Created by tridetch on 07.04.2019. CliamtLabService
@@ -26,10 +22,10 @@ interface ClimatLabApiService {
     fun sendRequestReport(@Query("updateRequest") updateRequest: String = "1", @Body requestReport: RequestReport): Completable
 
     @POST("/api/request.php")
-    fun acceptRequest(@Query("requestId") requestId: String, @Query("acceptRequest") acceptRequest: Int = 1, @Query("date_update") date: Date = Date()): Completable
+    fun acceptRequest(@Query("acceptRequest") acceptRequest: Int = 1, @Body acceptRequestBody: AcceptRequestBody): Completable
 
     @POST("/api/request.php")
-    fun cancelRequest(@Query("requestId") requestId: String, @Query("comment") comment: String): Completable
+    fun cancelRequest(@Query("cancelRequest") cancelRequest: Int = 1, @Body cancelRequestBody: CancelRequestBody): Completable
 
     @POST("/api/clients.php")
     fun getClients(): Single<List<ClientResponseModel>>

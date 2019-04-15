@@ -89,7 +89,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                     val baos = ByteArrayOutputStream()
                     bm.compress(Bitmap.CompressFormat.JPEG, 80, baos) //bm is the bitmap object
                     val b = baos.toByteArray()
-                    val encodedImage = Base64.encodeToString(b, Base64.DEFAULT)
+                    val encodedImage = "data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}"
                     presenter.onBoilerPhotoTaken(encodedImage!!)
 
                     boilerPhotoImageView.visibility = View.VISIBLE
@@ -116,7 +116,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                     bm.compress(Bitmap.CompressFormat.JPEG, 80, baos) //bm is the bitmap object
                     val b = baos.toByteArray()
                     val encodedImage = Base64.encodeToString(b, Base64.DEFAULT)
-                    presenter.onResultPhotoTaken(encodedImage!!)
+                    presenter.onResultPhotoTaken("data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}")
 
                     resultPhotoImageView.visibility = View.VISIBLE
                     resultPhotoPlaceholder.visibility = View.GONE
