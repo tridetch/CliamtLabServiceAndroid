@@ -26,11 +26,13 @@ class LoginPresenter : BasePresenter<LoginView>() {
 
     fun login() {
         ClimatLabRepositoryProvider.instance.login(login, password)
-            .andThen { ClimatLabRepositoryProvider.instance.updateData() }
+            .andThen(ClimatLabRepositoryProvider.instance.updateData())
             .addSchedulers()
             .doOnSubscribe { viewState.showLoading(true) }
             .doFinally { viewState.showLoading(false) }
-            .subscribe({ viewState.showNextScreen() }, this::handleError)
+            .subscribe({
+                viewState.showNextScreen()
+            }, this::handleError)
     }
 
     fun onLoginChanged(login: String) {
