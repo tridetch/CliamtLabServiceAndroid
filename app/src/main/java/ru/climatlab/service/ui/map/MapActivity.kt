@@ -26,11 +26,13 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_drawer.*
 import kotlinx.android.synthetic.main.cancel_request_confirmation_dialog.view.*
+import kotlinx.android.synthetic.main.nav_header_drawer.view.*
 import kotlinx.android.synthetic.main.request_bottom_sheet.*
 import kotlinx.android.synthetic.main.request_bottom_sheet.view.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
+import ru.climatlab.service.data.PreferencesRepository
 import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.data.model.RequestStatus
 import ru.climatlab.service.ui.login.LoginActivity
@@ -96,6 +98,8 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                 }
             }
         })
+
+        navView.getHeaderView(0).navHeaderUserName.text = PreferencesRepository.getCurrentUserInfo()?.getFullName()
     }
 
     override fun onBackPressed() {

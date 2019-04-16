@@ -12,13 +12,13 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
 
     override fun login(login: String, password: String): Completable {
         return ClimatLabApiClient.climatLabService.login(login, password).map {
-            PreferencesRepository.putToken(it.token)
+            PreferencesRepository.putCurrentUserInfo(it)
         }.ignoreElement()
     }
 
     override fun logOut(): Completable {
         return Completable.create {
-            PreferencesRepository.putToken("")
+            PreferencesRepository.putCurrentUserInfo(null)
             it.onComplete()
         }
     }

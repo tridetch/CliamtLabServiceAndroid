@@ -14,7 +14,7 @@ class LoginPresenter : BasePresenter<LoginView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        if (PreferencesRepository.getToken().isNotBlank()) {
+        if (PreferencesRepository.getCurrentUserInfo()?.token?.isNotBlank() == true) {
             ClimatLabRepositoryProvider.instance.updateData().addSchedulers()
                 .doOnSubscribe { viewState.showLoading(true) }
                 .doFinally { viewState.showLoading(false) }

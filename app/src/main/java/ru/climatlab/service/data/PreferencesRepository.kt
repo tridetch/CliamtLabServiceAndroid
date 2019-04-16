@@ -2,7 +2,9 @@ package ru.climatlab.service.data
 
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.google.gson.Gson
 import ru.climatlab.service.App
+import ru.climatlab.service.data.model.CurrentUserResponse
 
 object PreferencesRepository {
 
@@ -12,11 +14,11 @@ object PreferencesRepository {
         PreferenceManager.getDefaultSharedPreferences(App.context)
     }
 
-    fun putToken(token: String) {
-        prefs.edit().putString(TOKEN_KEY, token).apply()
+    fun putCurrentUserInfo(currentUser: CurrentUserResponse?) {
+        prefs.edit().putString(TOKEN_KEY, Gson().toJson(currentUser)).apply()
     }
 
-    fun getToken(): String {
-        return prefs.getString(TOKEN_KEY, "")!!
+    fun getCurrentUserInfo(): CurrentUserResponse? {
+        return Gson().fromJson(prefs.getString(TOKEN_KEY, null), CurrentUserResponse::class.java)
     }
 }

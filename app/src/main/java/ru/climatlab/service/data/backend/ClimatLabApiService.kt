@@ -13,7 +13,7 @@ import ru.climatlab.service.data.model.*
  */
 interface ClimatLabApiService {
     @POST("/api/login.php")
-    fun login(@Query("login") login: String, @Query("password") password: String): Single<TokenResponse>
+    fun login(@Query("login") login: String, @Query("password") password: String): Single<CurrentUserResponse>
 
     @GET("/api/requests.php")
     fun getRequests(): Single<List<RequestResponseModel>>

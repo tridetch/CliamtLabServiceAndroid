@@ -22,7 +22,7 @@ data class ClientResponseModel(
     @SerializedName("date_update") val lastUpdateDate: String,
     @SerializedName("author") val author: String
 ){
-    fun fullName() = "$name $surname $middleName"
+    fun fullName() = "$surname $name $middleName"
 }
 
 enum class Gender {
