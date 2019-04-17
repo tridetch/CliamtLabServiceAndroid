@@ -77,7 +77,17 @@
 
     <!--RequestType names-->
     <string-array name="request_types_array">
+        <item>ПНР</item>
+        <item>ПНР+Договор</item>
+        <item>ГАРАНТИЙНЫЙ ремонт</item>
+        <item>ТО платное</item>
+        <item>ТО по договору</item>
+        <item>Бесплатный выезд по договору</item>
+        <item>Платный выезд по договору</item>
+        <item>Разовый выезд Платный</item>
+        <item>Повторный выезд бесплатный</item>
+        <item>Заключение договора</item>
         <item>Монтаж</item>
-        <item>Обслуживание</item>
+        <item>ОТМЕНА ЗАЯВКИ</item>
     </string-array>
 </resources>

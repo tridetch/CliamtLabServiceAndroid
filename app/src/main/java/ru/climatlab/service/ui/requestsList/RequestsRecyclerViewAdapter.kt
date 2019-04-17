@@ -49,11 +49,7 @@ class RequestsRecyclerViewAdapter(
             itemView.officeTitleNameTextView.text = request.requestInfo.office
             itemView.equipmentTextView.text = request.requestInfo.equipmentId
             itemView.addressTextView.text = request.requestInfo.address
-            itemView.typeTextView.text = when(request.requestInfo.type){
-                RequestType.Mounting -> itemView.context.getString(R.string.request_type_mounting)
-                RequestType.Service -> itemView.context.getString(R.string.request_type_service)
-                null -> ""
-            }
+            itemView.typeTextView.text = request.requestInfo.type?.title?:""
             itemView.setOnClickListener { interactionListener.onClick(request) }
         }
     }
