@@ -14,4 +14,5 @@ interface ClimatLabRepository {
     fun cancelRequest(request: RequestResponseModel, comment: String): Completable
     fun getClients(): Single<List<ClientResponseModel>>
     fun updateData(): Completable
+    fun updateNotificationTokenIfNeeded(): Completable
 }

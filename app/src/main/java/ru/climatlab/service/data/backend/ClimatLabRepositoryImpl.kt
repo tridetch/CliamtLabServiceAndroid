@@ -1,7 +1,9 @@
 package ru.climatlab.service.data.backend
 
+import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.Completable
 import io.reactivex.Single
+import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.PreferencesRepository
 import ru.climatlab.service.data.model.*
 import kotlin.random.Random
@@ -61,13 +63,35 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
     }
 
     override fun cancelRequest(request: RequestResponseModel, comment: String): Completable {
-        return ClimatLabApiClient.climatLabService.cancelRequest(cancelRequestBody = CancelRequestBody(requestId = request.id, comment = comment))
+        return ClimatLabApiClient.climatLabService.cancelRequest(
+            cancelRequestBody = CancelRequestBody(
+                requestId = request.id,
+                comment = comment
+            )
+        )
     }
 
     override fun getClients(): Single<List<ClientResponseModel>> {
         return ClimatLabApiClient.climatLabService.getClients().map {
             cachedClients = it
             it
+        }
+    }
+
+    override fun updateNotificationTokenIfNeeded(): Completable {
+        return Completable.fromCallable {
+            if (PreferencesRepository.getIsNeedUpdateToken()) {
+                FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result?.let {
+                            ClimatLabApiClient.climatLabService.postNotificationToken(TokenRequestBody(it.token))
+                                .addSchedulers().subscribe({
+                                    PreferencesRepository.putIsNeedUpdateToken(false)
+                                }, {})
+                        }
+                    }
+                }
+            }
         }
     }
 }

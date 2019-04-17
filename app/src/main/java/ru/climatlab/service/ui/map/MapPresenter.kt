@@ -12,6 +12,10 @@ class MapPresenter : BasePresenter<MapView>() {
 
     fun onResume() {
         updateRequests()
+        ClimatLabRepositoryProvider.instance
+            .updateNotificationTokenIfNeeded()
+            .addSchedulers()
+            .subscribe({}, this::handleError)
     }
 
     private fun updateRequests() {

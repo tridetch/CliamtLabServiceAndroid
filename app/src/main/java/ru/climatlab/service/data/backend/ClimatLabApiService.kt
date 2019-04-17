@@ -30,4 +30,7 @@ interface ClimatLabApiService {
     @POST("/api/clients.php")
     fun getClients(): Single<List<ClientResponseModel>>
 
+    @POST("/api/profile.php")
+    fun postNotificationToken(@Body tokenRequestBody: TokenRequestBody):Completable
+
 }
