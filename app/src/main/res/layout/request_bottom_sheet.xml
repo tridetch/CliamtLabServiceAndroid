@@ -52,7 +52,7 @@
         <LinearLayout
             android:id="@+id/callButton"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -73,6 +73,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:lines="2"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                 tools:text="@tools:sample/us_phones" />
 
@@ -81,7 +83,7 @@
         <LinearLayout
             android:id="@+id/buildRouteButton"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -101,6 +103,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:lines="2"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                 tools:text="@tools:sample/us_phones" />
 

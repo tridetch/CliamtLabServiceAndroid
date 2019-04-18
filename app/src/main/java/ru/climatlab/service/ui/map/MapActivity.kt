@@ -262,7 +262,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                 Intent.createChooser(
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("geo:${request.requestInfo.coordinates?.latitude},${request.requestInfo.coordinates?.longitude}")
+                        Uri.parse("geo:0,0?q=${request.requestInfo.coordinates?.latitude},${request.requestInfo.coordinates?.longitude}(${request.requestInfo.address})")
                     ), getString(R.string.map_chooser_title)
                 )
             )
