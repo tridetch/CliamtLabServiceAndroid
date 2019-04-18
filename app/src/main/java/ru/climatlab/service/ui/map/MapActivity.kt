@@ -2,6 +2,8 @@ package ru.climatlab.service.ui.map
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Menu
@@ -250,7 +252,21 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         requestInfoCard.clientFullNameTextView.text = request.clientResponseModel.fullName()
         requestInfoCard.officeTitleNameTextView.text = request.requestInfo.office
         requestInfoCard.equipmentTextView.text = request.requestInfo.equipmentId
+        requestInfoCard.phoneNumber.text = "8${request.clientResponseModel.phone}"
         requestInfoCard.addressTextView.text = request.requestInfo.address
+        requestInfoCard.callButton.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:8${request.clientResponseModel.phone}")))
+        }
+        requestInfoCard.buildRouteButton.setOnClickListener {
+            startActivity(
+                Intent.createChooser(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("geo:${request.requestInfo.coordinates?.latitude},${request.requestInfo.coordinates?.longitude}")
+                    ), getString(R.string.map_chooser_title)
+                )
+            )
+        }
         when (request.requestInfo.status) {
             RequestStatus.NewRequest -> {
                 requestInfoCard.requestActionButton.background.setTint(

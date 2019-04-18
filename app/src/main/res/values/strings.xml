@@ -75,6 +75,7 @@
     <string name="request_canceled_message">Заявка отменена</string>
     <string name="request_report_successfully_sent_mwssage">Акт успешно отправлен</string>
     <string name="request_type_selector_label">Тип работ</string>
+    <string name="map_chooser_title">Выберите навигатор</string>
 
     <!--RequestType names-->
     <string-array name="request_types_array">
