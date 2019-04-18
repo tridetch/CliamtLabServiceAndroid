@@ -21,7 +21,7 @@
     <string name="action_settings">Settings</string>
 
     <!--Drawer-->
-    <string name="nav_menu_requests">Заявки</string>
+    <string name="nav_menu_requests">Мои заявки</string>
     <string name="nav_menu_in_work">В работе</string>
     <string name="nav_menu_exit">Выйти</string>
     <string name="nav_header_title">Android Studio</string>

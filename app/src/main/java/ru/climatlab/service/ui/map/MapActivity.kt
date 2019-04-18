@@ -126,7 +126,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_all_requests -> {
-                startActivity<RequestsListActivity>()
+                startActivity(intentFor<RequestsListActivity>(RequestsListActivity.EXTRA_REQUESTS_FILTER to RequestStatus.NewRequest))
             }
             R.id.nav_accepted_requests -> {
                 startActivity(intentFor<RequestsListActivity>(RequestsListActivity.EXTRA_REQUESTS_FILTER to RequestStatus.InWork))
