@@ -21,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -239,12 +240,26 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
     override fun showRequests(requests: List<Request>) {
         map.clear()
-        requests.forEach {
-            val requestMarker = map.addMarker(
+        requests.forEach { request ->
+            map.addMarker(
                 MarkerOptions()
-                    .position(LatLng(it.requestInfo.coordinates!!.latitude, it.requestInfo.coordinates.longitude))
-            )
-                .setTag(it)
+                    .position(
+                        LatLng(
+                            request.requestInfo.coordinates!!.latitude,
+                            request.requestInfo.coordinates.longitude
+                        )
+                    )
+                    .icon(
+                        BitmapDescriptorFactory.defaultMarker(
+                            when (request.requestInfo.status) {
+                                RequestStatus.NewRequest -> BitmapDescriptorFactory.HUE_RED
+                                else -> {
+                                    BitmapDescriptorFactory.HUE_CYAN
+                                }
+                            }
+                        )
+                    )
+            ).tag = request
         }
     }
 
