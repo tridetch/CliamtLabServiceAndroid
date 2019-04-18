@@ -10,7 +10,13 @@ import ru.climatlab.service.ui.BasePresenter
 @InjectViewState
 class RequestsListPresenter : BasePresenter<RequestsListView>() {
 
+    private var requestFilter: RequestStatus? = null
+
     fun onAttach(requestFilter: RequestStatus?) {
+        this.requestFilter = requestFilter
+    }
+
+    private fun updateRequests(requestFilter: RequestStatus?) {
         ClimatLabRepositoryProvider.instance
             .getRequests(requestFilter)
             .addSchedulers()
@@ -24,5 +30,9 @@ class RequestsListPresenter : BasePresenter<RequestsListView>() {
             RequestStatus.InWork -> viewState.showRequestReportScreen(request)
             else -> viewState.showRequestDetailsScreen(request)
         }
+    }
+
+    fun onResume() {
+        updateRequests(requestFilter)
     }
 }

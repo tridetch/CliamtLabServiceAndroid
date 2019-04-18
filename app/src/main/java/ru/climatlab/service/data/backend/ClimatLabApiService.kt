@@ -19,7 +19,7 @@ interface ClimatLabApiService {
     fun getRequests(): Single<List<RequestResponseModel>>
 
     @POST("/api/request.php")
-    fun sendRequestReport(@Query("updateRequest") updateRequest: String = "1", @Body requestReport: RequestReport): Completable
+    fun sendRequestReport(@Query("updateRequest") updateRequest: Int = 1, @Body requestReport: RequestReport): Completable
 
     @POST("/api/request.php")
     fun acceptRequest(@Query("acceptRequest") acceptRequest: Int = 1, @Body acceptRequestBody: AcceptRequestBody): Completable

@@ -39,6 +39,11 @@ class RequestsListActivity : BaseActivity(), RequestsListView {
         presenter.onAttach(requestFilter)
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.onResume()
+    }
+
     override fun updateData(requests: List<Request>) {
         requestsAdapter.updateDataSet(requests)
     }

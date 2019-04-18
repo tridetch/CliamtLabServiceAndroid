@@ -29,9 +29,9 @@ class RequestsRecyclerViewAdapter(
     }
 
     fun updateDataSet(requests: List<Request>) {
-        val lastItem = requestItems.size
+        requestItems.clear()
         requestItems.addAll(requests)
-        notifyItemRangeInserted(lastItem, requestItems.size)
+        notifyDataSetChanged()
     }
 
     interface InteractionListener {
