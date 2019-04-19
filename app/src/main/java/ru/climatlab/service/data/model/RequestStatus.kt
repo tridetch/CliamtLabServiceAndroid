@@ -11,7 +11,5 @@ enum class RequestStatus {
     @SerializedName("1")
     InWork,
     @SerializedName("3")
-    CancelledByMaster,
-    @SerializedName("4")
     Cancelled
 }
