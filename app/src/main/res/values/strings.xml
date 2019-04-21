@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Climat Lab Service</string>
     <string name="default_notification_channel_id">default_notification_channel_id</string>
+    <string name="ongoing_notification_channel_id">ongoing_notification_channel_id</string>
 
     <!--Common strings-->
     <string name="loading_message">Загрузка...</string>
