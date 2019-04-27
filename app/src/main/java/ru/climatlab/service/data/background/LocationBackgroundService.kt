@@ -72,7 +72,6 @@ class LocationBackgroundService : Service() {
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setDefaults(NotificationCompat.DEFAULT_VIBRATE or NotificationCompat.DEFAULT_LIGHTS)
-            .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setStyle(bigStyle)
             .setSmallIcon(R.drawable.ic_notification)
