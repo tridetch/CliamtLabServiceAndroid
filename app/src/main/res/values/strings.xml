@@ -77,6 +77,7 @@
     <string name="request_report_successfully_sent_mwssage">Акт успешно отправлен</string>
     <string name="request_type_selector_label">Тип работ</string>
     <string name="map_chooser_title">Выберите навигатор</string>
+    <string name="background_work">Приложение работает в фоновом режиме</string>
 
     <!--RequestType names-->
     <string-array name="request_types_array">

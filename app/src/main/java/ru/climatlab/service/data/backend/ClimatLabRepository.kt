@@ -1,5 +1,6 @@
 package ru.climatlab.service.data.backend
 
+import android.location.Location
 import io.reactivex.Completable
 import io.reactivex.Single
 import ru.climatlab.service.data.model.*
@@ -15,4 +16,5 @@ interface ClimatLabRepository {
     fun getClients(): Single<List<ClientResponseModel>>
     fun updateData(): Completable
     fun updateNotificationTokenIfNeeded(): Completable
+    fun sendUserLocation(location: Location?): Completable
 }

@@ -1,8 +1,10 @@
 package ru.climatlab.service.ui.map
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -13,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.arellomobile.mvp.MvpDelegate
@@ -36,6 +39,7 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
 import ru.climatlab.service.data.PreferencesRepository
+import ru.climatlab.service.data.background.LocationBackgroundService
 import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.data.model.RequestStatus
 import ru.climatlab.service.ui.login.LoginActivity
@@ -44,6 +48,8 @@ import ru.climatlab.service.ui.requestReport.RequestReportActivity
 import ru.climatlab.service.ui.requestsList.RequestsListActivity
 
 class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+
+    private val REQUEST_CODE_LOCATION = 0
 
     @InjectPresenter
     lateinit var presenter: MapPresenter
@@ -165,6 +171,23 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
             mvpDelegate.onAttach()
         }
         presenter.onResume()
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_DENIED
+            || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                REQUEST_CODE_LOCATION
+            )
+        } else {
+            startLocationService()
+        }
     }
 
     override fun onStart() {
@@ -195,6 +218,19 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         }
 
         mvpDelegate.onDestroy()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == REQUEST_CODE_LOCATION && grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+            startLocationService()
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun startLocationService() {
+        val intent = Intent(this, LocationBackgroundService::class.java)
+        intent.action = LocationBackgroundService.ACTION_START_FOREGROUND_SERVICE
+        startService(intent)
     }
 
     /**
@@ -350,6 +386,9 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
     }
 
     override fun showLoginScreen() {
+        val intent = Intent(this, LocationBackgroundService::class.java)
+        intent.action = LocationBackgroundService.ACTION_STOP_FOREGROUND_SERVICE
+        startService(intent)
         finish()
         startActivity<LoginActivity>()
     }
