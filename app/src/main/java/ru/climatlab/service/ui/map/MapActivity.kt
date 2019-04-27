@@ -6,6 +6,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Menu
@@ -230,7 +231,11 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
     private fun startLocationService() {
         val intent = Intent(this, LocationBackgroundService::class.java)
         intent.action = LocationBackgroundService.ACTION_START_FOREGROUND_SERVICE
-        startService(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
     }
 
     /**

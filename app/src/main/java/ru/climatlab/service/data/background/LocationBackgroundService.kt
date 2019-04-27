@@ -5,8 +5,8 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.IBinder
-import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -53,11 +53,17 @@ class LocationBackgroundService : Service() {
                     .addSchedulers()
                     .subscribe({
                         Log.d(this@LocationBackgroundService.javaClass.simpleName, "Location updated")
-                    },{})
+                    }, {})
             }
         }
     }
+
     override fun onCreate() {
+        super.onCreate()
+        start()
+    }
+
+    private fun start() {
         locationProviderClient = FusedLocationProviderClient(this)
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -71,18 +77,16 @@ class LocationBackgroundService : Service() {
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setDefaults(NotificationCompat.DEFAULT_VIBRATE or NotificationCompat.DEFAULT_LIGHTS)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setStyle(bigStyle)
             .setSmallIcon(R.drawable.ic_notification)
             .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))
-                .setContentTitle(getString(R.string.background_work))
-//                .setContentText(getString(R.string.rent_via_bluetooth_text))
+            .setContentTitle(getString(R.string.background_work))
             .setContentIntent(pendingIntent)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
         if (notificationManager != null) {
-            if (android.os.Build.VERSION.SDK_INT >= 26) {
+            if (Build.VERSION.SDK_INT >= 26) {
                 val channel = NotificationChannel(
                     channelId,
                     getString(R.string.default_notification_channel_id),
@@ -102,6 +106,7 @@ class LocationBackgroundService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START_FOREGROUND_SERVICE -> {
+                start()
                 locationProviderClient.requestLocationUpdates(request, locationCallback, null)
             }
             ACTION_STOP_FOREGROUND_SERVICE -> {
