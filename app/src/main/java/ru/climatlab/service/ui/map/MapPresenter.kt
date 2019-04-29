@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
 import ru.climatlab.service.data.model.Request
+import ru.climatlab.service.data.model.RequestStatus
 import ru.climatlab.service.ui.BasePresenter
 
 @InjectViewState
@@ -20,7 +21,7 @@ class MapPresenter : BasePresenter<MapView>() {
     }
 
     private fun updateRequests() {
-        ClimatLabRepositoryProvider.instance.getRequests()
+        ClimatLabRepositoryProvider.instance.getRequests(RequestStatus.NewRequest, RequestStatus.InWork)
             .addSchedulers().subscribe({
                 viewState.showRequests(it)
                 if (needFocusAllRequests) {

@@ -29,15 +29,16 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
         return getClients().ignoreElement()
     }
 
-    override fun getRequests(requestFilter: RequestStatus?): Single<List<Request>> {
+    override fun getRequests(vararg requestFilter: RequestStatus?): Single<List<Request>> {
         val random = Random
         return ClimatLabApiClient.climatLabService.getRequests()
             .map { requests ->
-                cachedRequests = requests.filter { if (requestFilter != null) it.status == requestFilter else true }
-                    .mapNotNull { request ->
-                        val client = cachedClients.firstOrNull { client -> client.id == request.clientId }
-                        if (client == null) null else Request(request, client)
-                    }
+                cachedRequests =
+                    requests.filter { if (requestFilter.isNotEmpty()) it.status in requestFilter else true }
+                        .mapNotNull { request ->
+                            val client = cachedClients.firstOrNull { client -> client.id == request.clientId }
+                            if (client == null) null else Request(request, client)
+                        }
                 cachedRequests
             }
     }

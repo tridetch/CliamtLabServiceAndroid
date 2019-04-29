@@ -7,7 +7,7 @@ import ru.climatlab.service.data.model.*
 
 interface ClimatLabRepository {
     fun login(login: String, password: String): Completable
-    fun getRequests(requestFilter: RequestStatus? = null): Single<List<Request>>
+    fun getRequests(vararg requestFilter: RequestStatus?): Single<List<Request>>
     fun getRequest(requestId: String): Request?
     fun sendRequestReport(requestReport: RequestReport): Completable
     fun logOut():Completable
