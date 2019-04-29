@@ -20,4 +20,5 @@ interface MapView: BaseMvpView {
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showMessage(message: MapView.Message)
     fun focusRequests(requests: List<Request>)
+    fun focusCurrentLocation()
 }

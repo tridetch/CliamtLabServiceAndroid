@@ -28,6 +28,8 @@ class MapPresenter : BasePresenter<MapView>() {
                     needFocusAllRequests = false
                     if (it.isNotEmpty()) {
                         viewState.focusRequests(it)
+                    } else {
+                        viewState.focusCurrentLocation()
                     }
                 }
             }, this::handleError)
@@ -75,5 +77,9 @@ class MapPresenter : BasePresenter<MapView>() {
                 viewState.showMessage(MapView.Message.RequestCanceled)
                 updateRequests()
             }, this::handleError)
+    }
+
+    fun onUpdateRequestClick() {
+        updateRequests()
     }
 }

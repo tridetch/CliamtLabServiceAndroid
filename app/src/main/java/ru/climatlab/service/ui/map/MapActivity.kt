@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.arellomobile.mvp.MvpDelegate
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -54,26 +56,27 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
     private val REQUEST_CODE_LOCATION = 0
 
-    @InjectPresenter
-    lateinit var presenter: MapPresenter
-
-    private val mvpDelegate: MvpDelegate<out MapActivity> by lazy { MvpDelegate(this) }
-    private var isStateSaved: Boolean = false
-    private var isGoogleMapReady: Boolean = false
-    private lateinit var map: GoogleMap
-
-    lateinit var loadingDialog: ProgressDialog
-    private var errorAlert: AlertDialog? = null
-
-    lateinit var requestBottomSheetBehavior: BottomSheetBehavior<View>
-
     companion object {
         private const val KEY_MAP_VIEW_OUT_STATE = "mapview_state"
     }
 
+    @InjectPresenter
+    lateinit var presenter: MapPresenter
+    private val mvpDelegate: MvpDelegate<out MapActivity> by lazy { MvpDelegate(this) }
+    private var isStateSaved: Boolean = false
+    private var isGoogleMapReady: Boolean = false
+
+    private lateinit var map: GoogleMap
+    lateinit var loadingDialog: ProgressDialog
+
+    private var errorAlert: AlertDialog? = null
+    lateinit var requestBottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var locationProvider: FusedLocationProviderClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mvpDelegate.onCreate(savedInstanceState)
+        locationProvider = FusedLocationProviderClient(this)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         supportActionBar!!.title = getString(R.string.title_activity_map)
@@ -127,7 +130,11 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_refresh -> {
+                presenter.onUpdateRequestClick()
+                Toast.makeText(this, getString(R.string.request_updates_message), Toast.LENGTH_LONG).show()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -230,8 +237,10 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         mvpDelegate.onDestroy()
     }
 
+    @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CODE_LOCATION && grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+            map.isMyLocationEnabled = true
             startLocationService()
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -258,11 +267,17 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
      */
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) map.isMyLocationEnabled = true
         map.uiSettings.isMyLocationButtonEnabled = true
         map.uiSettings.isZoomControlsEnabled = true
-
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.055, 43.055), 14f))
 
         map.setOnMarkerClickListener {
             presenter.onRequestSelected(it.tag as Request)
@@ -271,6 +286,17 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
         isGoogleMapReady = true
         mvpDelegate.onAttach()
+    }
+
+    override fun focusCurrentLocation() {
+        var location: Location? = null
+        try {
+            location = map.myLocation
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 14f))
+        } catch (e: Exception) {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.055, 43.055), 14f))
+        }
+
     }
 
     override fun showLoading(needShow: Boolean) {
