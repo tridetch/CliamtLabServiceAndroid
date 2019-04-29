@@ -12,6 +12,10 @@
             android:id="@+id/nav_accepted_requests"
             android:icon="@drawable/ic_playlist_play_black_24dp"
             android:title="@string/nav_menu_in_work" />
+        <item
+            android:id="@+id/nav_instructions"
+            android:icon="@drawable/ic_live_help_black_24dp"
+            android:title="@string/nav_menu_in_work" />
     </group>
 
     <group>

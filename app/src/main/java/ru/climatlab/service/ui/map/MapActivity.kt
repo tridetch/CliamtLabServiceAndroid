@@ -139,6 +139,13 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
             R.id.nav_accepted_requests -> {
                 startActivity(intentFor<RequestsListActivity>(RequestsListActivity.EXTRA_REQUESTS_FILTER to RequestStatus.InWork))
             }
+            R.id.nav_instructions -> {
+                val instructionIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.instructions_url)))
+                if (instructionIntent.resolveActivity(packageManager) != null) {
+                    startActivity(Intent.createChooser(instructionIntent, getString(R.string.web_chooser_title)))
+                }
+                startActivity(instructionIntent)
+            }
             R.id.nav_exit -> {
                 presenter.onLogoutClick()
             }

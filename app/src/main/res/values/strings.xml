@@ -2,6 +2,7 @@
     <string name="app_name">Climat Lab Service</string>
     <string name="default_notification_channel_id">default_notification_channel_id</string>
     <string name="ongoing_notification_channel_id">ongoing_notification_channel_id</string>
+    <string name="instructions_url">https://drive.google.com/drive/folders/19Kl0Ok40-2yYJaCQQERtSZToSFSpdQJb?usp=sharing</string>
 
     <!--Common strings-->
     <string name="loading_message">Загрузка...</string>
@@ -24,6 +25,7 @@
     <!--Drawer-->
     <string name="nav_menu_requests">Мои заявки</string>
     <string name="nav_menu_in_work">В работе</string>
+    <string name="nav_instructions">Мастерская</string>
     <string name="nav_menu_exit">Выйти</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
@@ -78,6 +80,7 @@
     <string name="request_type_selector_label">Тип работ</string>
     <string name="map_chooser_title">Выберите навигатор</string>
     <string name="background_work">Приложение работает в фоновом режиме</string>
+    <string name="web_chooser_title">Открыть с помощью</string>
 
     <!--RequestType names-->
     <string-array name="request_types_array">
