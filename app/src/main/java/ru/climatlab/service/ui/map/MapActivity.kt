@@ -412,6 +412,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
     }
 
     override fun focusRequests(requests: List<Request>) {
+        if (requests.isEmpty()) return
         val boundsBuilder = LatLngBounds.builder()
         requests.onEach {
             boundsBuilder.include(

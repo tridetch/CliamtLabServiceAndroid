@@ -25,7 +25,9 @@ class MapPresenter : BasePresenter<MapView>() {
                 viewState.showRequests(it)
                 if (needFocusAllRequests) {
                     needFocusAllRequests = false
-                    viewState.focusRequests(it)
+                    if (it.isNotEmpty()) {
+                        viewState.focusRequests(it)
+                    }
                 }
             }, this::handleError)
     }
