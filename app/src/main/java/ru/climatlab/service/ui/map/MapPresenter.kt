@@ -9,6 +9,7 @@ import ru.climatlab.service.ui.BasePresenter
 @InjectViewState
 class MapPresenter : BasePresenter<MapView>() {
     private var selectedRequest: Request? = null
+    private var needFocusAllRequests: Boolean = true
 
     fun onResume() {
         updateRequests()
@@ -22,6 +23,10 @@ class MapPresenter : BasePresenter<MapView>() {
         ClimatLabRepositoryProvider.instance.getRequests()
             .addSchedulers().subscribe({
                 viewState.showRequests(it)
+                if (needFocusAllRequests) {
+                    needFocusAllRequests = false
+                    viewState.focusRequests(it)
+                }
             }, this::handleError)
     }
 

@@ -19,4 +19,5 @@ interface MapView: BaseMvpView {
     fun showRequestReportScreen(request: Request)
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showMessage(message: MapView.Message)
+    fun focusRequests(requests: List<Request>)
 }

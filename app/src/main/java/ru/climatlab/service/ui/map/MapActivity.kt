@@ -27,10 +27,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.app_bar_drawer.*
 import kotlinx.android.synthetic.main.cancel_request_confirmation_dialog.view.*
 import kotlinx.android.synthetic.main.nav_header_drawer.view.*
@@ -91,7 +93,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(R.id.mapView) as SupportMapFragment
         isGoogleMapReady = false
         mapFragment.getMapAsync(this)
 
@@ -407,5 +409,25 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
     override fun closeScreen() {
         finish()
+    }
+
+    override fun focusRequests(requests: List<Request>) {
+        val boundsBuilder = LatLngBounds.builder()
+        requests.onEach {
+            boundsBuilder.include(
+                LatLng(
+                    it.requestInfo.getCoordinates().latitude,
+                    it.requestInfo.getCoordinates().longitude
+                )
+            )
+        }
+        val view = mapView.view
+        if (view != null) {
+            val width = view.measuredWidth
+            val height = view.measuredHeight
+            val padding = (width * 0.12).toInt() // offset from edges of the map 12% of screen
+            val cameraUpdate = CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), width, height, padding)
+            map.animateCamera(cameraUpdate)
+        }
     }
 }

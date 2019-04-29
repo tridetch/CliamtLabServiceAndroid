@@ -16,7 +16,7 @@ data class RequestResponseModel(
     val status: RequestStatus?,
     @SerializedName("latlng") val latlng: String?
 ) {
-    fun getCoordinates(): MapCoordinates? {
+    fun getCoordinates(): MapCoordinates {
         var mapCoordinates = MapCoordinates(0.0, 0.0)
         try {
             val coordinates = latlng?.split(regex = Regex(","), limit = 0)
