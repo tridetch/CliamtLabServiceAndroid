@@ -40,8 +40,8 @@ class LocationBackgroundService : Service() {
     private lateinit var locationProviderClient: FusedLocationProviderClient
 
     private val request = LocationRequest().apply {
-        interval = 5 * 60 * 1000
-        fastestInterval = 1 * 60 * 1000
+        interval = 1 * 60 * 1000
+        fastestInterval = 1 * 30 * 1000
         priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
     }
 
@@ -49,7 +49,7 @@ class LocationBackgroundService : Service() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult ?: return
             for (location in locationResult.locations) {
-                ClimatLabRepositoryProvider.instance.sendUserLocation(location)
+                ClimatLabRepositoryProvider.instance.sendUserLocation(location.latitude, location.longitude)
                     .addSchedulers()
                     .subscribe({
                         Log.d(this@LocationBackgroundService.javaClass.simpleName, "Location updated")

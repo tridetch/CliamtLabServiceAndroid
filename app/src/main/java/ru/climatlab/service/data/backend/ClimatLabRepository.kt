@@ -16,5 +16,5 @@ interface ClimatLabRepository {
     fun getClients(): Single<List<ClientResponseModel>>
     fun updateData(): Completable
     fun updateNotificationTokenIfNeeded(): Completable
-    fun sendUserLocation(location: Location?): Completable
+    fun sendUserLocation(lat: Double, lng: Double): Completable
 }

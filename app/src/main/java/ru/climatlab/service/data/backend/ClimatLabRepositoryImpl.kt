@@ -1,6 +1,5 @@
 package ru.climatlab.service.data.backend
 
-import android.location.Location
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -88,7 +87,7 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
         }
     }
 
-    override fun sendUserLocation(location: Location?): Completable {
-        return Completable.complete()
+    override fun sendUserLocation(lat: Double, lng: Double): Completable {
+        return ClimatLabApiClient.climatLabService.sendUserLocation(MapCoordinates(lat, lng))
     }
 }

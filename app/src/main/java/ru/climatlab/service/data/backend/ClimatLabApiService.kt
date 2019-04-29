@@ -31,7 +31,9 @@ interface ClimatLabApiService {
     fun getClients(): Single<List<ClientResponseModel>>
 
     @POST("/api/profile.php")
-    fun postNotificationToken(@Body tokenRequestBody: TokenRequestBody):Completable
+    fun postNotificationToken(@Body tokenRequestBody: TokenRequestBody): Completable
 
+    @POST("/api/geo.php")
+    fun sendUserLocation(@Body userLocation: MapCoordinates): Completable
 
 }
