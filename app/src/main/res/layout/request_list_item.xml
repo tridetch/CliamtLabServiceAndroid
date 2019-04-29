@@ -78,11 +78,12 @@
 
     <TextView
         android:id="@+id/addressTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintLeft_toRightOf="@id/addressLabelTextView"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/addressLabelTextView"
         tools:text="п. Змейка ул. Парковая 19" />
 
@@ -92,8 +93,9 @@
         android:layout_height="wrap_content"
         android:text="@string/type_label"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addressLabelTextView" />
+        app:layout_constraintTop_toBottomOf="@id/addressTextView" />
 
     <TextView
         android:id="@+id/typeTextView"
@@ -101,6 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:visibility="gone"
         app:layout_constraintLeft_toRightOf="@id/typeLabelTextView"
         app:layout_constraintTop_toTopOf="@id/typeLabelTextView"
         tools:text="Монтаж" />
