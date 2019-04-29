@@ -42,13 +42,11 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
 
         boilerPhotoCard.setOnClickListener {
             ImagePicker.with(this)
-                .cameraOnly()
                 .maxResultSize(480, 720)
                 .start(REQUEST_CODE_BOILER_PHOTO)
         }
         resultPhotoCard.setOnClickListener {
             ImagePicker.with(this)
-                .cameraOnly()
                 .maxResultSize(480, 720)
                 .start(REQUEST_CODE_RESULT_PHOTO)
         }
@@ -68,6 +66,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 co = coEditText.text.toString(),
                 co2 = co2EditText.text.toString(),
                 recommendations = recommendationsInputLayout.editText!!.text.toString(),
+                performedWork  = performedWorkInputLayout.editText!!.text.toString(),
                 amountToPay = summaryToPayEditText.text.toString(),
                 amountForTheRoad = summaryForRoadEditText.text.toString(),
                 amountOfPart = summaryForPartsEditText.text.toString(),

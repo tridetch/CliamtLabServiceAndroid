@@ -64,6 +64,7 @@
     <string name="maxGasLabel">Максимум газа на котле</string>
     <string name="CoLabel">CO ппм</string>
     <string name="Co2Label">CO2 %</string>
+    <string name="performedWorkHint">Проделанные работы</string>
     <string name="recommendationsHint">Рекомендации</string>
     <string name="summaryTitle">Расчет</string>
     <string name="summaryToPayLabel">Сумма к оплате</string>

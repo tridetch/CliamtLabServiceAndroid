@@ -19,6 +19,7 @@ data class RequestReport(
     @SerializedName("maximumGasOnTheBoiler") val maximumGasOnTheBoiler: String = "",
     @SerializedName("co") val co: String = "",
     @SerializedName("co2") val co2: String = "",
+    @SerializedName("performedWork") val performedWork: String = "",
     @SerializedName("recommendations") val recommendations: String = "",
     @SerializedName("amountToPay") val amountToPay: String = "",
     @SerializedName("amountForTheRoad") val amountForTheRoad: String = "",
