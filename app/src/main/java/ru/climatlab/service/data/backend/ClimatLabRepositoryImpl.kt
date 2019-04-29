@@ -35,14 +35,6 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
         return ClimatLabApiClient.climatLabService.getRequests()
             .map { requests ->
                 cachedRequests = requests.filter { if (requestFilter != null) it.status == requestFilter else true }
-                    .map {
-                        it.copy(
-                            coordinates = MapCoordinates(
-                                44.05 + random.nextDouble() / 100,
-                                43.05 + random.nextDouble() / 100
-                            )
-                        )
-                    }
                     .mapNotNull { request ->
                         val client = cachedClients.firstOrNull { client -> client.id == request.clientId }
                         if (client == null) null else Request(request, client)

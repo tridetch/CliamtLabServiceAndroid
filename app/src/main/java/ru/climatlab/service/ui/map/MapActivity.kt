@@ -286,8 +286,8 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                 MarkerOptions()
                     .position(
                         LatLng(
-                            request.requestInfo.coordinates!!.latitude,
-                            request.requestInfo.coordinates.longitude
+                            request.requestInfo.getCoordinates()!!.latitude,
+                            request.requestInfo.getCoordinates()!!.longitude
                         )
                     )
                     .icon(
@@ -318,7 +318,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                 Intent.createChooser(
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("geo:0,0?q=${request.requestInfo.coordinates?.latitude},${request.requestInfo.coordinates?.longitude}(${request.requestInfo.address})")
+                        Uri.parse("geo:0,0?q=${request.requestInfo.getCoordinates()?.latitude},${request.requestInfo.getCoordinates()?.longitude}(${request.requestInfo.address})")
                     ), getString(R.string.map_chooser_title)
                 )
             )

@@ -33,4 +33,5 @@ interface ClimatLabApiService {
     @POST("/api/profile.php")
     fun postNotificationToken(@Body tokenRequestBody: TokenRequestBody):Completable
 
+
 }
