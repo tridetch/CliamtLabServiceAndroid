@@ -290,8 +290,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
     override fun focusCurrentLocation() {
         try {
-            var location: Location? = null
-            location = map.myLocation
+            val location: Location = map.myLocation
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 14f))
         } catch (e: Exception) {
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.055, 43.055), 14f))
