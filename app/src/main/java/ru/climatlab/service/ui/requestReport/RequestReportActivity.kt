@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.view.View
@@ -34,12 +35,15 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
     @InjectPresenter
     lateinit var presenter: RequestReportPresenter
 
+    private lateinit var photoAdapter: PhotoAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request_report)
 
         presenter.onAttach(intent.getStringExtra(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID))
 
+/*
         boilerPhotoCard.setOnClickListener {
             ImagePicker.with(this)
                 .maxResultSize(480, 720)
@@ -50,6 +54,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 .maxResultSize(480, 720)
                 .start(REQUEST_CODE_RESULT_PHOTO)
         }
+*/
 
         confirmButton.setOnClickListener {
             presenter.onReportConfirm(
@@ -85,6 +90,18 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             requestTypeSpinner.adapter = adapter
         }
 
+        photoAdapter = PhotoAdapter(mutableListOf(), object: PhotoAdapter.InteractionListener {
+            override fun onPhotoRemove(position: Int) {
+                presenter.onPhotoRemoved(position)
+            }
+        })
+        photosList.adapter = photoAdapter
+
+        addPhotoButton.setOnClickListener {
+            ImagePicker.with(this)
+                .maxResultSize(480, 720)
+                .start(REQUEST_CODE_RESULT_PHOTO)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -93,7 +110,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             REQUEST_CODE_BOILER_PHOTO -> {
                 if (resultCode == Activity.RESULT_OK) {
                     //Image Uri will not be null for RESULT_OK
-                    val fileUri = data?.data
+                    val fileUri = data?.data!!
                     //You can get File object from intent
                     val file: File = ImagePicker.getFile(data)!!
                     //You can also get File Path from intent
@@ -104,14 +121,14 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                     bm.compress(Bitmap.CompressFormat.JPEG, 80, baos) //bm is the bitmap object
                     val b = baos.toByteArray()
                     val encodedImage = "data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}"
-                    presenter.onBoilerPhotoTaken(encodedImage!!)
-
+                    presenter.onTakePhoto(fileUri, encodedImage)
+/*
                     boilerPhotoImageView.visibility = View.VISIBLE
                     boilerPhotoPlaceholder.visibility = View.GONE
 
                     Glide.with(this)
                         .load(fileUri)
-                        .into(boilerPhotoImageView)
+                        .into(boilerPhotoImageView)*/
                 } else if (resultCode == ImagePicker.RESULT_ERROR) {
                     Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
                 }
@@ -119,7 +136,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             REQUEST_CODE_RESULT_PHOTO->{
                 if (resultCode == Activity.RESULT_OK) {
                     //Image Uri will not be null for RESULT_OK
-                    val fileUri = data?.data
+                    val fileUri = data?.data!!
                     //You can get File object from intent
                     val file: File = ImagePicker.getFile(data)!!
                     //You can also get File Path from intent
@@ -130,19 +147,33 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                     bm.compress(Bitmap.CompressFormat.JPEG, 80, baos) //bm is the bitmap object
                     val b = baos.toByteArray()
                     val encodedImage = Base64.encodeToString(b, Base64.DEFAULT)
-                    presenter.onResultPhotoTaken("data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}")
+                    presenter.onTakePhoto(fileUri,"data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}")
 
+/*
                     resultPhotoImageView.visibility = View.VISIBLE
                     resultPhotoPlaceholder.visibility = View.GONE
 
                     Glide.with(this)
                         .load(fileUri)
                         .into(resultPhotoImageView)
+*/
                 } else if (resultCode == ImagePicker.RESULT_ERROR) {
                     Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+    override fun setupPhoto(photos: MutableList<Uri>) {
+        photoAdapter.setupDataSet(photos)
+    }
+
+    override fun onPhotoAdded() {
+        photoAdapter.itemAdded()
+    }
+
+    override fun onPhotoRemoved(position: Int) {
+        photoAdapter.itemRemoved(position)
     }
 
     override fun showRequestNotFoundError() {

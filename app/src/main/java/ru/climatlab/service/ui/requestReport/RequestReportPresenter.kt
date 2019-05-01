@@ -1,5 +1,6 @@
 package ru.climatlab.service.ui.requestReport
 
+import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
@@ -14,6 +15,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
 
     private lateinit var request: Request
     private var requestReport = RequestReport()
+    private var photoUriList: MutableList<Uri> = mutableListOf()
 
     fun onAttach(requestId: String) {
         val cachedRequest = ClimatLabRepositoryProvider.instance.getRequest(requestId)
@@ -23,7 +25,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             request = cachedRequest
             requestReport = requestReport.copy(requestId = cachedRequest.requestInfo.id)
         }
-
+        viewState.setupPhoto(photoUriList)
     }
 
     fun onReportConfirm(
@@ -45,8 +47,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         amountToPay: String = requestReport.amountToPay,
         amountForTheRoad: String = requestReport.amountForTheRoad,
         amountOfPart: String = requestReport.amountOfPart,
-        boilerPhoto: String = requestReport.boilerPhoto,
-        resultPhoto: String = requestReport.resultPhoto,
+        resultPhoto: MutableList<String> = requestReport.resultPhotos,
         requestType: RequestType = requestReport.requestType
     ) {
         requestReport = requestReport.copy(
@@ -69,8 +70,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             amountToPay = amountToPay,
             amountForTheRoad = amountForTheRoad,
             amountOfPart = amountOfPart,
-            boilerPhoto = boilerPhoto,
-            resultPhoto = resultPhoto,
+            resultPhotos = resultPhoto,
             requestType = requestType
         )
         ClimatLabRepositoryProvider.instance
@@ -84,11 +84,16 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             }, this::handleError)
     }
 
-    fun onBoilerPhotoTaken(boilerPhotoBase64: String) {
-        requestReport = requestReport.copy(boilerPhoto = boilerPhotoBase64)
+    fun onTakePhoto(photoUri: Uri, base64Image: String) {
+        photoUriList.add(photoUri)
+        requestReport.resultPhotos.add(base64Image)
+        viewState.onPhotoAdded()
     }
 
-    fun onResultPhotoTaken(resultPhotoBase64: String) {
-        requestReport = requestReport.copy(resultPhoto = resultPhotoBase64)
+    fun onPhotoRemoved(position: Int) {
+        photoUriList.removeAt(position)
+        requestReport.resultPhotos.removeAt(position)
+        viewState.onPhotoRemoved(position)
     }
+
 }

@@ -30,7 +30,11 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
     }
 
     override fun getRequests(vararg requestFilter: RequestStatus?): Single<List<Request>> {
-        val random = Random
+        val requests = listOf(Request(RequestResponseModel("idReq","idClient", "idEq", RequestType.CommissioningWorks, "office", "address","descr", RequestStatus.InWork, "44.05,43.05"),
+            ClientResponseModel("", "", "", "", Gender.Male, "", "", "", "", "", "", "", "", "", "", "", "", "")))
+        cachedRequests = requests
+        return Single.just(cachedRequests)
+/*
         return ClimatLabApiClient.climatLabService.getRequests()
             .map { requests ->
                 cachedRequests =
@@ -41,6 +45,7 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
                         }
                 cachedRequests
             }
+*/
     }
 
     override fun sendRequestReport(requestReport: RequestReport): Completable {

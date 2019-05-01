@@ -24,7 +24,6 @@ data class RequestReport(
     @SerializedName("amountToPay") val amountToPay: String = "",
     @SerializedName("amountForTheRoad") val amountForTheRoad: String = "",
     @SerializedName("amountOfPart") val amountOfPart: String = "",
-    @SerializedName("boilerPhoto") val boilerPhoto: String = "",
-    @SerializedName("resultPhoto") val resultPhoto: String = "",
+    @SerializedName("resultPhoto") val resultPhotos: MutableList<String> = mutableListOf(),
     @SerializedName("requestType") val requestType: RequestType = RequestType.CommissioningWorks
 )
