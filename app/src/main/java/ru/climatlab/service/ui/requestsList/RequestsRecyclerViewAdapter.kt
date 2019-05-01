@@ -1,5 +1,7 @@
 package ru.climatlab.service.ui.requestsList
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.request_list_item.view.*
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.Request
-import ru.climatlab.service.data.model.RequestResponseModel
-import ru.climatlab.service.data.model.RequestType
 
 class RequestsRecyclerViewAdapter(
     private var requestItems: MutableList<Request>,
@@ -49,8 +49,27 @@ class RequestsRecyclerViewAdapter(
             itemView.officeTitleNameTextView.text = request.requestInfo.office
             itemView.equipmentTextView.text = request.requestInfo.equipmentId
             itemView.addressTextView.text = request.requestInfo.address
-            itemView.typeTextView.text = request.requestInfo.type?.title?:""
             itemView.setOnClickListener { interactionListener.onClick(request) }
+            itemView.phoneNumber.text = request.clientResponseModel.phone
+            itemView.callButton.setOnClickListener {
+                itemView.context.startActivity(
+                    Intent(
+                        Intent.ACTION_DIAL,
+                        Uri.parse("tel:8${request.clientResponseModel.phone}")
+                    )
+                )
+            }
+            itemView.buildRouteButton.setOnClickListener {
+                itemView.context.startActivity(
+                    Intent.createChooser(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("geo:0,0?q=${request.requestInfo.getCoordinates()?.latitude},${request.requestInfo.getCoordinates()?.longitude}(${request.requestInfo.address})")
+                        ), itemView.context.getString(R.string.map_chooser_title)
+                    )
+                )
+            }
+
         }
     }
 }

@@ -1,6 +1,8 @@
 package ru.climatlab.service.ui.requestDetailsInfo
 
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -37,5 +39,19 @@ class RequestDetailsActivity : BaseActivity(), RequestDetailsView {
         descriptionTextView.text = request.requestInfo.description
         equipmentTextView.text = request.requestInfo.equipmentId
         addressTextView.text = request.requestInfo.address
+        phoneNumber.text = request.clientResponseModel.phone
+        callButton.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:8${request.clientResponseModel.phone}")))
+        }
+        buildRouteButton.setOnClickListener {
+            startActivity(
+                Intent.createChooser(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("geo:0,0?q=${request.requestInfo.getCoordinates()?.latitude},${request.requestInfo.getCoordinates()?.longitude}(${request.requestInfo.address})")
+                    ), getString(R.string.map_chooser_title)
+                )
+            )
+        }
     }
 }
