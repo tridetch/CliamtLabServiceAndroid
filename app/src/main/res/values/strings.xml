@@ -83,6 +83,7 @@
     <string name="map_chooser_title">Выберите навигатор</string>
     <string name="background_work">Приложение работает в фоновом режиме</string>
     <string name="web_chooser_title">Открыть с помощью</string>
+    <string name="take_photo">Добавить фото</string>
 
     <!--RequestType names-->
     <string-array name="request_types_array">

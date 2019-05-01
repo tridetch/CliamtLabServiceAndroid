@@ -26,7 +26,7 @@ class MapPresenter : BasePresenter<MapView>() {
                 viewState.showRequests(it)
                 if (needFocusAllRequests) {
                     needFocusAllRequests = false
-                    if (it.isNotEmpty()) {
+                    if (it.size > 1) {
                         viewState.focusRequests(it)
                     } else {
                         viewState.focusCurrentLocation()
