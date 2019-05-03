@@ -343,6 +343,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         requestInfoCard.equipmentTextView.text = request.requestInfo.equipmentId
         requestInfoCard.phoneNumber.text = "8${request.clientResponseModel.phone}"
         requestInfoCard.addressTextView.text = request.requestInfo.address
+        requestInfoCard.descriptionTextView.text = request.requestInfo.description
         requestInfoCard.callButton.setOnClickListener {
             startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:8${request.clientResponseModel.phone}")))
         }
@@ -367,6 +368,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                 requestInfoCard.requestActionButton.text = getString(R.string.accept_request_button_label)
                 requestInfoCard.requestActionButton.setOnClickListener { presenter.onAcceptRequest(request) }
                 requestInfoCard.openRequestImageButton.setOnClickListener {
+                    hideRequestBottomCard()
                     startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
                 }
             }

@@ -23,6 +23,7 @@ class MapPresenter : BasePresenter<MapView>() {
     private fun updateRequests() {
         ClimatLabRepositoryProvider.instance.getRequests(RequestStatus.NewRequest, RequestStatus.InWork)
             .addSchedulers().subscribe({
+                viewState.hideRequestBottomCard()
                 viewState.showRequests(it)
                 if (needFocusAllRequests) {
                     needFocusAllRequests = false
@@ -63,7 +64,8 @@ class MapPresenter : BasePresenter<MapView>() {
             .subscribe({
                 viewState.showMessage(MapView.Message.RequestAccepted)
                 viewState.hideRequestBottomCard()
-                viewState.showRequestReportScreen(request)
+                updateRequests()
+//                viewState.showRequestReportScreen(request)
             }, this::handleError)
     }
 

@@ -149,6 +149,27 @@
             app:layout_constraintTop_toTopOf="@id/equipmentLabelTextView"
             tools:text="Котел" />
 
+        <TextView
+            android:id="@+id/descriptionLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/description_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/equipmentLabelTextView" />
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:maxLines="3"
+            android:scrollbars="vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toRightOf="@id/descriptionLabelTextView"
+            app:layout_constraintTop_toTopOf="@id/descriptionLabelTextView"
+            tools:text="Описание" />
+
         <Button
             android:id="@+id/requestActionButton"
             style="@style/Widget.AppCompat.Button.Colored"
@@ -160,7 +181,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/equipmentLabelTextView" />
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
