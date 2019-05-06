@@ -30,14 +30,6 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
     }
 
     override fun getRequests(vararg requestFilter: RequestStatus?): Single<List<Request>> {
-/*
-        val requests = listOf(Request(RequestResponseModel("idReq","idClient", "idEq", RequestType.CommissioningWorks, "office", "address","descr", RequestStatus.InWork, "44.05,43.05"),
-            ClientResponseModel("1", "", "", "", Gender.Male, "", "", "", "", "", "", "", "", "", "", "", "", "")),
-            Request(RequestResponseModel("idReq2","idClient2", "idEq", RequestType.CommissioningWorks, "office", "address","descr", RequestStatus.NewRequest, "44.052,43.052"),
-                ClientResponseModel("2", "", "", "", Gender.Male, "", "", "", "", "", "", "", "", "", "", "", "", "")))
-        cachedRequests = requests
-        return Single.just(cachedRequests)
-*/
         return ClimatLabApiClient.climatLabService.getRequests()
             .map { requests ->
                 cachedRequests =

@@ -34,6 +34,7 @@
 
     <string name="client_label">Клиент:</string>
     <string name="office_label">Офис:</string>
+    <string name="date_label">Дата:</string>
     <string name="equipment_label">Оборудование:</string>
     <string name="address_label">Адрес:</string>
     <string name="type_label">Тип:</string>

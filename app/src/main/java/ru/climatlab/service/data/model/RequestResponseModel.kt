@@ -9,6 +9,7 @@ data class RequestResponseModel(
     @SerializedName("id") val id: String,
     @SerializedName("client") val clientId: String?,
     @SerializedName("equipment") val equipmentId: String?,
+    @SerializedName("date_start") val date: Long,
     val type: RequestType?,
     val office: String?,
     @SerializedName("adress") val address: String?,
@@ -17,7 +18,7 @@ data class RequestResponseModel(
     @SerializedName("latlng") val latlng: String?
 ) {
     fun getCoordinates(): MapCoordinates {
-        var mapCoordinates = MapCoordinates(0.0, 0.0)
+        var mapCoordinates = MapCoordinates(44.055200,  42.982851)
         try {
             val coordinates = latlng?.split(regex = Regex(","), limit = 0)
             val lat = coordinates?.get(0)?.toDouble()

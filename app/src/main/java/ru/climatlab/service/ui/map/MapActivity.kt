@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.text.format.DateUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -339,6 +340,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
     override fun showRequestBottomCard(request: Request) {
         requestInfoCard.clientFullNameTextView.text = request.clientResponseModel.fullName()
+        requestInfoCard.dateTextView.text = DateUtils.formatDateTime(this, request.requestInfo.date, DateUtils.FORMAT_NUMERIC_DATE)
         requestInfoCard.officeTitleNameTextView.text = request.requestInfo.office
         requestInfoCard.equipmentTextView.text = request.requestInfo.equipmentId
         requestInfoCard.phoneNumber.text = "8${request.clientResponseModel.phone}"
