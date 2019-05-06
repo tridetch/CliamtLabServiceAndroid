@@ -52,6 +52,8 @@ import ru.climatlab.service.ui.login.LoginActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
 import ru.climatlab.service.ui.requestReport.RequestReportActivity
 import ru.climatlab.service.ui.requestsList.RequestsListActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
@@ -340,12 +342,18 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
     override fun showRequestBottomCard(request: Request) {
         requestInfoCard.clientFullNameTextView.text = request.clientResponseModel.fullName()
-        requestInfoCard.dateTextView.text = DateUtils.formatDateTime(this, request.requestInfo.date, DateUtils.FORMAT_NUMERIC_DATE)
+        requestInfoCard.dateTextView.text = SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
         requestInfoCard.officeTitleNameTextView.text = request.requestInfo.office
         requestInfoCard.equipmentTextView.text = request.requestInfo.equipmentId
         requestInfoCard.phoneNumber.text = "8${request.clientResponseModel.phone}"
         requestInfoCard.addressTextView.text = request.requestInfo.address
         requestInfoCard.descriptionTextView.text = request.requestInfo.description
+        if (request.requestInfo.addressDetails.isNullOrBlank()) {
+            requestInfoCard.addressDetailsTextView.visibility = View.GONE
+        } else {
+            requestInfoCard.addressDetailsTextView.visibility = View.VISIBLE
+            requestInfoCard.addressDetailsTextView.text = request.requestInfo.addressDetails
+        }
         requestInfoCard.callButton.setOnClickListener {
             startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:8${request.clientResponseModel.phone}")))
         }

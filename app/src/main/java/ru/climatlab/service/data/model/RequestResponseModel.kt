@@ -9,14 +9,16 @@ data class RequestResponseModel(
     @SerializedName("id") val id: String,
     @SerializedName("client") val clientId: String?,
     @SerializedName("equipment") val equipmentId: String?,
-    @SerializedName("date_start") val date: Long,
+    @SerializedName("date_start") private val _date: Long,
     val type: RequestType?,
     val office: String?,
     @SerializedName("adress") val address: String?,
+    @SerializedName("adress2") val addressDetails: String?,
     val description: String?,
     val status: RequestStatus?,
     @SerializedName("latlng") val latlng: String?
 ) {
+    val date: Long get() = _date * 1000
     fun getCoordinates(): MapCoordinates {
         var mapCoordinates = MapCoordinates(44.055200,  42.982851)
         try {

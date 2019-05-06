@@ -111,6 +111,15 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/addressDetailsTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintLeft_toLeftOf="@id/buildRouteButton"
+            app:layout_constraintRight_toRightOf="@id/buildRouteButton"
+            app:layout_constraintTop_toBottomOf="@id/buildRouteButton" />
+
+        <TextView
             android:id="@+id/dateLabelTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,7 +127,8 @@
             android:text="@string/date_label"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buildRouteButton" />
+            app:layout_constraintTop_toBottomOf="@id/addressDetailsTextView"
+            app:layout_goneMarginTop="16dp" />
 
         <TextView
             android:id="@+id/dateTextView"
