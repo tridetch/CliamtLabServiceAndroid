@@ -122,7 +122,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:gravity="center_vertical"
-            android:lines="2"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
             tools:text="@tools:sample/cities" />
 
