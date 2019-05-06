@@ -159,4 +159,15 @@
         app:layout_constraintTop_toTopOf="@id/dateLabelTextView"
         tools:text="@tools:sample/date/ddmmyy" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/confirmButtonLabel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,11 +33,12 @@ class RequestDetailsActivity : BaseActivity(), RequestDetailsView {
     override fun showRequestNotFoundError() {
         AlertDialog.Builder(this)
             .setMessage(R.string.request_not_found_error_message)
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> this@RequestDetailsActivity.finish()}
+            .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> this@RequestDetailsActivity.finish() }
             .show()
     }
 
     override fun showRequestDetailsInfo(request: Request) {
+        confirmButton.setOnClickListener { presenter.onAcceptRequest(request) }
         clientFullNameTextView.text = request.clientResponseModel.fullName()
         descriptionTextView.text = request.requestInfo.description
         equipmentTextView.text = request.requestInfo.equipmentId

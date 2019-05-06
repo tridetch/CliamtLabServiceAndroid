@@ -1,9 +1,9 @@
 package ru.climatlab.service.ui.requestDetailsInfo
 
 import com.arellomobile.mvp.InjectViewState
+import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
 import ru.climatlab.service.data.model.Request
-import ru.climatlab.service.data.model.RequestResponseModel
 import ru.climatlab.service.ui.BasePresenter
 
 @InjectViewState
@@ -19,5 +19,15 @@ class RequestDetailsPresenter : BasePresenter<RequestDetailsView>() {
             request = cachedRequest
             viewState.showRequestDetailsInfo(request)
         }
+    }
+
+    fun onAcceptRequest(request: Request) {
+        ClimatLabRepositoryProvider.instance.acceptRequest(request.requestInfo)
+            .addSchedulers()
+            .doOnSubscribe { viewState.showLoading(true) }
+            .doFinally { viewState.showLoading(false) }
+            .subscribe({
+                viewState.closeScreen()
+            }, this::handleError)
     }
 }
