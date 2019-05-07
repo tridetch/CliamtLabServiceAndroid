@@ -75,7 +75,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 amountToPay = summaryToPayEditText.text.toString(),
                 amountForTheRoad = summaryForRoadEditText.text.toString(),
                 amountOfPart = summaryForPartsEditText.text.toString(),
-                requestType = RequestType.values()[requestTypeSpinner.selectedItemPosition-1]
+                requestType = RequestType.values()[requestTypeSpinner.selectedItemPosition]
             )
         }
 

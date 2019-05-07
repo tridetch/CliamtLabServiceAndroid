@@ -27,5 +27,7 @@ enum class RequestType(val title: String) {
     @SerializedName("9")
     ConclusionOfAnAgreement("Заключение договора"),
     @SerializedName("10")
+    Mounting("Монтаж"),
+    @SerializedName("11")
     CancelRequest("ОТМЕНА ЗАЯВКИ"),
 }
