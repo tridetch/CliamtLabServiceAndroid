@@ -37,6 +37,7 @@
     <string name="date_label">Дата выезда:</string>
     <string name="equipment_label">Оборудование:</string>
     <string name="address_label">Адрес:</string>
+    <string name="address_details_label">Доп адрес:</string>
     <string name="type_label">Тип:</string>
     <string name="description_label">Описание:</string>
     <string name="accept_request_button_label">Принять</string>

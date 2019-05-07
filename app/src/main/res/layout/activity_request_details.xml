@@ -128,12 +128,22 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/addressDetailsLabelTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:text="@string/address_details_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buildRouteButton" />
+
+    <TextView
         android:id="@+id/addressDetailsTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintLeft_toLeftOf="@id/buildRouteButton"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintLeft_toRightOf="@id/addressDetailsLabelTextView"
         app:layout_constraintRight_toRightOf="@id/buildRouteButton"
         app:layout_constraintTop_toBottomOf="@id/buildRouteButton" />
 

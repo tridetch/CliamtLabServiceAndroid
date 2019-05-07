@@ -47,8 +47,10 @@ class RequestDetailsActivity : BaseActivity(), RequestDetailsView {
         dateTextView.text = SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
         if (request.requestInfo.addressDetails.isNullOrBlank()) {
             addressDetailsTextView.visibility = View.GONE
+            addressDetailsLabelTextView.visibility = View.GONE
         } else {
             addressDetailsTextView.visibility = View.VISIBLE
+            addressDetailsLabelTextView.visibility = View.VISIBLE
             addressDetailsTextView.text = request.requestInfo.addressDetails
         }
 
