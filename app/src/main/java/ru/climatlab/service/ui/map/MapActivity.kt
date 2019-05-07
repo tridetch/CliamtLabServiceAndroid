@@ -2,7 +2,9 @@ package ru.climatlab.service.ui.map
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.NotificationManager
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -186,6 +188,9 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
     @SuppressLint("MissingPermission")
     override fun onResume() {
         super.onResume()
+        val nMgr = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        nMgr.cancelAll()
+
         isStateSaved = false
         if (isGoogleMapReady) {
             mvpDelegate.onAttach()

@@ -1,7 +1,8 @@
 package ru.climatlab.service.ui.login
 
+import android.app.NotificationManager
+import android.content.Context
 import android.os.Bundle
-import android.text.Editable
 import androidx.core.widget.addTextChangedListener
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.redmadrobot.inputmask.MaskedTextChangedListener
@@ -10,7 +11,6 @@ import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.map.MapActivity
-
 
 
 class LoginActivity : BaseActivity(), LoginView {
@@ -40,6 +40,8 @@ class LoginActivity : BaseActivity(), LoginView {
     }
 
     override fun showNextScreen() {
+        val nMgr = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        nMgr.cancelAll()
         closeScreen()
         startActivity<MapActivity>()
     }
