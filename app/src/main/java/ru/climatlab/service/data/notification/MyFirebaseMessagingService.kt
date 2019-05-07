@@ -75,7 +75,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setDefaults(NotificationCompat.DEFAULT_VIBRATE or NotificationCompat.DEFAULT_LIGHTS)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setStyle(bigStyle)
