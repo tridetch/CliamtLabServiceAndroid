@@ -3,25 +3,26 @@ package ru.climatlab.service.ui.requestReport
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.bumptech.glide.Glide
-import com.github.dhaval2404.imagepicker.ImagePicker
+import com.fxn.pix.Options
+import com.fxn.pix.Pix
+import com.fxn.utility.ImageQuality
+import com.fxn.utility.PermUtil
 import kotlinx.android.synthetic.main.activity_request_report.*
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 
 class RequestReportActivity : BaseActivity(), RequestReportView {
@@ -29,8 +30,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
         const val EXTRA_KEY_REQUEST_ID = "extra_key_request_id"
     }
 
-    private val REQUEST_CODE_BOILER_PHOTO = 1
-    private val REQUEST_CODE_RESULT_PHOTO = 2
+    private val REQUEST_CODE_RESULT_PHOTO = 1
 
     @InjectPresenter
     lateinit var presenter: RequestReportPresenter
@@ -43,18 +43,6 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
 
         presenter.onAttach(intent.getStringExtra(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID))
 
-/*
-        boilerPhotoCard.setOnClickListener {
-            ImagePicker.with(this)
-                .maxResultSize(480, 720)
-                .start(REQUEST_CODE_BOILER_PHOTO)
-        }
-        resultPhotoCard.setOnClickListener {
-            ImagePicker.with(this)
-                .maxResultSize(480, 720)
-                .start(REQUEST_CODE_RESULT_PHOTO)
-        }
-*/
 
         confirmButton.setOnClickListener {
             presenter.onReportConfirm(
@@ -71,7 +59,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 co = coEditText.text.toString(),
                 co2 = co2EditText.text.toString(),
                 recommendations = recommendationsInputLayout.editText!!.text.toString(),
-                performedWork  = performedWorkInputLayout.editText!!.text.toString(),
+                performedWork = performedWorkInputLayout.editText!!.text.toString(),
                 amountToPay = summaryToPayEditText.text.toString(),
                 amountForTheRoad = summaryForRoadEditText.text.toString(),
                 amountOfPart = summaryForPartsEditText.text.toString(),
@@ -90,7 +78,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             requestTypeSpinner.adapter = adapter
         }
 
-        photoAdapter = PhotoAdapter(mutableListOf(), object: PhotoAdapter.InteractionListener {
+        photoAdapter = PhotoAdapter(mutableListOf(), object : PhotoAdapter.InteractionListener {
             override fun onPhotoRemove(position: Int) {
                 presenter.onPhotoRemoved(position)
             }
@@ -98,67 +86,33 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
         photosList.adapter = photoAdapter
 
         addPhotoButton.setOnClickListener {
-            ImagePicker.with(this)
-                .maxResultSize(480, 720)
-                .start(REQUEST_CODE_RESULT_PHOTO)
+            val options = Options.init()
+                .setRequestCode(REQUEST_CODE_RESULT_PHOTO)
+                .setImageQuality(ImageQuality.HIGH)
+                .setImageResolution(720, 480)
+                .setCount(99)
+                .setScreenOrientation(Options.SCREEN_ORIENTATION_FULL_SENSOR)
+
+            Pix.start(this, options)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            REQUEST_CODE_BOILER_PHOTO -> {
+            REQUEST_CODE_RESULT_PHOTO -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    //Image Uri will not be null for RESULT_OK
-                    val fileUri = data?.data!!
-                    //You can get File object from intent
-                    val file: File = ImagePicker.getFile(data)!!
-                    //You can also get File Path from intent
-                    val filePath: String = ImagePicker.getFilePath(data)!!
-
-                    val bm = BitmapFactory.decodeFile(ImagePicker.getFilePath(data))
-                    val baos = ByteArrayOutputStream()
-                    bm.compress(Bitmap.CompressFormat.JPEG, 80, baos) //bm is the bitmap object
-                    val b = baos.toByteArray()
-                    val encodedImage = "data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}"
-                    presenter.onTakePhoto(fileUri, encodedImage)
-/*
-                    boilerPhotoImageView.visibility = View.VISIBLE
-                    boilerPhotoPlaceholder.visibility = View.GONE
-
-                    Glide.with(this)
-                        .load(fileUri)
-                        .into(boilerPhotoImageView)*/
-                } else if (resultCode == ImagePicker.RESULT_ERROR) {
-                    Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-                }
-            }
-            REQUEST_CODE_RESULT_PHOTO->{
-                if (resultCode == Activity.RESULT_OK) {
-                    //Image Uri will not be null for RESULT_OK
-                    val fileUri = data?.data!!
-                    //You can get File object from intent
-                    val file: File = ImagePicker.getFile(data)!!
-                    //You can also get File Path from intent
-                    val filePath: String = ImagePicker.getFilePath(data)!!
-
-                    val bm = BitmapFactory.decodeFile(ImagePicker.getFilePath(data))
-                    val baos = ByteArrayOutputStream()
-                    bm.compress(Bitmap.CompressFormat.JPEG, 80, baos) //bm is the bitmap object
-                    val b = baos.toByteArray()
-                    val encodedImage = Base64.encodeToString(b, Base64.DEFAULT)
-                    presenter.onTakePhoto(fileUri,"data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}")
-
-/*
-                    resultPhotoImageView.visibility = View.VISIBLE
-                    resultPhotoPlaceholder.visibility = View.GONE
-
-                    Glide.with(this)
-                        .load(fileUri)
-                        .into(resultPhotoImageView)
-*/
-                } else if (resultCode == ImagePicker.RESULT_ERROR) {
-                    Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                    val photos = data!!.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                    photos.forEach {
+                        val bm = BitmapFactory.decodeFile(it)
+                        val baos = ByteArrayOutputStream()
+                        bm.compress(Bitmap.CompressFormat.JPEG, 80, baos) //bm is the bitmap object
+                        val b = baos.toByteArray()
+                        presenter.onTakePhoto(
+                            Uri.parse(it),
+                            "data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}"
+                        )
+                    }
                 }
             }
         }
@@ -181,6 +135,21 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             .setMessage(R.string.request_not_found_error_message)
             .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> this@RequestReportActivity.finish() }
             .show()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Pix.start(this, Options.init().setRequestCode(100))
+                } else {
+                    Toast.makeText(this, "Approve permissions to open Pix ImagePicker", Toast.LENGTH_LONG)
+                        .show()
+                }
+                return
+            }
+        }
     }
 
     override fun showMessage(reportSent: RequestReportView.Message) {

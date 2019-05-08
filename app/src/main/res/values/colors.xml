@@ -5,4 +5,8 @@
     <color name="colorAccent">#42A5F5</color>
 
     <color name="iconColor">#4D000000</color>
+
+    <!--Pix image picker theme-->
+    <color name="colorPrimaryPix">@color/colorPrimaryDark</color>
+    <color name="colorPrimaryLightPix">@color/colorPrimary</color>
 </resources>
