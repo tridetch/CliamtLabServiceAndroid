@@ -45,17 +45,6 @@ class MapPresenter : BasePresenter<MapView>() {
         }
     }
 
-    fun onLogoutClick() {
-        ClimatLabRepositoryProvider.instance
-            .logOut()
-            .addSchedulers()
-            .doOnSubscribe { viewState.showLoading(true) }
-            .doFinally { viewState.showLoading(false) }
-            .subscribe({
-                viewState.showLoginScreen()
-            }, this::handleError)
-    }
-
     fun onAcceptRequest(request: Request) {
         ClimatLabRepositoryProvider.instance.acceptRequest(request.requestInfo)
             .addSchedulers()

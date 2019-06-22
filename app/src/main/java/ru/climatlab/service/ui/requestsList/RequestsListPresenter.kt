@@ -32,7 +32,22 @@ class RequestsListPresenter : BasePresenter<RequestsListView>() {
         }
     }
 
+    fun onLogoutClick() {
+        ClimatLabRepositoryProvider.instance
+            .logOut()
+            .addSchedulers()
+            .doOnSubscribe { viewState.showLoading(true) }
+            .doFinally { viewState.showLoading(false) }
+            .subscribe({
+                viewState.showLoginScreen()
+            }, this::handleError)
+    }
+
     fun onResume() {
         updateRequests(requestFilter)
+            ClimatLabRepositoryProvider.instance
+                .updateNotificationTokenIfNeeded()
+                .addSchedulers()
+                .subscribe({}, this::handleError)
     }
 }

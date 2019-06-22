@@ -20,6 +20,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/activity_map" />
+    <include layout="@layout/activity_requests_list" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

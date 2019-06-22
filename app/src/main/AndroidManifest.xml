@@ -58,6 +58,7 @@
         <activity
             android:name=".ui.requestsList.RequestsListActivity"
             android:label="@string/title_activity_requests"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -84,8 +85,7 @@
             android:name=".ui.map.MapActivity"
             android:label="@string/title_activity_map"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

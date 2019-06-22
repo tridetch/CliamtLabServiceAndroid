@@ -2,27 +2,20 @@ package ru.climatlab.service.ui.map
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.NotificationManager
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.text.format.DateUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.GravityCompat
 import com.arellomobile.mvp.MvpDelegate
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -35,29 +28,20 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.app_bar_drawer.*
 import kotlinx.android.synthetic.main.cancel_request_confirmation_dialog.view.*
-import kotlinx.android.synthetic.main.nav_header_drawer.view.*
 import kotlinx.android.synthetic.main.request_bottom_sheet.*
 import kotlinx.android.synthetic.main.request_bottom_sheet.view.*
 import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
-import ru.climatlab.service.data.PreferencesRepository
-import ru.climatlab.service.data.background.LocationBackgroundService
 import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.data.model.RequestStatus
-import ru.climatlab.service.ui.login.LoginActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
 import ru.climatlab.service.ui.requestReport.RequestReportActivity
-import ru.climatlab.service.ui.requestsList.RequestsListActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback {
 
     private val REQUEST_CODE_LOCATION = 0
 
@@ -82,22 +66,13 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         super.onCreate(savedInstanceState)
         mvpDelegate.onCreate(savedInstanceState)
         locationProvider = FusedLocationProviderClient(this)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = getString(R.string.title_activity_map)
+        setContentView(R.layout.activity_map)
 
         loadingDialog = ProgressDialog(this).apply {
             isIndeterminate = true
             setCancelable(false)
             setMessage(getString(R.string.loading_message))
         }
-
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-        navView.setNavigationItemSelectedListener(this)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -118,16 +93,6 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
                 }
             }
         })
-
-        navView.getHeaderView(0).navHeaderUserName.text = PreferencesRepository.getCurrentUserInfo()?.getFullName()
-    }
-
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -144,36 +109,6 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_all_requests -> {
-                startActivity(intentFor<RequestsListActivity>(RequestsListActivity.EXTRA_REQUESTS_FILTER to RequestStatus.NewRequest))
-            }
-            R.id.nav_accepted_requests -> {
-                startActivity(intentFor<RequestsListActivity>(RequestsListActivity.EXTRA_REQUESTS_FILTER to RequestStatus.InWork))
-            }
-            R.id.nav_instructions -> {
-                val instructionIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.instructions_url)))
-                if (instructionIntent.resolveActivity(packageManager) != null) {
-                    startActivity(Intent.createChooser(instructionIntent, getString(R.string.web_chooser_title)))
-                }
-                startActivity(instructionIntent)
-            }
-            R.id.nav_exit -> {
-                presenter.onLogoutClick()
-            }
-        }
-
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.drawer, menu)
-        return true
-    }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
@@ -185,34 +120,21 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
         outState.putBundle(KEY_MAP_VIEW_OUT_STATE, bundle)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.activity_map_menu, menu)
+        return true
+    }
+
     @SuppressLint("MissingPermission")
     override fun onResume() {
         super.onResume()
-        val nMgr = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        nMgr.cancelAll()
 
         isStateSaved = false
         if (isGoogleMapReady) {
             mvpDelegate.onAttach()
         }
         presenter.onResume()
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_DENIED
-            || ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_DENIED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                REQUEST_CODE_LOCATION
-            )
-        } else {
-            startLocationService()
-        }
     }
 
     override fun onStart() {
@@ -249,19 +171,8 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CODE_LOCATION && grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
             map.isMyLocationEnabled = true
-            startLocationService()
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    private fun startLocationService() {
-        val intent = Intent(this, LocationBackgroundService::class.java)
-        intent.action = LocationBackgroundService.ACTION_START_FOREGROUND_SERVICE
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
-        }
     }
 
     /**
@@ -347,7 +258,8 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
     override fun showRequestBottomCard(request: Request) {
         requestInfoCard.clientFullNameTextView.text = request.clientResponseModel.fullName()
-        requestInfoCard.dateTextView.text = SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
+        requestInfoCard.dateTextView.text =
+            SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
         requestInfoCard.officeTitleNameTextView.text = request.requestInfo.office
         requestInfoCard.equipmentTextView.text = request.requestInfo.equipmentId
         requestInfoCard.phoneNumber.text = "8${request.clientResponseModel.phone}"
@@ -438,14 +350,6 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback, Navigation
 
     override fun showRequestReportScreen(request: Request) {
         startActivity(intentFor<RequestReportActivity>(RequestReportActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
-    }
-
-    override fun showLoginScreen() {
-        val intent = Intent(this, LocationBackgroundService::class.java)
-        intent.action = LocationBackgroundService.ACTION_STOP_FOREGROUND_SERVICE
-        startService(intent)
-        finish()
-        startActivity<LoginActivity>()
     }
 
     override fun closeScreen() {

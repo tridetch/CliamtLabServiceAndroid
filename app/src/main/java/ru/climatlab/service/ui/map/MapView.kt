@@ -14,7 +14,6 @@ interface MapView: BaseMvpView {
     fun showRequests(requests: List<Request>)
     fun showRequestBottomCard(request: Request)
     fun hideRequestBottomCard()
-    fun showLoginScreen()
     fun showRequestDetails(request: Request)
     fun showRequestReportScreen(request: Request)
     @StateStrategyType(OneExecutionStateStrategy::class)

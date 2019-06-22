@@ -9,4 +9,5 @@ interface RequestsListView: BaseMvpView {
     fun updateData(requests: List<Request>)
     fun showRequestDetailsScreen(request: Request)
     fun showRequestReportScreen(request: Request)
+    fun showLoginScreen()
 }

@@ -11,6 +11,7 @@ import org.jetbrains.anko.startActivity
 import ru.climatlab.service.R
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.map.MapActivity
+import ru.climatlab.service.ui.requestsList.RequestsListActivity
 
 
 class LoginActivity : BaseActivity(), LoginView {
@@ -43,6 +44,6 @@ class LoginActivity : BaseActivity(), LoginView {
         val nMgr = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         nMgr.cancelAll()
         closeScreen()
-        startActivity<MapActivity>()
+        startActivity<RequestsListActivity>()
     }
 }
