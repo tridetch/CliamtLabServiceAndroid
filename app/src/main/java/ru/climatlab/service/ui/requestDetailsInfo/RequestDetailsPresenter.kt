@@ -30,4 +30,15 @@ class RequestDetailsPresenter : BasePresenter<RequestDetailsView>() {
                 viewState.closeScreen()
             }, this::handleError)
     }
+
+    fun onCancelRequest(request: Request, comment: String) {
+        ClimatLabRepositoryProvider.instance.cancelRequest(request.requestInfo, comment)
+            .addSchedulers()
+            .doOnSubscribe { viewState.showLoading(true) }
+            .doFinally { viewState.showLoading(false) }
+            .subscribe({
+                viewState.closeScreen()
+            }, this::handleError)
+    }
+
 }

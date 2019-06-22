@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.arellomobile.mvp.presenter.InjectPresenter
 import kotlinx.android.synthetic.main.activity_request_details.*
+import kotlinx.android.synthetic.main.cancel_request_confirmation_dialog.view.*
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.ui.BaseActivity
@@ -39,6 +40,19 @@ class RequestDetailsActivity : BaseActivity(), RequestDetailsView {
 
     override fun showRequestDetailsInfo(request: Request) {
         confirmButton.setOnClickListener { presenter.onAcceptRequest(request) }
+        val cancelRequestConfirmationDialog =
+            layoutInflater.inflate(R.layout.cancel_request_confirmation_dialog, null)
+        AlertDialog.Builder(this)
+            .setTitle(R.string.cancel_request_confirmation_dialog_title)
+            .setView(cancelRequestConfirmationDialog)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                presenter.onCancelRequest(
+                    request,
+                    cancelRequestConfirmationDialog.reasonInputLayout.editText!!.text.toString()
+                )
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
         clientFullNameTextView.text = request.clientResponseModel.fullName()
         descriptionTextView.text = request.requestInfo.description
         equipmentTextView.text = request.requestInfo.equipmentId
