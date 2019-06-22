@@ -46,6 +46,9 @@
 
     <!--Requests list screen-->
     <string name="title_activity_requests">Заявки</string>
+    <string name="requests_filter_new">Новые</string>
+    <string name="requests_filter_in_work">В работе</string>
+    <string name="requests_filter_cancelled">Отмененные</string>
 
     <!--Request types-->
     <string name="request_type_mounting">Монтаж</string>

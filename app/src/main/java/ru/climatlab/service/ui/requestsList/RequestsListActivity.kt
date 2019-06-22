@@ -64,7 +64,12 @@ class RequestsListActivity : BaseActivity(), RequestsListView, NavigationView.On
             })
         requestsRecyclerView.adapter = requestsAdapter
         val requestFilter = intent.getSerializableExtra(EXTRA_REQUESTS_FILTER) as RequestStatus?
-
+        when (requestFilter) {
+            RequestStatus.NewRequest -> supportActionBar!!.title = "${getString(R.string.title_activity_requests)} (${getString(R.string.requests_filter_new)}))"
+            RequestStatus.InWork -> "${getString(R.string.title_activity_requests)} (${getString(R.string.requests_filter_in_work)}))"
+            RequestStatus.Cancelled -> "${getString(R.string.title_activity_requests)} ${getString(R.string.requests_filter_cancelled)})"
+            null -> {}
+        }
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
@@ -79,6 +84,9 @@ class RequestsListActivity : BaseActivity(), RequestsListView, NavigationView.On
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
+            R.id.nav_request_list->{
+                startActivity(intentFor<RequestsListActivity>(RequestsListActivity.EXTRA_REQUESTS_FILTER to RequestStatus.NewRequest))
+            }
             R.id.nav_map -> {
                 startActivity<MapActivity>()
             }
