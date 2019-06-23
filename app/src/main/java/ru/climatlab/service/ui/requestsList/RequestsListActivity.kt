@@ -63,13 +63,6 @@ class RequestsListActivity : BaseActivity(), RequestsListView, NavigationView.On
                 }
             })
         requestsRecyclerView.adapter = requestsAdapter
-        val requestFilter = intent.getSerializableExtra(EXTRA_REQUESTS_FILTER) as RequestStatus?
-        when (requestFilter) {
-            RequestStatus.NewRequest -> supportActionBar!!.title = "${getString(R.string.title_activity_requests)} (${getString(R.string.requests_filter_new)}))"
-            RequestStatus.InWork -> "${getString(R.string.title_activity_requests)} (${getString(R.string.requests_filter_in_work)}))"
-            RequestStatus.Cancelled -> "${getString(R.string.title_activity_requests)} ${getString(R.string.requests_filter_cancelled)})"
-            null -> {}
-        }
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
@@ -77,8 +70,23 @@ class RequestsListActivity : BaseActivity(), RequestsListView, NavigationView.On
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
         navView.getHeaderView(0).navHeaderUserName.text = PreferencesRepository.getCurrentUserInfo()?.getFullName()
+        handleIntent(intent)
+    }
 
+    private fun handleIntent(intent: Intent?) {
+        val requestFilter = intent?.getSerializableExtra(EXTRA_REQUESTS_FILTER) as RequestStatus?
+        supportActionBar!!.title = when (requestFilter) {
+            RequestStatus.NewRequest -> "${getString(R.string.title_activity_requests)} (${getString(R.string.requests_filter_new)})"
+            RequestStatus.InWork -> "${getString(R.string.title_activity_requests)} (${getString(R.string.requests_filter_in_work)})"
+            RequestStatus.Cancelled -> "${getString(R.string.title_activity_requests)} ${getString(R.string.requests_filter_cancelled)})"
+            null -> getString(R.string.title_activity_requests)
+        }
         presenter.onAttach(requestFilter)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
