@@ -10,7 +10,7 @@ data class ClientResponseModel(
     @SerializedName("sex") val gender: Gender,
     @SerializedName("email") val email: String,
     @SerializedName("phone") val phone: String,
-    @SerializedName("contact") val contact: String,
+    @SerializedName("contact") val reserveContact: String,
     @SerializedName("passport") val passport: String,
     @SerializedName("city") val city: String,
     @SerializedName("birthday") val birthday: String,

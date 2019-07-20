@@ -36,11 +36,13 @@
     <string name="client_label">Клиент:</string>
     <string name="office_label">Офис:</string>
     <string name="date_label">Дата выезда:</string>
+    <string name="reserve_contact">Доп. контакт:</string>
     <string name="equipment_label">Оборудование:</string>
     <string name="address_label">Адрес:</string>
     <string name="address_details_label">Доп адрес:</string>
     <string name="type_label">Тип:</string>
     <string name="description_label">Описание:</string>
+    <string name="comment_label">Комментарий:</string>
     <string name="accept_request_button_label">Принять</string>
     <string name="cancel_request_button_label">Отказаться</string>
 
@@ -90,6 +92,7 @@
     <string name="background_work">Приложение работает в фоновом режиме</string>
     <string name="web_chooser_title">Открыть с помощью</string>
     <string name="take_photo">Добавить фото</string>
+    <string name="empty">Отсутствует</string>
 
     <!--RequestType names-->
     <string-array name="request_types_array">

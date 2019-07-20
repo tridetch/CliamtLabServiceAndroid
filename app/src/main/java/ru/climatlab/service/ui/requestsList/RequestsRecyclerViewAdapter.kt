@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.request_list_item.view.*
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.Request
+import java.text.SimpleDateFormat
+import java.util.*
 
 class RequestsRecyclerViewAdapter(
     private var requestItems: MutableList<Request>,
@@ -48,6 +50,10 @@ class RequestsRecyclerViewAdapter(
             itemView.clientFullNameTextView.text = request.clientResponseModel.fullName()
             itemView.officeTitleNameTextView.text = request.requestInfo.office
             itemView.equipmentTextView.text = request.requestInfo.equipmentId
+            itemView.descriptionTextView.text = request.requestInfo.description
+            itemView.commentTextView.text = request.requestInfo.comment
+            itemView.dateTextView.text = SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
+            itemView.contactTextView.text = if (request.clientResponseModel.reserveContact.isNotBlank()) request.clientResponseModel.reserveContact else itemView.context.getString(R.string.empty)
             itemView.addressTextView.text = request.requestInfo.address
             itemView.setOnClickListener { interactionListener.onClick(request) }
             itemView.phoneNumber.text = request.clientResponseModel.phone
