@@ -37,6 +37,8 @@
     <string name="office_label">Офис:</string>
     <string name="date_label">Дата выезда:</string>
     <string name="reserve_contact">Доп. контакт:</string>
+    <string name="reserve_address">Доп. адрес:</string>
+    <string name="contract_date_number">Дата/№ договора:</string>
     <string name="equipment_label">Оборудование:</string>
     <string name="address_label">Адрес:</string>
     <string name="address_details_label">Доп адрес:</string>

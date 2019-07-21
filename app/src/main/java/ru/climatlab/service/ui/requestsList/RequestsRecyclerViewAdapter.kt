@@ -54,7 +54,10 @@ class RequestsRecyclerViewAdapter(
             itemView.commentTextView.text = request.requestInfo.comment
             itemView.dateTextView.text = SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
             itemView.contactTextView.text = if (request.clientResponseModel.reserveContact.isNotBlank()) request.clientResponseModel.reserveContact else itemView.context.getString(R.string.empty)
-            itemView.addressTextView.text = request.requestInfo.address
+            itemView.contractDateAndNumberTextView.text = "${request.clientResponseModel.contractDate} №${request.clientResponseModel.contractNumber}"
+            itemView.addressTextView.text = """${request.requestInfo.address}
+                |${request.requestInfo.addressDetails}
+            """.trimMargin()
             itemView.setOnClickListener { interactionListener.onClick(request) }
             itemView.phoneNumber.text = request.clientResponseModel.phone
             itemView.callButton.setOnClickListener {
