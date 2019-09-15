@@ -100,6 +100,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:autoLink="phone"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintLeft_toRightOf="@id/commentLabelTextView"
         app:layout_constraintRight_toRightOf="parent"
@@ -141,10 +142,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:autoLink="phone"
+        android:linksClickable="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintLeft_toRightOf="@id/contactLabelTextView"
         app:layout_constraintTop_toTopOf="@id/contactLabelTextView"
-        tools:text="ФИО телефон" />
+        tools:text="ФИО телефон\nashbfhsdfbjdsjfkdshfk" />
 
     <TextView
         android:id="@+id/contractDateAndNumberLabelTextView"
@@ -153,7 +156,7 @@
         android:text="@string/contract_date_number"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contactLabelTextView"
+        app:layout_constraintTop_toBottomOf="@id/contactTextView"
         app:layout_goneMarginTop="16dp" />
 
     <TextView
