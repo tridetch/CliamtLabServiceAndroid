@@ -2,7 +2,6 @@ package ru.climatlab.service.ui.requestsList
 
 import android.content.Intent
 import android.net.Uri
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,10 +52,11 @@ class RequestsRecyclerViewAdapter(
             itemView.equipmentTextView.text = request.requestInfo.equipmentId
             itemView.descriptionTextView.text = request.requestInfo.description
             itemView.commentTextView.text = request.requestInfo.comment
-            itemView.dateTextView.text = SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
-            itemView.contactTextView.text = if (request.clientResponseModel.reserveContact.isNotBlank()) request.clientResponseModel.reserveContact else itemView.context.getString(R.string.empty)
-            itemView.contactTextView.movementMethod = LinkMovementMethod.getInstance()
-            itemView.contractDateAndNumberTextView.text = "${request.clientResponseModel.contractDate} №${request.clientResponseModel.contractNumber}"
+            itemView.moreTextView.text = request.clientResponseModel.comment
+            itemView.dateTextView.text =
+                SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
+            itemView.contractDateAndNumberTextView.text =
+                "${request.clientResponseModel.contractDate} №${request.clientResponseModel.contractNumber}"
             itemView.addressTextView.text = """${request.requestInfo.address}
                 |${request.requestInfo.addressDetails}
             """.trimMargin()
@@ -69,6 +69,20 @@ class RequestsRecyclerViewAdapter(
                         Uri.parse("tel:8${request.clientResponseModel.phone}")
                     )
                 )
+            }
+            if (request.clientResponseModel.reserveContact.isNotBlank()) {
+                itemView.reservePhoneNumber.text = request.clientResponseModel.reserveContact
+                itemView.reservePhoneNumber.setOnClickListener {
+                    itemView.context.startActivity(
+                        Intent(
+                            Intent.ACTION_DIAL,
+                            Uri.parse("tel:8${request.clientResponseModel.reserveContact}")
+                        )
+                    )
+                }
+            } else {
+                itemView.reservePhoneNumber.text = itemView.context.getString(R.string.empty)
+                itemView.reservePhoneNumber.setOnClickListener {}
             }
             itemView.buildRouteButton.setOnClickListener {
                 itemView.context.startActivity(

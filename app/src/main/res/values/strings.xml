@@ -45,6 +45,7 @@
     <string name="type_label">Тип:</string>
     <string name="description_label">Описание:</string>
     <string name="comment_label">Комментарий:</string>
+    <string name="more_label">Ещё:</string>
     <string name="accept_request_button_label">Принять</string>
     <string name="cancel_request_button_label">Отказаться</string>
 

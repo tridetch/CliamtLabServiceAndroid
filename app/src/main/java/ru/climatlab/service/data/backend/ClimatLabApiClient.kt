@@ -14,9 +14,9 @@ object ClimatLabApiClient {
     val climatLabService: ClimatLabApiService by lazy {
 
         val okHttp = OkHttpClient.Builder()
-                .connectTimeout(2, TimeUnit.MINUTES)
-                .writeTimeout(2, TimeUnit.MINUTES)
-                .readTimeout(2, TimeUnit.MINUTES)
+                .connectTimeout(4, TimeUnit.MINUTES)
+                .writeTimeout(4, TimeUnit.MINUTES)
+                .readTimeout(4, TimeUnit.MINUTES)
                 .retryOnConnectionFailure(true)
                 .addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT).apply { level = HttpLoggingInterceptor.Level.BODY })
                 .addInterceptor(AuthInterceptor())

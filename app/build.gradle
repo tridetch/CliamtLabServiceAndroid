@@ -18,8 +18,8 @@ android {
         applicationId "ru.climatlab.service"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 18
-        versionName "0.10"
+        versionCode 19
+        versionName "0.11"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

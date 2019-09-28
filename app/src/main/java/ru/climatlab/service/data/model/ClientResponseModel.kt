@@ -14,6 +14,7 @@ data class ClientResponseModel(
     @SerializedName("passport") val passport: String,
     @SerializedName("city") val city: String,
     @SerializedName("birthday") val birthday: String,
+    @SerializedName("comment") val comment: String,
     @SerializedName("where") val where: String,
     @SerializedName("dogovor_number") val contractNumber: String,
     @SerializedName("dogovor_date") val contractDate: String,

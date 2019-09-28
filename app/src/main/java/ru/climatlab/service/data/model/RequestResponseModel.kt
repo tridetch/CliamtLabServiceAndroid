@@ -15,6 +15,7 @@ data class RequestResponseModel(
     @SerializedName("adress") val address: String?,
     @SerializedName("adress2") val addressDetails: String?,
     val description: String?,
+    @SerializedName("comment")
     val comment: String?,
     val status: RequestStatus?,
     @SerializedName("latlng") val latlng: String?

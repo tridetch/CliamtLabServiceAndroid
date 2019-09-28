@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.app_bar_drawer.*
 import kotlinx.android.synthetic.main.nav_header_drawer.view.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
+import ru.climatlab.service.BuildConfig
 import ru.climatlab.service.R
 import ru.climatlab.service.data.PreferencesRepository
 import ru.climatlab.service.data.background.LocationBackgroundService
@@ -70,6 +71,7 @@ class RequestsListActivity : BaseActivity(), RequestsListView, NavigationView.On
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
         navView.getHeaderView(0).navHeaderUserName.text = PreferencesRepository.getCurrentUserInfo()?.getFullName()
+        navView.getHeaderView(0).navHeaderTitle.text = "${getString(R.string.app_title)} (v.${BuildConfig.VERSION_CODE}"
         handleIntent(intent)
     }
 
