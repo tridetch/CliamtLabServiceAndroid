@@ -4,6 +4,7 @@ import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
+import ru.climatlab.service.data.model.PhotoOfWork
 import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.data.model.RequestReport
 import ru.climatlab.service.data.model.RequestType
@@ -15,6 +16,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
 
     private lateinit var request: Request
     private var requestReport = RequestReport()
+    private val resultPhotos: MutableList<PhotoOfWork> = mutableListOf()
     private var photoUriList: MutableList<Uri> = mutableListOf()
 
     fun onAttach(requestId: String) {
@@ -47,7 +49,6 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         amountToPay: String = requestReport.amountToPay,
         amountForTheRoad: String = requestReport.amountForTheRoad,
         amountOfPart: String = requestReport.amountOfPart,
-        resultPhoto: MutableList<String> = requestReport.resultPhotos,
         requestType: RequestType = requestReport.requestType
     ) {
         requestReport = requestReport.copy(
@@ -70,11 +71,10 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             amountToPay = amountToPay,
             amountForTheRoad = amountForTheRoad,
             amountOfPart = amountOfPart,
-            resultPhotos = resultPhoto,
             requestType = requestType
         )
         ClimatLabRepositoryProvider.instance
-            .sendRequestReport(requestReport)
+            .sendRequestReport(requestReport, resultPhotos)
             .addSchedulers()
             .doOnSubscribe { viewState.showLoading(true) }
             .doFinally { viewState.showLoading(false) }
@@ -86,13 +86,13 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
 
     fun onTakePhoto(photoUri: Uri, base64Image: String) {
         photoUriList.add(photoUri)
-        requestReport.resultPhotos.add(base64Image)
+        resultPhotos.add(PhotoOfWork(file_name = "${photoUri.lastPathSegment}_id_${request.id}",content = base64Image))
         viewState.onPhotoAdded()
     }
 
     fun onPhotoRemoved(position: Int) {
         photoUriList.removeAt(position)
-        requestReport.resultPhotos.removeAt(position)
+        resultPhotos.removeAt(position)
         viewState.onPhotoRemoved(position)
     }
 

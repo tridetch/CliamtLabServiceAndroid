@@ -2,6 +2,7 @@ package ru.climatlab.service.data.backend
 
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.PreferencesRepository
@@ -38,8 +39,16 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
             }
     }
 
-    override fun sendRequestReport(requestReport: RequestReport): Completable {
+    override fun sendRequestReport(
+        requestReport: RequestReport,
+        resultPhotos: MutableList<PhotoOfWork>
+    ): Completable {
         return ClimatLabApiClient.climatLabService.sendRequestReport(requestReport = requestReport)
+            .andThen(sendPhotos(resultPhotos))
+    }
+
+    private fun sendPhotos(resultPhotos: MutableList<PhotoOfWork>): Completable {
+        return Observable.fromIterable(resultPhotos).flatMapCompletable { ClimatLabApiClient.climatLabService.sendPhoto(it) }
     }
 
     override fun getRequest(requestId: String): Request? {

@@ -36,4 +36,7 @@ interface ClimatLabApiService {
     @POST("/api/geo.php")
     fun sendUserLocation(@Body userLocation: MapCoordinates): Completable
 
+    @POST("/api/upload_file.php")
+    fun sendPhoto(@Body photo: PhotoOfWork): Completable
+
 }
