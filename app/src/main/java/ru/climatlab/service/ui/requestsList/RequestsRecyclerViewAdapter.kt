@@ -47,36 +47,36 @@ class RequestsRecyclerViewAdapter(
 
         fun bindItem(request: Request) {
             this.request = request
-            itemView.clientFullNameTextView.text = request.clientResponseModel.fullName()
-            itemView.officeTitleNameTextView.text = request.requestInfo.office
-            itemView.equipmentTextView.text = request.requestInfo.equipmentId
-            itemView.descriptionTextView.text = request.requestInfo.description
-            itemView.commentTextView.text = request.requestInfo.comment
-            itemView.moreTextView.text = request.clientResponseModel.comment
+            itemView.clientFullNameTextView.text = request.clientInfo?.fullName()
+            itemView.officeTitleNameTextView.text = request.office
+            itemView.equipmentTextView.text = request.equipmentId
+            itemView.descriptionTextView.text = request.description
+            itemView.commentTextView.text = request.comment
+            itemView.moreTextView.text = request.clientInfo?.comment
             itemView.dateTextView.text =
-                SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
+                SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.date))
             itemView.contractDateAndNumberTextView.text =
-                "${request.clientResponseModel.contractDate} №${request.clientResponseModel.contractNumber}"
-            itemView.addressTextView.text = """${request.requestInfo.address}
-                |${request.requestInfo.addressDetails}
+                "${request.clientInfo?.contractDate} №${request.clientInfo?.contractNumber}"
+            itemView.addressTextView.text = """${request.address}
+                |${request.addressDetails}
             """.trimMargin()
             itemView.setOnClickListener { interactionListener.onClick(request) }
-            itemView.phoneNumber.text = request.clientResponseModel.phone
+            itemView.phoneNumber.text = request.clientInfo?.phone
             itemView.callButton.setOnClickListener {
                 itemView.context.startActivity(
                     Intent(
                         Intent.ACTION_DIAL,
-                        Uri.parse("tel:8${request.clientResponseModel.phone}")
+                        Uri.parse("tel:8${request.clientInfo?.phone}")
                     )
                 )
             }
-            if (request.clientResponseModel.reserveContact.isNotBlank()) {
-                itemView.reservePhoneNumber.text = request.clientResponseModel.reserveContact
+            if (request.clientInfo?.reserveContact?.isBlank() == false) {
+                itemView.reservePhoneNumber.text = request.clientInfo.reserveContact
                 itemView.reservePhoneNumber.setOnClickListener {
                     itemView.context.startActivity(
                         Intent(
                             Intent.ACTION_DIAL,
-                            Uri.parse("tel:8${request.clientResponseModel.reserveContact}")
+                            Uri.parse("tel:8${request.clientInfo.reserveContact}")
                         )
                     )
                 }
@@ -89,7 +89,7 @@ class RequestsRecyclerViewAdapter(
                     Intent.createChooser(
                         Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse("geo:0,0?q=${request.requestInfo.getCoordinates()?.latitude},${request.requestInfo.getCoordinates()?.longitude}(${request.requestInfo.address})")
+                            Uri.parse("geo:0,0?q=${request.getCoordinates().latitude},${request.getCoordinates().longitude}(${request.address})")
                         ), itemView.context.getString(R.string.map_chooser_title)
                     )
                 )

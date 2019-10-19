@@ -55,30 +55,30 @@ class RequestDetailsActivity : BaseActivity(), RequestDetailsView {
                 .setNegativeButton(android.R.string.cancel, null)
                 .show()
         }
-        clientFullNameTextView.text = request.clientResponseModel.fullName()
-        descriptionTextView.text = request.requestInfo.description
-        equipmentTextView.text = request.requestInfo.equipmentId
-        addressTextView.text = request.requestInfo.address
-        phoneNumber.text = request.clientResponseModel.phone
-        dateTextView.text = SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
-        if (request.requestInfo.addressDetails.isNullOrBlank()) {
+        clientFullNameTextView.text = request.clientInfo?.fullName()
+        descriptionTextView.text = request.description
+        equipmentTextView.text = request.equipmentId
+        addressTextView.text = request.address
+        phoneNumber.text = request.clientInfo?.phone
+        dateTextView.text = SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.date))
+        if (request.addressDetails.isBlank()) {
             addressDetailsTextView.visibility = View.GONE
             addressDetailsLabelTextView.visibility = View.GONE
         } else {
             addressDetailsTextView.visibility = View.VISIBLE
             addressDetailsLabelTextView.visibility = View.VISIBLE
-            addressDetailsTextView.text = request.requestInfo.addressDetails
+            addressDetailsTextView.text = request.addressDetails
         }
 
         callButton.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:8${request.clientResponseModel.phone}")))
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:8${request.clientInfo?.phone}")))
         }
         buildRouteButton.setOnClickListener {
             startActivity(
                 Intent.createChooser(
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("geo:0,0?q=${request.requestInfo.getCoordinates()?.latitude},${request.requestInfo.getCoordinates()?.longitude}(${request.requestInfo.address})")
+                        Uri.parse("geo:0,0?q=${request.getCoordinates().latitude},${request.getCoordinates().longitude}(${request.address})")
                     ), getString(R.string.map_chooser_title)
                 )
             )

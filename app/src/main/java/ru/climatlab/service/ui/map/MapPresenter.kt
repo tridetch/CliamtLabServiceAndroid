@@ -46,7 +46,7 @@ class MapPresenter : BasePresenter<MapView>() {
     }
 
     fun onAcceptRequest(request: Request) {
-        ClimatLabRepositoryProvider.instance.acceptRequest(request.requestInfo)
+        ClimatLabRepositoryProvider.instance.acceptRequest(request)
             .addSchedulers()
             .doOnSubscribe { viewState.showLoading(true) }
             .doFinally { viewState.showLoading(false) }
@@ -59,7 +59,7 @@ class MapPresenter : BasePresenter<MapView>() {
     }
 
     fun onCancelRequest(request: Request, comment: String) {
-        ClimatLabRepositoryProvider.instance.cancelRequest(request.requestInfo, comment)
+        ClimatLabRepositoryProvider.instance.cancelRequest(request, comment)
             .addSchedulers()
             .doOnSubscribe { viewState.showLoading(true) }
             .doFinally { viewState.showLoading(false) }

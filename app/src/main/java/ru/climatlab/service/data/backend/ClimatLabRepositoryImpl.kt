@@ -6,7 +6,6 @@ import io.reactivex.Single
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.PreferencesRepository
 import ru.climatlab.service.data.model.*
-import kotlin.random.Random
 
 class ClimatLabRepositoryImpl : ClimatLabRepository {
     private var cachedRequests = listOf<Request>()
@@ -34,10 +33,7 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
             .map { requests ->
                 cachedRequests =
                     requests.filter { if (requestFilter.filterNotNull().isNotEmpty()) it.status in requestFilter else true }
-                        .mapNotNull { request ->
-                            val client = cachedClients.firstOrNull { client -> client.id == request.clientId }
-                            if (client == null) null else Request(request, client)
-                        }
+                        .map { it.mapToRequest() }
                 cachedRequests
             }
     }
@@ -47,14 +43,14 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
     }
 
     override fun getRequest(requestId: String): Request? {
-        return cachedRequests.firstOrNull { it.requestInfo.id == requestId }
+        return cachedRequests.firstOrNull { it.id == requestId }
     }
 
-    override fun acceptRequest(request: RequestResponseModel): Completable {
+    override fun acceptRequest(request: Request): Completable {
         return ClimatLabApiClient.climatLabService.acceptRequest(acceptRequestBody = AcceptRequestBody(requestId = request.id))
     }
 
-    override fun cancelRequest(request: RequestResponseModel, comment: String): Completable {
+    override fun cancelRequest(request: Request, comment: String): Completable {
         return ClimatLabApiClient.climatLabService.cancelRequest(
             cancelRequestBody = CancelRequestBody(
                 requestId = request.id,
@@ -90,4 +86,21 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
     override fun sendUserLocation(lat: Double, lng: Double): Completable {
         return ClimatLabApiClient.climatLabService.sendUserLocation(MapCoordinates(lat, lng))
     }
+}
+
+private fun RequestResponseModel.mapToRequest(): Request {
+    return Request(
+        id = id,
+        comment = comment ?: "",
+        date = date,
+        equipmentId = equipmentId ?: "",
+        status = status ?: RequestStatus.Cancelled,
+        type = type ?: RequestType.WarrantyRepair,
+        office = office ?: "",
+        description = description ?: "",
+        address = address ?: "",
+        addressDetails = addressDetails ?: "",
+        clientInfo = clientInfo,
+        latlng = latlng
+    )
 }

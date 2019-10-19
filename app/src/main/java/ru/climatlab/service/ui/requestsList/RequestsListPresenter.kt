@@ -26,7 +26,7 @@ class RequestsListPresenter : BasePresenter<RequestsListView>() {
     }
 
     fun onRequestClick(request: Request) {
-        when (request.requestInfo.status) {
+        when (request.status) {
             RequestStatus.InWork -> viewState.showRequestReportScreen(request)
             else -> viewState.showRequestDetailsScreen(request)
         }

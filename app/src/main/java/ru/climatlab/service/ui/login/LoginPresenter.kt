@@ -15,18 +15,12 @@ class LoginPresenter : BasePresenter<LoginView>() {
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         if (PreferencesRepository.getCurrentUserInfo()?.token?.isNotBlank() == true) {
-            ClimatLabRepositoryProvider.instance.updateData().addSchedulers()
-                .doOnSubscribe { viewState.showLoading(true) }
-                .doFinally { viewState.showLoading(false) }
-                .subscribe({
-                    viewState.showNextScreen()
-                }, this::handleError)
+            viewState.showNextScreen()
         }
     }
 
     fun login() {
         ClimatLabRepositoryProvider.instance.login(login, password)
-            .andThen(ClimatLabRepositoryProvider.instance.updateData())
             .addSchedulers()
             .doOnSubscribe { viewState.showLoading(true) }
             .doFinally { viewState.showLoading(false) }

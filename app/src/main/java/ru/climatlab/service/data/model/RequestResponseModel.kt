@@ -18,19 +18,8 @@ data class RequestResponseModel(
     @SerializedName("comment")
     val comment: String?,
     val status: RequestStatus?,
-    @SerializedName("latlng") val latlng: String?
+    @SerializedName("latlng") val latlng: String?,
+    @SerializedName("client_info") val clientInfo: ClientResponseModel?
 ) {
     val date: Long get() = _date * 1000
-    fun getCoordinates(): MapCoordinates {
-        var mapCoordinates = MapCoordinates(44.055200,  42.982851)
-        try {
-            val coordinates = latlng?.split(regex = Regex(","), limit = 0)
-            val lat = coordinates?.get(0)?.toDouble()
-            val lng = coordinates?.get(1)?.toDouble()
-            if (lat != null && lng != null) {
-                mapCoordinates = MapCoordinates(lat, lng)
-            }
-        } catch (ignore: Exception) {}
-        return mapCoordinates
-    }
 }

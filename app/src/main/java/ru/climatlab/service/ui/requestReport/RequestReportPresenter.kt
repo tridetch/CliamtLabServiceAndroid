@@ -23,7 +23,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             viewState.showRequestNotFoundError()
         } else {
             request = cachedRequest
-            requestReport = requestReport.copy(requestId = cachedRequest.requestInfo.id)
+            requestReport = requestReport.copy(requestId = cachedRequest.id)
         }
         viewState.setupPhoto(photoUriList)
     }

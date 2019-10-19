@@ -238,13 +238,13 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback {
                 MarkerOptions()
                     .position(
                         LatLng(
-                            request.requestInfo.getCoordinates()!!.latitude,
-                            request.requestInfo.getCoordinates()!!.longitude
+                            request.getCoordinates()!!.latitude,
+                            request.getCoordinates()!!.longitude
                         )
                     )
                     .icon(
                         BitmapDescriptorFactory.defaultMarker(
-                            when (request.requestInfo.status) {
+                            when (request.status) {
                                 RequestStatus.NewRequest -> BitmapDescriptorFactory.HUE_RED
                                 else -> {
                                     BitmapDescriptorFactory.HUE_CYAN
@@ -257,34 +257,34 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback {
     }
 
     override fun showRequestBottomCard(request: Request) {
-        requestInfoCard.clientFullNameTextView.text = request.clientResponseModel.fullName()
+        requestInfoCard.clientFullNameTextView.text = request.clientInfo?.fullName()
         requestInfoCard.dateTextView.text =
-            SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.requestInfo.date))
-        requestInfoCard.officeTitleNameTextView.text = request.requestInfo.office
-        requestInfoCard.equipmentTextView.text = request.requestInfo.equipmentId
-        requestInfoCard.phoneNumber.text = "8${request.clientResponseModel.phone}"
-        requestInfoCard.addressTextView.text = request.requestInfo.address
-        requestInfoCard.descriptionTextView.text = request.requestInfo.description
-        if (request.requestInfo.addressDetails.isNullOrBlank()) {
+            SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.date))
+        requestInfoCard.officeTitleNameTextView.text = request.office
+        requestInfoCard.equipmentTextView.text = request.equipmentId
+        requestInfoCard.phoneNumber.text = "8${request.clientInfo?.phone}"
+        requestInfoCard.addressTextView.text = request.address
+        requestInfoCard.descriptionTextView.text = request.description
+        if (request.addressDetails.isNullOrBlank()) {
             requestInfoCard.addressDetailsTextView.visibility = View.GONE
         } else {
             requestInfoCard.addressDetailsTextView.visibility = View.VISIBLE
-            requestInfoCard.addressDetailsTextView.text = request.requestInfo.addressDetails
+            requestInfoCard.addressDetailsTextView.text = request.addressDetails
         }
         requestInfoCard.callButton.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:8${request.clientResponseModel.phone}")))
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:8${request.clientInfo?.phone}")))
         }
         requestInfoCard.buildRouteButton.setOnClickListener {
             startActivity(
                 Intent.createChooser(
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("geo:0,0?q=${request.requestInfo.getCoordinates()?.latitude},${request.requestInfo.getCoordinates()?.longitude}(${request.requestInfo.address})")
+                        Uri.parse("geo:0,0?q=${request.getCoordinates().latitude},${request.getCoordinates().longitude}(${request.address})")
                     ), getString(R.string.map_chooser_title)
                 )
             )
         }
-        when (request.requestInfo.status) {
+        when (request.status) {
             RequestStatus.NewRequest -> {
                 requestInfoCard.requestActionButton.background.setTint(
                     ContextCompat.getColor(
@@ -296,7 +296,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback {
                 requestInfoCard.requestActionButton.setOnClickListener { presenter.onAcceptRequest(request) }
                 requestInfoCard.openRequestImageButton.setOnClickListener {
                     hideRequestBottomCard()
-                    startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
+                    startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
                 }
             }
             RequestStatus.InWork -> {
@@ -323,7 +323,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback {
                 )
                 requestInfoCard.requestActionButton.text = getString(R.string.cancel_request_button_label)
                 requestInfoCard.openRequestImageButton.setOnClickListener {
-                    startActivity(intentFor<RequestReportActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
+                    startActivity(intentFor<RequestReportActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
                 }
             }
             else -> {
@@ -345,11 +345,11 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback {
     }
 
     override fun showRequestDetails(request: Request) {
-        startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
+        startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
     }
 
     override fun showRequestReportScreen(request: Request) {
-        startActivity(intentFor<RequestReportActivity>(RequestReportActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
+        startActivity(intentFor<RequestReportActivity>(RequestReportActivity.EXTRA_KEY_REQUEST_ID to request.id))
     }
 
     override fun closeScreen() {
@@ -362,8 +362,8 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback {
         requests.onEach {
             boundsBuilder.include(
                 LatLng(
-                    it.requestInfo.getCoordinates().latitude,
-                    it.requestInfo.getCoordinates().longitude
+                    it.getCoordinates().latitude,
+                    it.getCoordinates().longitude
                 )
             )
         }

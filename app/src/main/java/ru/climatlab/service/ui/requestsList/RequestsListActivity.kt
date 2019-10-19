@@ -71,7 +71,7 @@ class RequestsListActivity : BaseActivity(), RequestsListView, NavigationView.On
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
         navView.getHeaderView(0).navHeaderUserName.text = PreferencesRepository.getCurrentUserInfo()?.getFullName()
-        navView.getHeaderView(0).navHeaderTitle.text = "${getString(R.string.app_title)} (v.${BuildConfig.VERSION_CODE}"
+        navView.getHeaderView(0).navHeaderTitle.text = "${getString(R.string.app_title)} (v.${BuildConfig.VERSION_CODE})"
         handleIntent(intent)
     }
 
@@ -175,11 +175,11 @@ class RequestsListActivity : BaseActivity(), RequestsListView, NavigationView.On
     }
 
     override fun showRequestDetailsScreen(request: Request) {
-        startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
+        startActivity(intentFor<RequestDetailsActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
     }
 
     override fun showRequestReportScreen(request: Request) {
-        startActivity(intentFor<RequestReportActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.requestInfo.id))
+        startActivity(intentFor<RequestReportActivity>(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID to request.id))
     }
 
     override fun showLoginScreen() {
