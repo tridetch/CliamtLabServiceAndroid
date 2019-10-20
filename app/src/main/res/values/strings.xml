@@ -95,6 +95,7 @@
     <string name="background_work">Приложение работает в фоновом режиме</string>
     <string name="web_chooser_title">Открыть с помощью</string>
     <string name="take_photo">Добавить фото</string>
+    <string name="add_file">Добавить файл</string>
     <string name="empty">Отсутствует</string>
 
     <!--RequestType names-->

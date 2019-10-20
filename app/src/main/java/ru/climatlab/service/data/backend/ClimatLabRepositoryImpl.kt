@@ -41,13 +41,13 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
 
     override fun sendRequestReport(
         requestReport: RequestReport,
-        resultPhotos: MutableList<PhotoOfWork>
+        resultPhotos: MutableList<SelectedFile>
     ): Completable {
         return ClimatLabApiClient.climatLabService.sendRequestReport(requestReport = requestReport)
             .andThen(sendPhotos(resultPhotos))
     }
 
-    private fun sendPhotos(resultPhotos: MutableList<PhotoOfWork>): Completable {
+    private fun sendPhotos(resultPhotos: MutableList<SelectedFile>): Completable {
         return Observable.fromIterable(resultPhotos).flatMapCompletable { ClimatLabApiClient.climatLabService.sendPhoto(it) }
     }
 

@@ -1,6 +1,7 @@
 package ru.climatlab.service.ui.requestReport
 
 import android.net.Uri
+import ru.climatlab.service.data.model.SelectedFile
 import ru.climatlab.service.ui.BaseMvpView
 
 interface RequestReportView : BaseMvpView {
@@ -12,4 +13,7 @@ interface RequestReportView : BaseMvpView {
     fun setupPhoto(photos: MutableList<Uri>)
     fun onPhotoAdded()
     fun onPhotoRemoved(position: Int)
+    fun setupFiles(files: MutableList<SelectedFile>)
+    fun onFileAdded()
+    fun onFileRemoved(position: Int)
 }

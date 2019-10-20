@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#D32F2F</color>
     <color name="colorAccent">#42A5F5</color>
 
-    <color name="iconColor">#4D000000</color>
+    <color name="iconColor">#B2000000</color>
 
     <!--Pix image picker theme-->
     <color name="colorPrimaryPix">@color/colorPrimaryDark</color>

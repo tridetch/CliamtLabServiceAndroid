@@ -4,10 +4,10 @@ import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
-import ru.climatlab.service.data.model.PhotoOfWork
 import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.data.model.RequestReport
 import ru.climatlab.service.data.model.RequestType
+import ru.climatlab.service.data.model.SelectedFile
 import ru.climatlab.service.ui.BasePresenter
 import java.util.*
 
@@ -16,8 +16,9 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
 
     private lateinit var request: Request
     private var requestReport = RequestReport()
-    private val resultPhotos: MutableList<PhotoOfWork> = mutableListOf()
+    private val resultPhotos: MutableList<SelectedFile> = mutableListOf()
     private var photoUriList: MutableList<Uri> = mutableListOf()
+    private val files: MutableList<SelectedFile> = mutableListOf()
 
     fun onAttach(requestId: String) {
         val cachedRequest = ClimatLabRepositoryProvider.instance.getRequest(requestId)
@@ -28,6 +29,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             requestReport = requestReport.copy(requestId = cachedRequest.id)
         }
         viewState.setupPhoto(photoUriList)
+        viewState.setupFiles(files)
     }
 
     fun onReportConfirm(
@@ -86,7 +88,13 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
 
     fun onTakePhoto(photoUri: Uri, base64Image: String) {
         photoUriList.add(photoUri)
-        resultPhotos.add(PhotoOfWork(file_name = "${photoUri.lastPathSegment}_id_${request.id}",content = base64Image))
+        resultPhotos.add(
+            SelectedFile(
+                request_id = request.id,
+                file_name = photoUri.lastPathSegment,
+                content = base64Image
+            )
+        )
         viewState.onPhotoAdded()
     }
 
@@ -94,6 +102,22 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         photoUriList.removeAt(position)
         resultPhotos.removeAt(position)
         viewState.onPhotoRemoved(position)
+    }
+
+    fun onFileSelected(convertImageFileToBase64: String, filename: String) {
+        files.add(
+            SelectedFile(
+                request_id = request.id,
+                file_name = filename,
+                content = convertImageFileToBase64
+            )
+        )
+        viewState.onFileAdded()
+    }
+
+    fun onFileRemoved(position: Int) {
+        files.removeAt(position)
+        viewState.onFileRemoved(position)
     }
 
 }
