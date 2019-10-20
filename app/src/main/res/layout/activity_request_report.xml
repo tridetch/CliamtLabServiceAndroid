@@ -460,6 +460,17 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/photosList" />
 
+        <TextView
+            android:id="@+id/filesTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/filesTitle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addPhotoButton" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fileList"
             android:layout_width="0dp"
@@ -475,7 +486,7 @@
             app:layout_constraintBottom_toTopOf="@id/addFileButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addPhotoButton" />
+            app:layout_constraintTop_toBottomOf="@id/filesTitle" />
 
         <Button
             android:id="@+id/addFileButton"
