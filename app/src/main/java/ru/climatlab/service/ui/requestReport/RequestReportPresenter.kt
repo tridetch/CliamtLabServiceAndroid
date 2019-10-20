@@ -76,7 +76,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             requestType = requestType
         )
         ClimatLabRepositoryProvider.instance
-            .sendRequestReport(requestReport, resultPhotos)
+            .sendRequestReport(requestReport, resultPhotos.plus(files))
             .addSchedulers()
             .doOnSubscribe { viewState.showLoading(true) }
             .doFinally { viewState.showLoading(false) }

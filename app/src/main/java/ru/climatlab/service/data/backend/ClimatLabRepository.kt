@@ -10,7 +10,7 @@ interface ClimatLabRepository {
     fun getRequest(requestId: String): Request?
     fun sendRequestReport(
         requestReport: RequestReport,
-        resultPhotos: MutableList<SelectedFile>
+        resultPhotos: List<SelectedFile>
     ): Completable
     fun logOut():Completable
     fun acceptRequest(request: Request): Completable
