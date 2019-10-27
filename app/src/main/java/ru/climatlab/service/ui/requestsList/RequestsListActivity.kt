@@ -71,7 +71,7 @@ class RequestsListActivity : BaseActivity(), RequestsListView, NavigationView.On
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
         navView.getHeaderView(0).navHeaderUserName.text = PreferencesRepository.getCurrentUserInfo()?.getFullName()
-        navView.getHeaderView(0).navHeaderTitle.text = "${getString(R.string.app_title)} (v.${BuildConfig.VERSION_CODE})"
+        navView.getHeaderView(0).navHeaderTitle.text = "${getString(R.string.app_title)} (v.${BuildConfig.VERSION_NAME})"
         handleIntent(intent)
     }
 

@@ -1,6 +1,7 @@
 package ru.climatlab.service.ui.requestReport
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.ContentUris
 import android.content.Context
 import android.content.DialogInterface
@@ -15,8 +16,11 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.text.format.DateUtils
+import android.text.format.Formatter
 import android.util.Base64
 import android.util.Base64OutputStream
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -25,12 +29,15 @@ import com.fxn.pix.Options
 import com.fxn.pix.Pix
 import com.fxn.utility.ImageQuality
 import com.fxn.utility.PermUtil
+import com.github.tcking.giraffecompressor.GiraffeCompressor
 import kotlinx.android.synthetic.main.activity_request_report.*
+import org.jetbrains.anko.toast
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.data.model.SelectedFile
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
+import rx.Observer
 import java.io.*
 
 
@@ -40,7 +47,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
     }
 
     private val REQUEST_CODE_RESULT_PHOTO = 1
-    private val REQUEST_CODE_RESULT_DOC = 2
+    private val REQUEST_CODE_RESULT_FILE = 2
 
     @InjectPresenter
     lateinit var presenter: RequestReportPresenter
@@ -48,12 +55,13 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
     private lateinit var photoAdapter: PhotoAdapter
     private lateinit var fileAdapter: FileAdapter
 
+    private lateinit var progressDialog: ProgressDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request_report)
 
         presenter.onAttach(intent.getStringExtra(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID))
-
 
         confirmButton.setOnClickListener {
             presenter.onReportConfirm(
@@ -116,15 +124,20 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "*/*"
             intent.addCategory(Intent.CATEGORY_OPENABLE)
-            //intent.putExtra("browseCoa", itemToBrowse);
-            //Intent chooser = Intent.createChooser(intent, "Select a File to Upload");
             try {
-                //startActivityForResult(chooser, FILE_SELECT_CODE);
-                startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), REQUEST_CODE_RESULT_DOC)
+                startActivityForResult(
+                    Intent.createChooser(intent, "Select a File to Upload"),
+                    REQUEST_CODE_RESULT_FILE
+                )
             } catch (ex: Exception) {
                 println("browseClick :$ex")//android.content.ActivityNotFoundException ex
             }
 
+        }
+
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Обработка видео файла, ожидайте...")
+            isIndeterminate = true
         }
     }
 
@@ -146,18 +159,9 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                     }
                 }
             }
-            REQUEST_CODE_RESULT_DOC -> {
+            REQUEST_CODE_RESULT_FILE -> {
                 try {
-                    val uri = data?.data?.let { uri: Uri ->
-                        /*
-                                            if (filesize >= FILE_SIZE_LIMIT) {
-                                                Toast.makeText(
-                                                    this,
-                                                    "The selected file is too large. Selet a new file with size less than 2mb",
-                                                    Toast.LENGTH_LONG
-                                                ).show()
-                                            } else {
-                        */
+                    data?.data?.let { uri: Uri ->
                         val mimeType = contentResolver.getType(uri)
                         val filename: String
                         if (mimeType == null) {
@@ -169,30 +173,67 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                                 filename = file.getName()
                             }
                         } else {
-                            val returnUri = data.getData()
+                            val returnUri = data.data
                             val returnCursor = contentResolver.query(returnUri, null, null, null, null)
                             val nameIndex = returnCursor!!.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                            val sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE)
                             returnCursor.moveToFirst()
                             filename = returnCursor.getString(nameIndex)
-                            val size = java.lang.Long.toString(returnCursor.getLong(sizeIndex))
                         }
                         val sourcePath = getExternalFilesDir(null)!!.toString()
                         try {
-                            val fileSave = File(sourcePath + "/" + filename)
+                            val fileSave = File("$sourcePath/$filename")
+                            val fileCompressed = File("$sourcePath/c_$filename")
                             copyFileStream(fileSave, uri, this)
-                            presenter.onFileSelected(convertImageFileToBase64(fileSave), filename)
+                            if (mimeType?.startsWith("video") == true) {
+                                compressVideo(fileSave, fileCompressed)
+                            } else {
+                                presenter.onFileSelected(convertImageFileToBase64(fileSave), filename)
+                            }
                         } catch (e: Exception) {
+                            toast("Не удалось прикрепить файл")
                             e.printStackTrace()
                         }
-//                    }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-
             }
         }
+    }
+
+
+    private fun compressVideo(inputFile: File, outputFile: File) {
+        GiraffeCompressor.create()
+            .input(inputFile)
+            .output(outputFile)
+            .bitRate(500000)
+            .ready()
+            .doOnSubscribe {
+                Log.d("video_compressor", "Start")
+                progressDialog.show()
+            }
+            .observeOn(rx.android.schedulers.AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<GiraffeCompressor.Result?> {
+                override fun onError(e: Throwable?) {
+                    Log.d("video_compressor", e?.message)
+                }
+
+                override fun onNext(s: GiraffeCompressor.Result?) {
+                    var msg = String.format(
+                        "compress completed \ntake time:%s \nout put file:%s",
+                        DateUtils.formatElapsedTime(s!!.costTime / 1000),
+                        s?.output
+                    )
+                    msg = msg + "\ninput file size:" + Formatter.formatFileSize(application, inputFile.length())
+                    msg = msg + "\nout file size:" + Formatter.formatFileSize(application, File(s?.output).length())
+                    Log.d("video_compressor", msg)
+                }
+
+                override fun onCompleted() {
+                    progressDialog.hide()
+                    presenter.onFileSelected(convertImageFileToBase64(outputFile), outputFile.name)
+                }
+            })
     }
 
     fun copyFileStream(dest: File, uri: Uri, context: Context) {
