@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 data class SelectedFile(
     @SerializedName("id_request")val request_id: String,
     @SerializedName("file_name")val file_name: String,
-    @SerializedName("file")val content: String
+    @SerializedName("file_string")val content: String
 )
