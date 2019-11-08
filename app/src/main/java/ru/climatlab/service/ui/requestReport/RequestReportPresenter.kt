@@ -9,6 +9,7 @@ import ru.climatlab.service.data.model.RequestReport
 import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.data.model.SelectedFile
 import ru.climatlab.service.ui.BasePresenter
+import java.io.File
 import java.util.*
 
 @InjectViewState
@@ -86,13 +87,27 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             }, this::handleError)
     }
 
+/*
     fun onTakePhoto(photoUri: Uri, base64Image: String) {
         photoUriList.add(photoUri)
         resultPhotos.add(
             SelectedFile(
                 request_id = request.id,
                 file_name = photoUri.lastPathSegment,
-                content = base64Image
+                file = base64Image
+            )
+        )
+        viewState.onPhotoAdded()
+    }
+*/
+
+    fun onTakePhotoFile(photoUri: Uri, file: File) {
+        photoUriList.add(photoUri)
+        resultPhotos.add(
+            SelectedFile(
+                request_id = request.id,
+                file_name = photoUri.lastPathSegment,
+                file = file
             )
         )
         viewState.onPhotoAdded()
@@ -104,12 +119,12 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         viewState.onPhotoRemoved(position)
     }
 
-    fun onFileSelected(convertImageFileToBase64: String, filename: String) {
+    fun onFileSelected(file: File, filename: String) {
         files.add(
             SelectedFile(
                 request_id = request.id,
                 file_name = filename,
-                content = convertImageFileToBase64
+                file = file
             )
         )
         viewState.onFileAdded()

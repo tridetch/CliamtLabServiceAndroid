@@ -2,10 +2,9 @@ package ru.climatlab.service.data.backend
 
 import io.reactivex.Completable
 import io.reactivex.Single
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.*
 import ru.climatlab.service.data.model.*
 
 /**
@@ -36,7 +35,8 @@ interface ClimatLabApiService {
     @POST("/api/geo.php")
     fun sendUserLocation(@Body userLocation: MapCoordinates): Completable
 
+    @Multipart
     @POST("/api/upload_file.php")
-    fun sendPhoto(@Body photo: SelectedFile): Completable
+    fun sendPhoto(@Part("id_request") id: RequestBody, @Part("file_name") name: RequestBody, @Part("file") file: RequestBody): Completable
 
 }

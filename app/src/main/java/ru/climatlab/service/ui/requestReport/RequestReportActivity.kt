@@ -148,14 +148,32 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 if (resultCode == Activity.RESULT_OK) {
                     val photos = data!!.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                     photos.forEach {
-                        val bm = BitmapFactory.decodeFile(it)
-                        val baos = ByteArrayOutputStream()
-                        bm.compress(Bitmap.CompressFormat.JPEG, 80, baos) //bm is the bitmap object
-                        val b = baos.toByteArray()
-                        presenter.onTakePhoto(
-                            Uri.parse(it),
-                            "data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}"
-                        )
+                        try {
+                            val bm = BitmapFactory.decodeFile(it)
+                            val baos = ByteArrayOutputStream()
+                            bm.compress(Bitmap.CompressFormat.JPEG, 80, baos) //bm is the bitmap object
+                            val b = baos.toByteArray()
+/*
+                                                presenter.onTakePhotoFile(
+                                                    Uri.parse(it),
+                                                    "data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}"
+                                                )
+*/
+                            val uri = Uri.parse(it)
+                            val sourcePath = getExternalFilesDir(null)!!.toString()
+                            val fileSave = File("$sourcePath/${uri.lastPathSegment}")
+                            val bos = BufferedOutputStream(FileOutputStream(fileSave))
+                            bos.write(b)
+                            bos.flush()
+                            bos.close()
+                            presenter.onTakePhotoFile(
+                                uri,
+                                fileSave
+                            )
+                        } catch (e: Exception) {
+                            toast("Не удалось прикрепить файл")
+                            e.printStackTrace()
+                        }
                     }
                 }
             }
@@ -167,10 +185,10 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                         if (mimeType == null) {
                             val path = getPath(this, uri)
                             if (path == null) {
-                                filename = uri?.lastPathSegment
+                                filename = uri.lastPathSegment
                             } else {
                                 val file = File(path)
-                                filename = file.getName()
+                                filename = file.name
                             }
                         } else {
                             val returnUri = data.data
@@ -187,7 +205,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                             if (mimeType?.startsWith("video") == true) {
                                 compressVideo(fileSave, fileCompressed)
                             } else {
-                                presenter.onFileSelected(convertImageFileToBase64(fileSave), filename)
+                                presenter.onFileSelected(fileSave, filename)
                             }
                         } catch (e: Exception) {
                             toast("Не удалось прикрепить файл")
@@ -222,16 +240,16 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                     var msg = String.format(
                         "compress completed \ntake time:%s \nout put file:%s",
                         DateUtils.formatElapsedTime(s!!.costTime / 1000),
-                        s?.output
+                        s.output
                     )
                     msg = msg + "\ninput file size:" + Formatter.formatFileSize(application, inputFile.length())
-                    msg = msg + "\nout file size:" + Formatter.formatFileSize(application, File(s?.output).length())
+                    msg = msg + "\nout file size:" + Formatter.formatFileSize(application, File(s.output).length())
                     Log.d("video_compressor", msg)
                 }
 
                 override fun onCompleted() {
                     progressDialog.hide()
-                    presenter.onFileSelected(convertImageFileToBase64(outputFile), outputFile.name)
+                    presenter.onFileSelected(outputFile, outputFile.name)
                 }
             })
     }
@@ -240,7 +258,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
         var ins: InputStream? = null
         var os: OutputStream? = null
         try {
-            ins = context.getContentResolver().openInputStream(uri)
+            ins = context.contentResolver.openInputStream(uri)
             os = FileOutputStream(dest)
             val buffer: ByteArray? = ByteArray(1024)
             var length: Int = ins.read(buffer)
@@ -316,10 +334,10 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
         val column = "_data"
         val projection = arrayOf(column)
         try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null)
-            if (cursor != null && cursor!!.moveToFirst()) {
-                val index = cursor!!.getColumnIndexOrThrow(column)
-                return cursor!!.getString(index)
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor != null && cursor.moveToFirst()) {
+                val index = cursor.getColumnIndexOrThrow(column)
+                return cursor.getString(index)
             }
         } finally {
             if (cursor != null) {
