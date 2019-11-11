@@ -37,6 +37,6 @@ interface ClimatLabApiService {
 
     @Multipart
     @POST("/api/upload_file.php")
-    fun sendPhoto(@Part("id_request") id: RequestBody, @Part("file_name") name: RequestBody, @Part("file") file: RequestBody): Completable
+    fun sendPhoto(@Part("id_request") id: RequestBody, @Part file: MultipartBody.Part): Completable
 
 }

@@ -4,7 +4,6 @@ import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import ru.climatlab.service.addSchedulers
@@ -52,10 +51,10 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
 
     private fun sendPhotos(resultPhotos: List<SelectedFile>): Completable {
         return Observable.fromIterable(resultPhotos).flatMapCompletable {
+            val requestFile = RequestBody.create(MultipartBody.FORM, it.file)
             ClimatLabApiClient.climatLabService.sendPhoto(
-                RequestBody.create(MediaType.parse("text/plain"), it.request_id),
-                RequestBody.create(MediaType.parse("text/plain"), it.file_name),
-                RequestBody.create(MediaType.parse("multipart/form-data"), it.file)
+                RequestBody.create(MultipartBody.FORM, it.request_id),
+                MultipartBody.Part.createFormData("userfile", it.file_name, requestFile)
             )
         }
     }
