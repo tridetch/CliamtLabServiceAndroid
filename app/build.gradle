@@ -18,8 +18,8 @@ android {
         applicationId "ru.climatlab.service"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 25
-        versionName "0.18"
+        versionCode 26
+        versionName "0.19"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -71,7 +71,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
-    implementation 'com.github.tcking:giraffecompressor:0.1.4'
+    implementation 'com.iceteck.silicompressorr:silicompressor:2.2.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

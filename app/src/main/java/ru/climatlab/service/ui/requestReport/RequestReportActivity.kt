@@ -16,11 +16,8 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.OpenableColumns
-import android.text.format.DateUtils
-import android.text.format.Formatter
 import android.util.Base64
 import android.util.Base64OutputStream
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -29,15 +26,16 @@ import com.fxn.pix.Options
 import com.fxn.pix.Pix
 import com.fxn.utility.ImageQuality
 import com.fxn.utility.PermUtil
-import com.github.tcking.giraffecompressor.GiraffeCompressor
+import com.iceteck.silicompressorr.SiliCompressor
+import io.reactivex.Single
 import kotlinx.android.synthetic.main.activity_request_report.*
 import org.jetbrains.anko.toast
 import ru.climatlab.service.R
+import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.data.model.SelectedFile
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
-import rx.Observer
 import java.io.*
 
 
@@ -219,39 +217,19 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
         }
     }
 
-
     private fun compressVideo(inputFile: File, outputFile: File) {
-        GiraffeCompressor.create()
-            .input(inputFile)
-            .output(outputFile)
-            .bitRate(500000)
-            .ready()
-            .doOnSubscribe {
-                Log.d("video_compressor", "Start")
-                progressDialog.show()
-            }
-            .observeOn(rx.android.schedulers.AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<GiraffeCompressor.Result?> {
-                override fun onError(e: Throwable?) {
-                    Log.d("video_compressor", e?.message)
-                }
-
-                override fun onNext(s: GiraffeCompressor.Result?) {
-                    var msg = String.format(
-                        "compress completed \ntake time:%s \nout put file:%s",
-                        DateUtils.formatElapsedTime(s!!.costTime / 1000),
-                        s.output
-                    )
-                    msg = msg + "\ninput file size:" + Formatter.formatFileSize(application, inputFile.length())
-                    msg = msg + "\nout file size:" + Formatter.formatFileSize(application, File(s.output).length())
-                    Log.d("video_compressor", msg)
-                }
-
-                override fun onCompleted() {
-                    progressDialog.hide()
-                    presenter.onFileSelected(outputFile, outputFile.name)
-                }
-            })
+        Single.fromCallable {
+            File(SiliCompressor.with(this).compressVideo(inputFile.path, outputFile.parent))
+        }
+            .addSchedulers()
+            .doOnSubscribe { progressDialog.show() }
+            .doFinally { progressDialog.hide() }
+            .subscribe({ t: File ->
+                presenter.onFileSelected(
+                    t,
+                    t.name
+                )
+            },{ toast("Не удалось прикрепить файл") })
     }
 
     fun copyFileStream(dest: File, uri: Uri, context: Context) {
