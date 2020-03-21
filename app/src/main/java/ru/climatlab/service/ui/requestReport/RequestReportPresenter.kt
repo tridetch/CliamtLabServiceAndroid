@@ -3,11 +3,9 @@ package ru.climatlab.service.ui.requestReport
 import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
+import ru.climatlab.service.data.PreferencesRepository
 import ru.climatlab.service.data.backend.ClimatLabRepositoryProvider
-import ru.climatlab.service.data.model.Request
-import ru.climatlab.service.data.model.RequestReport
-import ru.climatlab.service.data.model.RequestType
-import ru.climatlab.service.data.model.SelectedFile
+import ru.climatlab.service.data.model.*
 import ru.climatlab.service.ui.BasePresenter
 import java.io.File
 import java.util.*
@@ -20,6 +18,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
     private val resultPhotos: MutableList<SelectedFile> = mutableListOf()
     private var photoUriList: MutableList<Uri> = mutableListOf()
     private val files: MutableList<SelectedFile> = mutableListOf()
+    private val userInfo: CurrentUserResponse? = PreferencesRepository.getCurrentUserInfo()
 
     fun onAttach(requestId: String) {
         val cachedRequest = ClimatLabRepositoryProvider.instance.getRequest(requestId)
@@ -49,7 +48,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         co2: String = requestReport.co2,
         recommendations: String = requestReport.recommendations,
         performedWork: String = requestReport.performedWork,
-        amountToPay: String = requestReport.amountToPay,
+        amountToPay: String = requestReport.amountToPay,//change to double
         amountForTheRoad: String = requestReport.amountForTheRoad,
         amountOfPart: String = requestReport.amountOfPart,
         requestType: RequestType = requestReport.requestType
@@ -83,7 +82,16 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             .doFinally { viewState.showLoading(false) }
             .subscribe({
                 viewState.showMessage(RequestReportView.Message.ReportSent)
-                viewState.closeScreen()
+                viewState.acceptPayment(
+                    PaymentRequest(
+                        amount = amountToPay.toDouble(),
+                        login = userInfo?.login2can ?: "",
+                        password = userInfo?.password2can ?: "",
+                        description = request.getPaymentDescription(),
+                        receiptEmail = request?.clientInfo?.email?:""
+                    )
+                )
+//                viewState.closeScreen()
             }, this::handleError)
     }
 
@@ -129,6 +137,10 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         )
         viewState.onFileAdded()
     }
+
+    private fun Request.getPaymentDescription() =
+        """Заявка № ${request.id}""".trimMargin()
+
 
     fun onFileRemoved(position: Int) {
         files.removeAt(position)

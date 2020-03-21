@@ -32,6 +32,7 @@ import kotlinx.android.synthetic.main.activity_request_report.*
 import org.jetbrains.anko.toast
 import ru.climatlab.service.R
 import ru.climatlab.service.addSchedulers
+import ru.climatlab.service.data.model.PaymentRequest
 import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.data.model.SelectedFile
 import ru.climatlab.service.ui.BaseActivity
@@ -401,5 +402,9 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
 
     override fun showMessage(reportSent: RequestReportView.Message) {
         Toast.makeText(this, R.string.request_report_successfully_sent_mwssage, Toast.LENGTH_LONG).show()
+    }
+
+    override fun acceptPayment(paymentRequest: PaymentRequest) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

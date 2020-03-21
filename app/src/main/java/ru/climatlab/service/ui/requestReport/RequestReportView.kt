@@ -1,6 +1,7 @@
 package ru.climatlab.service.ui.requestReport
 
 import android.net.Uri
+import ru.climatlab.service.data.model.PaymentRequest
 import ru.climatlab.service.data.model.SelectedFile
 import ru.climatlab.service.ui.BaseMvpView
 
@@ -16,4 +17,5 @@ interface RequestReportView : BaseMvpView {
     fun setupFiles(files: MutableList<SelectedFile>)
     fun onFileAdded()
     fun onFileRemoved(position: Int)
+    fun acceptPayment(paymentRequest: PaymentRequest)
 }

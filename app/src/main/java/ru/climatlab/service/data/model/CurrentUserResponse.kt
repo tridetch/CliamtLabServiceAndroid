@@ -9,7 +9,9 @@ data class CurrentUserResponse(
     @SerializedName("name1") val surname: String,
     @SerializedName("name2") val middleName: String,
     @SerializedName("city") val city: String,
-    @SerializedName("phone") val phone: String
+    @SerializedName("phone") val phone: String,
+    @SerializedName("login2can") val login2can: String,
+    @SerializedName("password2can") val password2can: String
 ) {
     fun getFullName(): String {
         return "$surname $name $middleName"
