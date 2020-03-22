@@ -116,6 +116,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
                 request_id = request.id,
                 file_name = photoUri.lastPathSegment,
                 file = file
+            //todo get location
             )
         )
         viewState.onPhotoAdded()
