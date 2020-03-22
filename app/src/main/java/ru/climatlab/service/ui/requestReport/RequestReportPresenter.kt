@@ -88,7 +88,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
                         login = userInfo?.login2can ?: "",
                         password = userInfo?.password2can ?: "",
                         description = request.getPaymentDescription(),
-                        receiptEmail = request?.clientInfo?.email?:""
+                        receiptEmail = request?.clientInfo?.email ?: ""
                     )
                 )
 //                viewState.closeScreen()
@@ -139,7 +139,8 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
     }
 
     private fun Request.getPaymentDescription() =
-        """Заявка № ${request.id}""".trimMargin()
+        """Договор № ${request.clientInfo?.contractNumber}
+            |Заявка № ${request.id}""".trimMargin()
 
 
     fun onFileRemoved(position: Int) {

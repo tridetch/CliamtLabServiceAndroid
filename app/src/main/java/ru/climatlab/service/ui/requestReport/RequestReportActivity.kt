@@ -47,6 +47,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
 
     private val REQUEST_CODE_RESULT_PHOTO = 1
     private val REQUEST_CODE_RESULT_FILE = 2
+    private val REQUEST_CODE_ACCEPT_PAYMENT = 3
 
     @InjectPresenter
     lateinit var presenter: RequestReportPresenter
@@ -150,7 +151,11 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                         try {
                             val bm = BitmapFactory.decodeFile(it)
                             val baos = ByteArrayOutputStream()
-                            bm.compress(Bitmap.CompressFormat.JPEG, 80, baos) //bm is the bitmap object
+                            bm.compress(
+                                Bitmap.CompressFormat.JPEG,
+                                80,
+                                baos
+                            ) //bm is the bitmap object
                             val b = baos.toByteArray()
 /*
                                                 presenter.onTakePhotoFile(
@@ -191,8 +196,10 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                             }
                         } else {
                             val returnUri = data.data
-                            val returnCursor = contentResolver.query(returnUri, null, null, null, null)
-                            val nameIndex = returnCursor!!.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                            val returnCursor =
+                                contentResolver.query(returnUri, null, null, null, null)
+                            val nameIndex =
+                                returnCursor!!.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                             returnCursor.moveToFirst()
                             filename = returnCursor.getString(nameIndex)
                         }
@@ -215,6 +222,14 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                     e.printStackTrace()
                 }
             }
+            REQUEST_CODE_ACCEPT_PAYMENT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    toast(R.string.accept_payment_success)
+                } else {
+                    toast(R.string.accept_payment_failed)
+                }
+                closeScreen()
+            }
         }
     }
 
@@ -230,7 +245,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                     t,
                     t.name
                 )
-            },{ toast("Не удалось прикрепить файл") })
+            }, { toast("Не удалось прикрепить файл") })
     }
 
     fun copyFileStream(dest: File, uri: Uri, context: Context) {
@@ -308,7 +323,12 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
         return null
     }
 
-    fun getDataColumn(context: Context, uri: Uri?, selection: String?, selectionArgs: Array<String>?): String? {
+    fun getDataColumn(
+        context: Context,
+        uri: Uri?,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): String? {
         var cursor: Cursor? = null
         val column = "_data"
         val projection = arrayOf(column)
@@ -385,14 +405,22 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             .show()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Pix.start(this, Options.init().setRequestCode(100))
                 } else {
-                    Toast.makeText(this, "Approve permissions to open Pix ImagePicker", Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        this,
+                        "Approve permissions to open Pix ImagePicker",
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 }
                 return
@@ -401,10 +429,18 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
     }
 
     override fun showMessage(reportSent: RequestReportView.Message) {
-        Toast.makeText(this, R.string.request_report_successfully_sent_mwssage, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, R.string.request_report_successfully_sent_mwssage, Toast.LENGTH_LONG)
+            .show()
     }
 
     override fun acceptPayment(paymentRequest: PaymentRequest) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val intent = Intent("ru.toucan.terminal.acceptpayment").apply {
+            putExtra("Email", paymentRequest.login)
+            putExtra("Password", paymentRequest.password)
+            putExtra("Amount", paymentRequest.amount)
+            putExtra("ReceiptEmail", paymentRequest.receiptEmail)
+            putExtra("Description", paymentRequest.description)
+        }
+        startActivityForResult(intent, REQUEST_CODE_ACCEPT_PAYMENT)
     }
 }

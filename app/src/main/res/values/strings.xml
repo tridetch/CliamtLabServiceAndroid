@@ -98,6 +98,8 @@
     <string name="take_photo">Добавить фото</string>
     <string name="add_file">Добавить файл</string>
     <string name="empty">Отсутствует</string>
+    <string name="accept_payment_success">Оплата успешно произведена</string>
+    <string name="accept_payment_failed">не удалось произвести платеж</string>
 
     <!--RequestType names-->
     <string-array name="request_types_array">

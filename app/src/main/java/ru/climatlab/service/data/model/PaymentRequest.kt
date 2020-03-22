@@ -8,4 +8,3 @@ data class PaymentRequest(
     val receiptEmail: String = "",
     val receiptPhone: String = ""
 )
-
