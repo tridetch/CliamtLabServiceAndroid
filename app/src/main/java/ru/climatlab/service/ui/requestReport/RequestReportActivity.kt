@@ -30,6 +30,7 @@ import com.iceteck.silicompressorr.SiliCompressor
 import io.reactivex.Single
 import kotlinx.android.synthetic.main.activity_request_report.*
 import org.jetbrains.anko.toast
+import ru.climatlab.service.BuildConfig
 import ru.climatlab.service.R
 import ru.climatlab.service.addSchedulers
 import ru.climatlab.service.data.model.PaymentRequest
@@ -102,6 +103,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 presenter.onPhotoRemoved(position)
             }
         })
+
         photosList.adapter = photoAdapter
 
         addPhotoButton.setOnClickListener {
@@ -114,11 +116,13 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
 
             Pix.start(this, options)
         }
+
         fileAdapter = FileAdapter(mutableListOf(), object : FileAdapter.InteractionListener {
             override fun onFileRemove(position: Int) {
                 presenter.onFileRemoved(position)
             }
         })
+
         fileList.adapter = fileAdapter
         addFileButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -441,6 +445,29 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             putExtra("ReceiptEmail", paymentRequest.receiptEmail)
             putExtra("Description", paymentRequest.description)
         }
-        startActivityForResult(intent, REQUEST_CODE_ACCEPT_PAYMENT)
+
+        try {
+            startActivityForResult(intent, REQUEST_CODE_ACCEPT_PAYMENT)
+        } catch (e: Exception) {
+            redirectToInstall2CanApp()
+        }
+    }
+
+    private fun redirectToInstall2CanApp() {
+        try {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)
+                )
+            );
+        } catch (e: Exception) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)
+                )
+            );
+        }
     }
 }
