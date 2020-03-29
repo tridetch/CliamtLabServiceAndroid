@@ -17,14 +17,14 @@ data class Request(
     val latlng: String?,
     val clientInfo: ClientResponseModel?
 ){
-    fun getCoordinates(): MapCoordinates {
-        var mapCoordinates = MapCoordinates(44.055200,  42.982851)
+    fun getCoordinates(): Coordinates {
+        var mapCoordinates = Coordinates(44.055200,  42.982851)
         try {
             val coordinates = latlng?.split(regex = Regex(","), limit = 0)
             val lat = coordinates?.get(0)?.toDouble()
             val lng = coordinates?.get(1)?.toDouble()
             if (lat != null && lng != null) {
-                mapCoordinates = MapCoordinates(lat, lng)
+                mapCoordinates = Coordinates(lat, lng)
             }
         } catch (ignore: Exception) {}
         return mapCoordinates

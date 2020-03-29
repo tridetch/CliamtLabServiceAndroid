@@ -33,7 +33,7 @@ interface ClimatLabApiService {
     fun postNotificationToken(@Body tokenRequestBody: TokenRequestBody): Completable
 
     @POST("/api/geo.php")
-    fun sendUserLocation(@Body userLocation: MapCoordinates): Completable
+    fun sendUserLocation(@Body userLocation: Coordinates): Completable
 
     @Multipart
     @POST("/api/upload_file.php")

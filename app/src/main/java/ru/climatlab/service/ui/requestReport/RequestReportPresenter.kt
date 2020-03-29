@@ -1,5 +1,6 @@
 package ru.climatlab.service.ui.requestReport
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import ru.climatlab.service.addSchedulers
@@ -32,6 +33,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         viewState.setupFiles(files)
     }
 
+    @SuppressLint("CheckResult")
     fun onReportConfirm(
         model: String = requestReport.model,
         brand: String = requestReport.brand,
@@ -88,33 +90,22 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
                         login = userInfo?.login2can ?: "",
                         password = userInfo?.password2can ?: "",
                         description = request.getPaymentDescription(),
-                        receiptEmail = request?.clientInfo?.email ?: ""
+                        receiptEmail = request.clientInfo?.email ?: ""
                     )
                 )
-//                viewState.closeScreen()
             }, this::handleError)
     }
 
-/*
-    fun onTakePhoto(photoUri: Uri, base64Image: String) {
+    fun onTakePhotoFile(
+        photoUri: Uri,
+        file: File,
+        coordinates: Coordinates
+    ) {
         photoUriList.add(photoUri)
         resultPhotos.add(
             SelectedFile(
                 request_id = request.id,
-                file_name = photoUri.lastPathSegment,
-                file = base64Image
-            )
-        )
-        viewState.onPhotoAdded()
-    }
-*/
-
-    fun onTakePhotoFile(photoUri: Uri, file: File) {
-        photoUriList.add(photoUri)
-        resultPhotos.add(
-            SelectedFile(
-                request_id = request.id,
-                file_name = photoUri.lastPathSegment,
+                file_name = photoUri.lastPathSegment?:"",
                 file = file
             //todo get location
             )

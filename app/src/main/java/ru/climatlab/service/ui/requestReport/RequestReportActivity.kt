@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -26,6 +27,7 @@ import com.fxn.pix.Options
 import com.fxn.pix.Pix
 import com.fxn.utility.ImageQuality
 import com.fxn.utility.PermUtil
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.iceteck.silicompressorr.SiliCompressor
 import io.reactivex.Single
 import kotlinx.android.synthetic.main.activity_request_report.*
@@ -33,6 +35,7 @@ import org.jetbrains.anko.toast
 import ru.climatlab.service.BuildConfig
 import ru.climatlab.service.R
 import ru.climatlab.service.addSchedulers
+import ru.climatlab.service.data.model.Coordinates
 import ru.climatlab.service.data.model.PaymentRequest
 import ru.climatlab.service.data.model.RequestType
 import ru.climatlab.service.data.model.SelectedFile
@@ -57,11 +60,13 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
     private lateinit var fileAdapter: FileAdapter
 
     private lateinit var progressDialog: ProgressDialog
+    private lateinit var locationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request_report)
 
+        locationProviderClient = FusedLocationProviderClient(this)
         presenter.onAttach(intent.getStringExtra(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID))
 
         confirmButton.setOnClickListener {
@@ -174,10 +179,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                             bos.write(b)
                             bos.flush()
                             bos.close()
-                            presenter.onTakePhotoFile(
-                                uri,
-                                fileSave
-                            )
+                            requestLocationAndSavePhoto(uri, fileSave)
                         } catch (e: Exception) {
                             toast("Не удалось прикрепить файл")
                             e.printStackTrace()
@@ -229,12 +231,35 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             REQUEST_CODE_ACCEPT_PAYMENT -> {
                 if (resultCode == Activity.RESULT_OK) {
                     toast(R.string.accept_payment_success)
+                    closeScreen()
                 } else {
                     toast(R.string.accept_payment_failed)
                 }
-                closeScreen()
             }
         }
+    }
+
+    private fun requestLocationAndSavePhoto(uri: Uri, fileSave: File) {
+        locationProviderClient.lastLocation
+            .addOnSuccessListener {
+                onCoordinateRequested(uri, fileSave, Coordinates(it.latitude, it.longitude))
+            }
+            .addOnFailureListener {
+                onCoordinateRequested(uri, fileSave, Coordinates())
+            }
+            .addOnCanceledListener { onCoordinateRequested(uri, fileSave, Coordinates()) }
+    }
+
+    private fun onCoordinateRequested(
+        uri: Uri,
+        fileSave: File,
+        coordinates: Coordinates
+    ) {
+        presenter.onTakePhotoFile(
+            uri,
+            fileSave,
+            coordinates
+        )
     }
 
     private fun compressVideo(inputFile: File, outputFile: File) {
@@ -273,7 +298,6 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
     }
 
     fun convertImageFileToBase64(imageFile: File): String {
-
         return FileInputStream(imageFile).use { inputStream ->
             ByteArrayOutputStream().use { outputStream ->
                 Base64OutputStream(outputStream, Base64.DEFAULT).use { base64FilterStream ->

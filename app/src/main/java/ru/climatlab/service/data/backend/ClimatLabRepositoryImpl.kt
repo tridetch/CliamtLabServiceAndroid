@@ -101,7 +101,7 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
     }
 
     override fun sendUserLocation(lat: Double, lng: Double): Completable {
-        return ClimatLabApiClient.climatLabService.sendUserLocation(MapCoordinates(lat, lng))
+        return ClimatLabApiClient.climatLabService.sendUserLocation(Coordinates(lat, lng))
     }
 }
 
