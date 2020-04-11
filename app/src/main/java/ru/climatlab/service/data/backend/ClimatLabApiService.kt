@@ -20,6 +20,9 @@ interface ClimatLabApiService {
     @POST("/api/request.php")
     fun sendRequestReport(@Query("updateRequest") updateRequest: Int = 1, @Body requestReport: RequestReport): Completable
 
+    @POST("/api/payment.php")
+    fun sendPaymentInfo(@Body paymentInfo: PaymentInfo): Completable
+
     @POST("/api/request.php")
     fun acceptRequest(@Query("acceptRequest") acceptRequest: Int = 1, @Body acceptRequestBody: AcceptRequestBody): Completable
 
@@ -37,6 +40,9 @@ interface ClimatLabApiService {
 
     @Multipart
     @POST("/api/upload_file.php")
-    fun sendPhoto(@Part("id_request") id: RequestBody, @Part file: MultipartBody.Part): Completable
+    fun sendPhoto(
+        @Part("id_request") id: RequestBody,
+        @Part("geo") location: RequestBody,
+        @Part file: MultipartBody.Part): Completable
 
 }

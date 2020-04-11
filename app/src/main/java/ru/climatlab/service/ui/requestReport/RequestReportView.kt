@@ -2,12 +2,14 @@ package ru.climatlab.service.ui.requestReport
 
 import android.net.Uri
 import ru.climatlab.service.data.model.PaymentRequest
+import ru.climatlab.service.data.model.Request
 import ru.climatlab.service.data.model.SelectedFile
 import ru.climatlab.service.ui.BaseMvpView
 
 interface RequestReportView : BaseMvpView {
     enum class Message {
-        ReportSent
+        ReportSent,
+        PaymentInfoSent
     }
     fun showRequestNotFoundError()
     fun showMessage(reportSent: Message)
@@ -18,4 +20,5 @@ interface RequestReportView : BaseMvpView {
     fun onFileAdded()
     fun onFileRemoved(position: Int)
     fun acceptPayment(paymentRequest: PaymentRequest)
+    fun setupRequestInfo(request: Request)
 }

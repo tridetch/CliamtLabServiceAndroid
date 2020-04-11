@@ -83,6 +83,7 @@
     <string name="summaryForRoadLabel">Сумма за дорогу</string>
     <string name="summaryForPartsLabel">Стоимость запчастей</string>
     <string name="confirmButtonLabel">Подтвердить</string>
+    <string name="retrySendPaymentInfo">Повторить</string>
     <string name="photosTitle">Фотографии</string>
     <string name="resultTitle">Результат</string>
     <string name="filesTitle">Файлы</string>

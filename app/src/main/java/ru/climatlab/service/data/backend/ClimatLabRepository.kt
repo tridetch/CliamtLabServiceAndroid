@@ -12,6 +12,7 @@ interface ClimatLabRepository {
         requestReport: RequestReport,
         resultPhotos: List<SelectedFile>
     ): Completable
+    fun sendPaymentInfo(paymentInfo: PaymentInfo): Completable
     fun logOut():Completable
     fun acceptRequest(request: Request): Completable
     fun cancelRequest(request: Request, comment: String): Completable

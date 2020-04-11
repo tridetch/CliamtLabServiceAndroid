@@ -7,6 +7,8 @@ data class Request(
     val id: String,
     val date: Long,
     val equipmentId: String,
+    val boilerBrand: String,
+    val boilerModel: String,
     val type: RequestType,
     val office: String,
     val address: String,

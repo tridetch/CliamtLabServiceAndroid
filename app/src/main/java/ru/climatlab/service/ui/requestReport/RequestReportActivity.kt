@@ -10,7 +10,6 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -35,10 +34,7 @@ import org.jetbrains.anko.toast
 import ru.climatlab.service.BuildConfig
 import ru.climatlab.service.R
 import ru.climatlab.service.addSchedulers
-import ru.climatlab.service.data.model.Coordinates
-import ru.climatlab.service.data.model.PaymentRequest
-import ru.climatlab.service.data.model.RequestType
-import ru.climatlab.service.data.model.SelectedFile
+import ru.climatlab.service.data.model.*
 import ru.climatlab.service.ui.BaseActivity
 import ru.climatlab.service.ui.requestDetailsInfo.RequestDetailsActivity
 import java.io.*
@@ -150,6 +146,11 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
         }
     }
 
+    override fun setupRequestInfo(request: Request) {
+        brandEditText.setText(request.boilerBrand)
+        modelEditText.setText(request.boilerModel)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -231,7 +232,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             REQUEST_CODE_ACCEPT_PAYMENT -> {
                 if (resultCode == Activity.RESULT_OK) {
                     toast(R.string.accept_payment_success)
-                    closeScreen()
+                    presenter.onPaymentInfo(data.toPaymentInfo())
                 } else {
                     toast(R.string.accept_payment_failed)
                 }
@@ -462,6 +463,11 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
     }
 
     override fun acceptPayment(paymentRequest: PaymentRequest) {
+        confirmButton.text = getString(R.string.retrySendPaymentInfo)
+        confirmButton.setOnClickListener {
+            presenter.onRetrySendClick()
+        }
+
         val intent = Intent("ru.toucan.terminal.acceptpayment").apply {
             putExtra("Email", paymentRequest.login)
             putExtra("Password", paymentRequest.password)
@@ -482,7 +488,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)
+                    Uri.parse("market://details?id=ru.toucan.terminal")
                 )
             );
         } catch (e: Exception) {
@@ -493,5 +499,43 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 )
             );
         }
+    }
+}
+
+private fun Intent?.toPaymentInfo(): PaymentInfo {
+    return if (this == null) {
+        PaymentInfo()
+    } else {
+        PaymentInfo(
+            transactionId = extras?.getString("TransactionId"),
+            created = extras?.getLong("Created"),
+            createdDT = extras?.getString("CreatedDT"),
+            clientID = extras?.getInt("ClientID"),
+            branchID = extras?.getInt("BranchID"),
+            posID = extras?.getInt("PosID"),
+            amount = extras?.getDouble("Amount"),
+            invoice = extras?.getString("Invoice"),
+            paymentType = extras?.getString("PaymentType"),
+            description = extras?.getString("Description"),
+            extID = extras?.getString("ExtID"),
+            receiptPhone = extras?.getString("ReceiptPhone"),
+            receiptEmail = extras?.getString("ReceiptEmail"),
+            externalPayment = extras?.getString("ExternalPayment"),
+            iin = extras?.getString("IIN"),
+            rrn = extras?.getString("RRN"),
+            approvalCode = extras?.getString("ApprovalCode"),
+            terminalID = extras?.getString("TerminalID"),
+            acquirerTranId = extras?.getString("AcquirerTranId"),
+            pan = extras?.getString("PAN"),
+            fiscalPrinterSN = extras?.getString("FiscalPrinterSN"),
+            fiscalShift = extras?.getString("FiscalShift"),
+            fiscalCryptoVerifCode = extras?.getString("FiscalCryptoVerifCode"),
+            fiscalDocSN = extras?.getString("FiscalDocSN"),
+            fiscalPrinterRegnum = extras?.getString("FiscalPrinterRegnum"),
+            fiscalDocumentNumber = extras?.getString("FiscalDocumentNumber"),
+            fiscalStorageNumber = extras?.getString("FiscalStorageNumber"),
+            fiscalMark = extras?.getString("FiscalMark"),
+            fiscalDatetime = extras?.getString("FiscalDatetime")
+            )
     }
 }

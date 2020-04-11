@@ -49,11 +49,16 @@ class ClimatLabRepositoryImpl : ClimatLabRepository {
             .andThen(sendPhotos(resultPhotos))
     }
 
+    override fun sendPaymentInfo(paymentInfo: PaymentInfo): Completable {
+        return ClimatLabApiClient.climatLabService.sendPaymentInfo(paymentInfo = paymentInfo)
+    }
+
     private fun sendPhotos(resultPhotos: List<SelectedFile>): Completable {
         return Observable.fromIterable(resultPhotos).flatMapCompletable {
             val requestFile = RequestBody.create(MultipartBody.FORM, it.file)
             ClimatLabApiClient.climatLabService.sendPhoto(
                 RequestBody.create(MultipartBody.FORM, it.request_id),
+                RequestBody.create(MultipartBody.FORM, it.location),
                 MultipartBody.Part.createFormData("userfile", it.file_name, requestFile)
             )
         }
@@ -111,6 +116,8 @@ private fun RequestResponseModel.mapToRequest(): Request {
         comment = comment ?: "",
         date = date,
         equipmentId = equipmentId ?: "",
+        boilerBrand = boilerBrand ?: "",
+        boilerModel = boilerModel ?: "",
         status = status ?: RequestStatus.Cancelled,
         type = type ?: RequestType.WarrantyRepair,
         office = office ?: "",

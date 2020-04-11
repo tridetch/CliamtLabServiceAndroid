@@ -16,6 +16,8 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
 
     private lateinit var request: Request
     private var requestReport = RequestReport()
+    private var paymentRequest: PaymentRequest? = null
+    private var paymentInfo: PaymentInfo? = null
     private val resultPhotos: MutableList<SelectedFile> = mutableListOf()
     private var photoUriList: MutableList<Uri> = mutableListOf()
     private val files: MutableList<SelectedFile> = mutableListOf()
@@ -29,6 +31,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             request = cachedRequest
             requestReport = requestReport.copy(requestId = cachedRequest.id)
         }
+        viewState.setupRequestInfo(request)
         viewState.setupPhoto(photoUriList)
         viewState.setupFiles(files)
     }
@@ -77,6 +80,17 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             amountOfPart = amountOfPart,
             requestType = requestType
         )
+        paymentRequest = PaymentRequest(
+            amount = amountToPay.toDouble(),
+            login = userInfo?.login2can ?: "",
+            password = userInfo?.password2can ?: "",
+            description = request.getPaymentDescription(),
+            receiptEmail = request.clientInfo?.email ?: ""
+        )
+        sendRequest()
+    }
+
+    private fun sendRequest() {
         ClimatLabRepositoryProvider.instance
             .sendRequestReport(requestReport, resultPhotos.plus(files))
             .addSchedulers()
@@ -84,15 +98,9 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             .doFinally { viewState.showLoading(false) }
             .subscribe({
                 viewState.showMessage(RequestReportView.Message.ReportSent)
-                viewState.acceptPayment(
-                    PaymentRequest(
-                        amount = amountToPay.toDouble(),
-                        login = userInfo?.login2can ?: "",
-                        password = userInfo?.password2can ?: "",
-                        description = request.getPaymentDescription(),
-                        receiptEmail = request.clientInfo?.email ?: ""
-                    )
-                )
+                paymentRequest?.let {
+                    viewState.acceptPayment(it)
+                }
             }, this::handleError)
     }
 
@@ -105,9 +113,9 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         resultPhotos.add(
             SelectedFile(
                 request_id = request.id,
-                file_name = photoUri.lastPathSegment?:"",
-                file = file
-            //todo get location
+                file_name = photoUri.lastPathSegment ?: "",
+                file = file,
+                location = coordinates.toString()
             )
         )
         viewState.onPhotoAdded()
@@ -138,6 +146,30 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
     fun onFileRemoved(position: Int) {
         files.removeAt(position)
         viewState.onFileRemoved(position)
+    }
+
+    fun onPaymentInfo(info: PaymentInfo) {
+        paymentInfo = info
+        sendPaymentInfo(info)
+    }
+
+    private fun sendPaymentInfo(info: PaymentInfo) {
+        ClimatLabRepositoryProvider.instance
+            .sendPaymentInfo(info)
+            .addSchedulers()
+            .doOnSubscribe { viewState.showLoading(true) }
+            .doFinally { viewState.showLoading(false) }
+            .subscribe({
+                viewState.showMessage(RequestReportView.Message.PaymentInfoSent)
+                viewState.closeScreen()
+            }, this::handleError)
+    }
+
+    fun onRetrySendClick() {
+        when {
+            paymentRequest != null && paymentInfo == null -> sendRequest()
+            paymentInfo != null -> sendPaymentInfo(paymentInfo!!)
+        }
     }
 
 }
