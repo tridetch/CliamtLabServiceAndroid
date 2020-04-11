@@ -85,7 +85,8 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             login = userInfo?.login2can ?: "",
             password = userInfo?.password2can ?: "",
             description = request.id,
-            receiptEmail = request.clientInfo?.email ?: ""
+            receiptEmail = request.clientInfo?.email ?: "",
+            receiptPhone = request.clientInfo?.phone ?: ""
         )
         sendRequest()
     }

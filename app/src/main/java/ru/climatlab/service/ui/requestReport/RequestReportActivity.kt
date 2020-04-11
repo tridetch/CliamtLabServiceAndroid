@@ -473,6 +473,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             putExtra("Password", paymentRequest.password)
             putExtra("Amount", paymentRequest.amount)
             putExtra("ReceiptEmail", paymentRequest.receiptEmail)
+            putExtra("ReceiptPhone", paymentRequest.receiptPhone)
             putExtra("Description", paymentRequest.description)
         }
 
