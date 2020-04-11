@@ -84,7 +84,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             amount = amountToPay.toDouble(),
             login = userInfo?.login2can ?: "",
             password = userInfo?.password2can ?: "",
-            description = request.getPaymentDescription(),
+            description = request.id,
             receiptEmail = request.clientInfo?.email ?: ""
         )
         sendRequest()
