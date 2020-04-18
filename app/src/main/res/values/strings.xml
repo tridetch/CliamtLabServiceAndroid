@@ -79,10 +79,11 @@
     <string name="performedWorkHint">Проделанные работы</string>
     <string name="recommendationsHint">Рекомендации</string>
     <string name="summaryTitle">Расчет</string>
-    <string name="summaryToPayLabel">Сумма к оплате</string>
-    <string name="summaryForRoadLabel">Сумма за дорогу</string>
+    <string name="summaryWorkLabel">Сумма за работу</string>
+    <string name="summaryLabel">Общая сумма</string>
     <string name="summaryForPartsLabel">Стоимость запчастей</string>
     <string name="confirmButtonLabel">Подтвердить</string>
+    <string name="acceptPaymentButtonLabel">Оплата картой</string>
     <string name="retrySendPaymentInfo">Повторить</string>
     <string name="photosTitle">Фотографии</string>
     <string name="resultTitle">Результат</string>

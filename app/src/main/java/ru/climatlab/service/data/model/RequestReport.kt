@@ -21,8 +21,8 @@ data class  RequestReport(
     @SerializedName("co2") val co2: String = "",
     @SerializedName("performedWork") val performedWork: String = "",
     @SerializedName("recommendations") val recommendations: String = "",
-    @SerializedName("amountToPay") val amountToPay: String = "",
-    @SerializedName("amountForTheRoad") val amountForTheRoad: String = "",
+    @SerializedName("amountToPay") val amountForWork: String = "",
+    @SerializedName("amountForTheRoad") val amountTotal: String = "",
     @SerializedName("amountOfPart") val amountOfPart: String = "",
     @SerializedName("requestType") val requestType: RequestType = RequestType.CommissioningWorks
 )

@@ -324,53 +324,63 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recommendationsInputLayout" />
 
+
         <TextView
-            android:id="@+id/summaryToPayLabel"
+            android:id="@+id/summaryLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/summaryToPayLabel"
+            android:text="@string/summaryLabel"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            app:layout_constraintBaseline_toBaselineOf="@+id/summaryToPayEditText"
+            app:layout_constraintBaseline_toBaselineOf="@+id/summaryEditText"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/summaryToPayEditText" />
+            app:layout_constraintRight_toLeftOf="@id/summaryEditText" />
 
         <EditText
-            android:id="@+id/summaryToPayEditText"
+            android:id="@+id/summaryEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:maxLines="1"
             app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintLeft_toRightOf="@id/summaryToPayLabel"
+            app:layout_constraintLeft_toRightOf="@id/summaryLabel"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/summaryTitle" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/acceptPaymentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/acceptPaymentButtonLabel"
+            app:layout_constraintTop_toBottomOf="@id/summaryEditText"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
         <TextView
-            android:id="@+id/summaryForRoadLabel"
+            android:id="@+id/summaryForWorkLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/summaryForRoadLabel"
+            android:text="@string/summaryWorkLabel"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            app:layout_constraintBaseline_toBaselineOf="@+id/summaryForRoadEditText"
+            app:layout_constraintBaseline_toBaselineOf="@+id/summaryForWorkEditText"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/summaryForRoadEditText" />
+            app:layout_constraintRight_toLeftOf="@id/summaryForWorkEditText" />
 
         <EditText
-            android:id="@+id/summaryForRoadEditText"
+            android:id="@+id/summaryForWorkEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:maxLines="1"
             app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintLeft_toRightOf="@id/summaryForRoadLabel"
+            app:layout_constraintLeft_toRightOf="@id/summaryForWorkLabel"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/summaryToPayEditText" />
+            app:layout_constraintTop_toBottomOf="@id/acceptPaymentButton" />
 
         <TextView
             android:id="@+id/summaryForPartsLabel"
@@ -394,7 +404,7 @@
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintLeft_toRightOf="@id/summaryForPartsLabel"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/summaryForRoadEditText" />
+            app:layout_constraintTop_toBottomOf="@id/summaryForWorkEditText" />
 
         <TextView
             android:id="@+id/requestTypeLabel"

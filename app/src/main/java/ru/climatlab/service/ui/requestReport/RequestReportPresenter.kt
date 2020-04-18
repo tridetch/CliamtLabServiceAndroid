@@ -53,8 +53,8 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         co2: String = requestReport.co2,
         recommendations: String = requestReport.recommendations,
         performedWork: String = requestReport.performedWork,
-        amountToPay: String = requestReport.amountToPay,//change to double
-        amountForTheRoad: String = requestReport.amountForTheRoad,
+        amountForWork: String = requestReport.amountForWork,
+        amountTotal: String = requestReport.amountTotal,
         amountOfPart: String = requestReport.amountOfPart,
         requestType: RequestType = requestReport.requestType
     ) {
@@ -75,18 +75,10 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             co2 = co2,
             recommendations = recommendations,
             performedWork = performedWork,
-            amountToPay = amountToPay,
-            amountForTheRoad = amountForTheRoad,
+            amountForWork = amountForWork,
+            amountTotal = amountTotal,
             amountOfPart = amountOfPart,
             requestType = requestType
-        )
-        paymentRequest = PaymentRequest(
-            amount = amountToPay.toDouble(),
-            login = userInfo?.login2can ?: "",
-            password = userInfo?.password2can ?: "",
-            description = request.id,
-            receiptEmail = request.clientInfo?.email ?: "",
-            receiptPhone = request.clientInfo?.phone ?: ""
         )
         sendRequest()
     }
@@ -99,9 +91,7 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             .doFinally { viewState.showLoading(false) }
             .subscribe({
                 viewState.showMessage(RequestReportView.Message.ReportSent)
-                paymentRequest?.let {
-                    viewState.acceptPayment(it)
-                }
+                viewState.disableReportButton()
             }, this::handleError)
     }
 
@@ -162,15 +152,26 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             .doFinally { viewState.showLoading(false) }
             .subscribe({
                 viewState.showMessage(RequestReportView.Message.PaymentInfoSent)
-                viewState.closeScreen()
+                viewState.disablePaymentButton()
             }, this::handleError)
     }
 
-    fun onRetrySendClick() {
+    fun onRetrySendPaymentInfoClick() {
         when {
-            paymentRequest != null && paymentInfo == null -> sendRequest()
             paymentInfo != null -> sendPaymentInfo(paymentInfo!!)
         }
+    }
+
+    fun onAcceptPaymentClick(amount: String) {
+        val paymentRequest = PaymentRequest(
+            amount = amount.toDouble(),
+            login = userInfo?.login2can ?: "",
+            password = userInfo?.password2can ?: "",
+            description = request.id,
+            receiptEmail = request.clientInfo?.email ?: "",
+            receiptPhone = request.clientInfo?.phone ?: ""
+        )
+            viewState.acceptPayment(paymentRequest)
     }
 
 }

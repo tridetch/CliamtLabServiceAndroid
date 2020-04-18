@@ -81,11 +81,15 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 co2 = co2EditText.text.toString(),
                 recommendations = recommendationsInputLayout.editText!!.text.toString(),
                 performedWork = performedWorkInputLayout.editText!!.text.toString(),
-                amountToPay = summaryToPayEditText.text.toString(),
-                amountForTheRoad = summaryForRoadEditText.text.toString(),
+                amountForWork = summaryForWorkEditText.text.toString(),
+                amountTotal = summaryEditText.text.toString(),
                 amountOfPart = summaryForPartsEditText.text.toString(),
                 requestType = RequestType.values()[requestTypeSpinner.selectedItemPosition]
             )
+        }
+
+        acceptPaymentButton.setOnClickListener {
+            presenter.onAcceptPaymentClick(summaryEditText.text.toString())
         }
 
         ArrayAdapter.createFromResource(
@@ -463,9 +467,9 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
     }
 
     override fun acceptPayment(paymentRequest: PaymentRequest) {
-        confirmButton.text = getString(R.string.retrySendPaymentInfo)
-        confirmButton.setOnClickListener {
-            presenter.onRetrySendClick()
+        acceptPaymentButton.text = getString(R.string.retrySendPaymentInfo)
+        acceptPaymentButton.setOnClickListener {
+            presenter.onRetrySendPaymentInfoClick()
         }
 
         val intent = Intent("ru.toucan.terminal.acceptpayment").apply {
@@ -500,6 +504,14 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 )
             );
         }
+    }
+
+    override fun disablePaymentButton() {
+        acceptPaymentButton.isEnabled = false
+    }
+
+    override fun disableReportButton() {
+        confirmButton.isEnabled = false
     }
 }
 

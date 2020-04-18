@@ -21,4 +21,6 @@ interface RequestReportView : BaseMvpView {
     fun onFileRemoved(position: Int)
     fun acceptPayment(paymentRequest: PaymentRequest)
     fun setupRequestInfo(request: Request)
+    fun disablePaymentButton()
+    fun disableReportButton()
 }
