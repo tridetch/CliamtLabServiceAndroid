@@ -153,7 +153,10 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
             .subscribe({
                 viewState.showMessage(RequestReportView.Message.PaymentInfoSent)
                 viewState.disablePaymentButton()
-            }, this::handleError)
+            }, {
+                viewState.setupPaymentRetry()
+                handleError(it)
+            })
     }
 
     fun onRetrySendPaymentInfoClick() {
@@ -163,15 +166,17 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
     }
 
     fun onAcceptPaymentClick(amount: String) {
+        if (amount.isBlank()) return
+        val clientPhone = request.clientInfo?.phone?.let { "+7$it" } ?: ""
         val paymentRequest = PaymentRequest(
             amount = amount.toDouble(),
             login = userInfo?.login2can ?: "",
             password = userInfo?.password2can ?: "",
             description = request.id,
             receiptEmail = request.clientInfo?.email ?: "",
-            receiptPhone = request.clientInfo?.phone ?: ""
+            receiptPhone = clientPhone
         )
-            viewState.acceptPayment(paymentRequest)
+        viewState.acceptPayment(paymentRequest)
     }
 
 }

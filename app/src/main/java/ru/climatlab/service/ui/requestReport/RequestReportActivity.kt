@@ -225,7 +225,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                                 presenter.onFileSelected(fileSave, filename)
                             }
                         } catch (e: Exception) {
-                            toast("Не удалось прикрепить файл")
+                            toast(getString(R.string.attach_file_error))
                             e.printStackTrace()
                         }
                     }
@@ -236,6 +236,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
             REQUEST_CODE_ACCEPT_PAYMENT -> {
                 if (resultCode == Activity.RESULT_OK) {
                     toast(R.string.accept_payment_success)
+                    summaryEditText.isEnabled = false
                     presenter.onPaymentInfo(data.toPaymentInfo())
                 } else {
                     toast(R.string.accept_payment_failed)
@@ -467,11 +468,6 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
     }
 
     override fun acceptPayment(paymentRequest: PaymentRequest) {
-        acceptPaymentButton.text = getString(R.string.retrySendPaymentInfo)
-        acceptPaymentButton.setOnClickListener {
-            presenter.onRetrySendPaymentInfoClick()
-        }
-
         val intent = Intent("ru.toucan.terminal.acceptpayment").apply {
             putExtra("Email", paymentRequest.login)
             putExtra("Password", paymentRequest.password)
@@ -503,6 +499,13 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                     Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)
                 )
             );
+        }
+    }
+
+    override fun setupPaymentRetry() {
+        acceptPaymentButton.text = getString(R.string.retrySendPaymentInfo)
+        acceptPaymentButton.setOnClickListener {
+            presenter.onRetrySendPaymentInfoClick()
         }
     }
 

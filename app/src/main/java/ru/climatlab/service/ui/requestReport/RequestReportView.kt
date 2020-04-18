@@ -23,4 +23,5 @@ interface RequestReportView : BaseMvpView {
     fun setupRequestInfo(request: Request)
     fun disablePaymentButton()
     fun disableReportButton()
+    fun setupPaymentRetry()
 }
