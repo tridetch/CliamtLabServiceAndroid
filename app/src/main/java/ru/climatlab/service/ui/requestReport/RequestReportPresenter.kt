@@ -56,31 +56,35 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
         amountForWork: String = requestReport.amountForWork,
         amountTotal: String = requestReport.amountTotal,
         amountOfPart: String = requestReport.amountOfPart,
-        requestType: RequestType = requestReport.requestType
+        requestType: RequestType? = requestReport.requestType
     ) {
-        requestReport = requestReport.copy(
-            date = Date(),
-            model = model,
-            brand = brand,
-            serialNumber = serialNumber,
-            presenceOfPickup = presenceOfPickup,
-            voltage = voltage,
-            grounding = grounding,
-            stabilizer = stabilizer,
-            dielectricCoupling = dielectricCoupling,
-            inletGasPressure = inletGasPressure,
-            minimumGasOnTheBoiler = minimumGasOnTheBoiler,
-            maximumGasOnTheBoiler = maximumGasOnTheBoiler,
-            co = co,
-            co2 = co2,
-            recommendations = recommendations,
-            performedWork = performedWork,
-            amountForWork = amountForWork,
-            amountTotal = amountTotal,
-            amountOfPart = amountOfPart,
-            requestType = requestType
-        )
-        sendRequest()
+        if (requestType == null) {
+            viewState.showSelectRequestTypeError()
+        } else {
+            requestReport = requestReport.copy(
+                date = Date(),
+                model = model,
+                brand = brand,
+                serialNumber = serialNumber,
+                presenceOfPickup = presenceOfPickup,
+                voltage = voltage,
+                grounding = grounding,
+                stabilizer = stabilizer,
+                dielectricCoupling = dielectricCoupling,
+                inletGasPressure = inletGasPressure,
+                minimumGasOnTheBoiler = minimumGasOnTheBoiler,
+                maximumGasOnTheBoiler = maximumGasOnTheBoiler,
+                co = co,
+                co2 = co2,
+                recommendations = recommendations,
+                performedWork = performedWork,
+                amountForWork = amountForWork,
+                amountTotal = amountTotal,
+                amountOfPart = amountOfPart,
+                requestType = requestType
+            )
+            sendRequest()
+        }
     }
 
     private fun sendRequest() {

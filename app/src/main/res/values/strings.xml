@@ -103,9 +103,11 @@
     <string name="accept_payment_success">Оплата успешно произведена</string>
     <string name="accept_payment_failed">Не удалось произвести платеж</string>
     <string name="attach_file_error">Не удалось прикрепить файл</string>
+    <string name="select_request_type_error_message">Выберите тип работ</string>
 
     <!--RequestType names-->
     <string-array name="request_types_array">
+        <item>Выберите тип работ</item>
         <item>ПНР</item>
         <item>ПНР+Договор</item>
         <item>ГАРАНТИЙНЫЙ ремонт</item>

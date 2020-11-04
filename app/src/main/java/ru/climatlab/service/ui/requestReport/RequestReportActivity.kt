@@ -30,6 +30,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.iceteck.silicompressorr.SiliCompressor
 import io.reactivex.Single
 import kotlinx.android.synthetic.main.activity_request_report.*
+import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
 import ru.climatlab.service.BuildConfig
 import ru.climatlab.service.R
@@ -66,6 +67,8 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
         presenter.onAttach(intent.getStringExtra(RequestDetailsActivity.EXTRA_KEY_REQUEST_ID))
 
         confirmButton.setOnClickListener {
+            val requestType =
+                if (requestTypeSpinner.selectedItemPosition == 0) null else RequestType.values()[requestTypeSpinner.selectedItemPosition]
             presenter.onReportConfirm(
                 model = modelEditText.text.toString(),
                 brand = brandEditText.text.toString(),
@@ -84,7 +87,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                 amountForWork = summaryForWorkEditText.text.toString(),
                 amountTotal = summaryEditText.text.toString(),
                 amountOfPart = summaryForPartsEditText.text.toString(),
-                requestType = RequestType.values()[requestTypeSpinner.selectedItemPosition]
+                requestType = requestType
             )
         }
 
@@ -171,12 +174,6 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
                                 baos
                             ) //bm is the bitmap object
                             val b = baos.toByteArray()
-/*
-                                                presenter.onTakePhotoFile(
-                                                    Uri.parse(it),
-                                                    "data:image/jpeg;base64,${Base64.encodeToString(b, Base64.DEFAULT)}"
-                                                )
-*/
                             val uri = Uri.parse(it)
                             val sourcePath = getExternalFilesDir(null)!!.toString()
                             val fileSave = File("$sourcePath/${uri.lastPathSegment}")
@@ -516,6 +513,10 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
     override fun disableReportButton() {
         confirmButton.isEnabled = false
     }
+
+    override fun showSelectRequestTypeError() {
+        longToast(R.string.select_request_type_error_message)
+    }
 }
 
 private fun Intent?.toPaymentInfo(): PaymentInfo {
@@ -552,6 +553,6 @@ private fun Intent?.toPaymentInfo(): PaymentInfo {
             fiscalStorageNumber = extras?.getString("FiscalStorageNumber"),
             fiscalMark = extras?.getString("FiscalMark"),
             fiscalDatetime = extras?.getString("FiscalDatetime")
-            )
+        )
     }
 }
