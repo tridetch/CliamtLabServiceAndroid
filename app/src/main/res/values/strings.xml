@@ -25,6 +25,7 @@
 
     <!--Drawer-->
     <string name="nav_menu_requests">Мои заявки</string>
+    <string name="nav_menu_all_requests">Все заявки</string>
     <string name="nav_menu_in_work">В работе</string>
     <string name="nav_menu_map">Карта</string>
     <string name="nav_instructions">Мастерская</string>

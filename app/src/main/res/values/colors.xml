@@ -9,4 +9,9 @@
     <!--Pix image picker theme-->
     <color name="colorPrimaryPix">@color/colorPrimaryDark</color>
     <color name="colorPrimaryLightPix">@color/colorPrimary</color>
+
+    <color name="request_new_color">#D1C4E9</color>
+    <color name="request_in_work">#90CAF9</color>
+    <color name="request_in_cancelled">#E57373</color>
+
 </resources>

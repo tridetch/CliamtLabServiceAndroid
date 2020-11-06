@@ -94,6 +94,9 @@ class RequestsListActivity : BaseActivity(), RequestsListView, NavigationView.On
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
+            R.id.nav_all_request_list->{
+                startActivity(intentFor<RequestsListActivity>())
+            }
             R.id.nav_request_list->{
                 startActivity(intentFor<RequestsListActivity>(RequestsListActivity.EXTRA_REQUESTS_FILTER to RequestStatus.NewRequest))
             }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.request_list_item.view.*
 import ru.climatlab.service.R
 import ru.climatlab.service.data.model.Request
+import ru.climatlab.service.data.model.RequestStatus
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,6 +48,12 @@ class RequestsRecyclerViewAdapter(
 
         fun bindItem(request: Request) {
             this.request = request
+            val color = when (request.status) {
+                RequestStatus.NewRequest -> R.color.request_new_color
+                RequestStatus.InWork -> R.color.request_in_work
+                RequestStatus.Cancelled -> R.color.request_in_cancelled
+            }
+            itemView.container.setBackgroundColor(color)
             itemView.clientFullNameTextView.text = request.clientInfo?.fullName()
             itemView.officeTitleNameTextView.text = request.office
             itemView.equipmentTextView.text = request.equipmentId

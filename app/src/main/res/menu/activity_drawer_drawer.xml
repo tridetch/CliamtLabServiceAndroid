@@ -5,6 +5,10 @@
 
     <group>
         <item
+            android:id="@+id/nav_all_request_list"
+            android:icon="@drawable/ic_list_black_24dp"
+            android:title="@string/nav_menu_all_requests" />
+        <item
             android:id="@+id/nav_request_list"
             android:icon="@drawable/ic_list_black_24dp"
             android:title="@string/nav_menu_requests" />
