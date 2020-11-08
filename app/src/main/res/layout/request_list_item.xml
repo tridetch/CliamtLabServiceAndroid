@@ -1,264 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
-    android:padding="8dp">
+    android:layout_marginTop="1dp"
+    app:cardCornerRadius="2dp">
 
-    <TextView
-        android:id="@+id/clientLabelTextView"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/client_label"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/clientFullNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toRightOf="@id/clientLabelTextView"
-        app:layout_constraintTop_toTopOf="@id/clientLabelTextView"
-        tools:text="Фамилия Имя Отчество" />
-
-    <TextView
-        android:id="@+id/officeLabelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/office_label"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clientLabelTextView" />
-
-    <TextView
-        android:id="@+id/officeTitleNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toRightOf="@id/officeLabelTextView"
-        app:layout_constraintTop_toTopOf="@id/officeLabelTextView"
-        tools:text="Пятигорск" />
-
-    <TextView
-        android:id="@+id/equipmentLabelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/equipment_label"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/officeLabelTextView" />
-
-    <TextView
-        android:id="@+id/equipmentTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toRightOf="@id/equipmentLabelTextView"
-        app:layout_constraintTop_toTopOf="@id/equipmentLabelTextView"
-        tools:text="Котел" />
-
-    <TextView
-        android:id="@+id/descriptionLabelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/description_label"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/equipmentTextView" />
-
-    <TextView
-        android:id="@+id/descriptionTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toRightOf="@id/descriptionLabelTextView"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/descriptionLabelTextView"
-        tools:text="Описание поломки" />
-
-    <TextView
-        android:id="@+id/commentLabelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/comment_label"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
-
-    <TextView
-        android:id="@+id/commentTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:autoLink="phone"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toRightOf="@id/commentLabelTextView"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/commentLabelTextView"
-        tools:text="Комментарий к заявке" />
-
-    <TextView
-        android:id="@+id/moreLabelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/more_label"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/commentTextView" />
-
-    <TextView
-        android:id="@+id/moreTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:autoLink="phone"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toRightOf="@id/moreLabelTextView"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/moreLabelTextView"
-        tools:text="Еще комментарий" />
-
-    <TextView
-        android:id="@+id/dateLabelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/date_label"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/moreTextView"
-        app:layout_goneMarginTop="16dp" />
-
-    <TextView
-        android:id="@+id/dateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toRightOf="@id/dateLabelTextView"
-        app:layout_constraintTop_toTopOf="@id/dateLabelTextView"
-        tools:text="@tools:sample/date/ddmmyy" />
-
-    <TextView
-        android:id="@+id/contractDateAndNumberLabelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/contract_date_number"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateTextView"
-        app:layout_goneMarginTop="16dp" />
-
-    <TextView
-        android:id="@+id/contractDateAndNumberTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintLeft_toRightOf="@id/contractDateAndNumberLabelTextView"
-        app:layout_constraintTop_toTopOf="@id/contractDateAndNumberLabelTextView"
-        tools:text="01.01.2019 № 15654-77" />
-
-    <LinearLayout
-        android:id="@+id/callButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackground"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contractDateAndNumberLabelTextView">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_local_phone_black_24dp"
-            app:tint="@color/iconColor" />
+        android:padding="8dp">
 
         <TextView
-            android:id="@+id/phoneNumber"
+            android:id="@+id/clientLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/client_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/clientFullNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:gravity="center_vertical"
-            android:lines="2"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-            tools:text="@tools:sample/us_phones" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/reserveCallButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="?attr/selectableItemBackground"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/callButton">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_local_phone_black_24dp"
-            app:tint="@color/iconColor" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toRightOf="@id/clientLabelTextView"
+            app:layout_constraintTop_toTopOf="@id/clientLabelTextView"
+            tools:text="Фамилия Имя Отчество" />
 
         <TextView
-            android:id="@+id/reservePhoneNumber"
+            android:id="@+id/officeLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/office_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clientLabelTextView" />
+
+        <TextView
+            android:id="@+id/officeTitleNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:gravity="center_vertical"
-            android:lines="2"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-            tools:text="@tools:sample/us_phones" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/buildRouteButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackground"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reserveCallButton">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_map_black_24dp"
-            app:tint="@color/iconColor" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toRightOf="@id/officeLabelTextView"
+            app:layout_constraintTop_toTopOf="@id/officeLabelTextView"
+            tools:text="Пятигорск" />
 
         <TextView
-            android:id="@+id/addressTextView"
+            android:id="@+id/equipmentLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/equipment_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/officeLabelTextView" />
+
+        <TextView
+            android:id="@+id/equipmentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toRightOf="@id/equipmentLabelTextView"
+            app:layout_constraintTop_toTopOf="@id/equipmentLabelTextView"
+            tools:text="Котел" />
+
+        <TextView
+            android:id="@+id/descriptionLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/description_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/equipmentTextView" />
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toRightOf="@id/descriptionLabelTextView"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/descriptionLabelTextView"
+            tools:text="Описание поломки" />
+
+        <TextView
+            android:id="@+id/commentLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/comment_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
+
+        <TextView
+            android:id="@+id/commentTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:autoLink="phone"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toRightOf="@id/commentLabelTextView"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/commentLabelTextView"
+            tools:text="Комментарий к заявке" />
+
+        <TextView
+            android:id="@+id/moreLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/more_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/commentTextView" />
+
+        <TextView
+            android:id="@+id/moreTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:autoLink="phone"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toRightOf="@id/moreLabelTextView"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/moreLabelTextView"
+            tools:text="Еще комментарий" />
+
+        <TextView
+            android:id="@+id/dateLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/moreTextView"
+            app:layout_goneMarginTop="16dp" />
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toRightOf="@id/dateLabelTextView"
+            app:layout_constraintTop_toTopOf="@id/dateLabelTextView"
+            tools:text="@tools:sample/date/ddmmyy" />
+
+        <TextView
+            android:id="@+id/contractDateAndNumberLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contract_date_number"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dateTextView"
+            app:layout_goneMarginTop="16dp" />
+
+        <TextView
+            android:id="@+id/contractDateAndNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toRightOf="@id/contractDateAndNumberLabelTextView"
+            app:layout_constraintTop_toTopOf="@id/contractDateAndNumberLabelTextView"
+            tools:text="01.01.2019 № 15654-77" />
+
+        <LinearLayout
+            android:id="@+id/callButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-            tools:text="@tools:sample/cities" />
+            android:orientation="horizontal"
+            android:padding="4dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contractDateAndNumberLabelTextView">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_local_phone_black_24dp"
+                app:tint="@color/iconColor" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/phoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:lines="2"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                tools:text="@tools:sample/us_phones" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/reserveCallButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/callButton">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_local_phone_black_24dp"
+                app:tint="@color/iconColor" />
+
+            <TextView
+                android:id="@+id/reservePhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:lines="2"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                tools:text="@tools:sample/us_phones" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buildRouteButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reserveCallButton">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_map_black_24dp"
+                app:tint="@color/iconColor" />
+
+            <TextView
+                android:id="@+id/addressTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                tools:text="@tools:sample/cities" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

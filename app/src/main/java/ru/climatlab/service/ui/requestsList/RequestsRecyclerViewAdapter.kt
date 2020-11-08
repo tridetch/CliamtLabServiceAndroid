@@ -5,6 +5,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.request_list_item.view.*
 import ru.climatlab.service.R
@@ -19,7 +20,8 @@ class RequestsRecyclerViewAdapter(
 ) : RecyclerView.Adapter<RequestsRecyclerViewAdapter.RequestViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.request_list_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.request_list_item, parent, false)
         return RequestViewHolder(view, interactionListener)
     }
 
@@ -48,12 +50,15 @@ class RequestsRecyclerViewAdapter(
 
         fun bindItem(request: Request) {
             this.request = request
-            val color = when (request.status) {
-                RequestStatus.NewRequest -> R.color.request_new_color
-                RequestStatus.InWork -> R.color.request_in_work
-                RequestStatus.Cancelled -> R.color.request_in_cancelled
-            }
-            itemView.container.setBackgroundColor(color)
+            val color = ContextCompat.getColor(
+                itemView.context,
+                when (request.status) {
+                    RequestStatus.NewRequest -> R.color.request_new_color
+                    RequestStatus.InWork -> R.color.request_in_work
+                    RequestStatus.Cancelled -> R.color.request_in_cancelled
+                }
+            )
+            itemView.container.setCardBackgroundColor(color)
             itemView.clientFullNameTextView.text = request.clientInfo?.fullName()
             itemView.officeTitleNameTextView.text = request.office
             itemView.equipmentTextView.text = request.equipmentId
