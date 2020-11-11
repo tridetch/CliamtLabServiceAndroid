@@ -1,5 +1,6 @@
 package ru.climatlab.service.ui.requestReport
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentUris
@@ -68,7 +69,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
 
         confirmButton.setOnClickListener {
             val requestType =
-                if (requestTypeSpinner.selectedItemPosition == 0) null else RequestType.values()[requestTypeSpinner.selectedItemPosition]
+                if (requestTypeSpinner.selectedItemPosition == 0) null else RequestType.values()[(requestTypeSpinner.selectedItemPosition - 1)]
             presenter.onReportConfirm(
                 model = modelEditText.text.toString(),
                 brand = brandEditText.text.toString(),
@@ -242,6 +243,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun requestLocationAndSavePhoto(uri: Uri, fileSave: File) {
         locationProviderClient.lastLocation
             .addOnSuccessListener {
