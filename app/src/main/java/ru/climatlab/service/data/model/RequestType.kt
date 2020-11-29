@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName
  * Created by tridetch on 07.04.2019. CliamtLabService
  */
 enum class RequestType(val title: String) {
+    @SerializedName("-1")
+    Unknown("Unknown"),
     @SerializedName("0")
     CommissioningWorks("ПНР"),
     @SerializedName("1")

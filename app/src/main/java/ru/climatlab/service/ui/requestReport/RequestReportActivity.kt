@@ -69,7 +69,7 @@ class RequestReportActivity : BaseActivity(), RequestReportView {
 
         confirmButton.setOnClickListener {
             val requestType =
-                if (requestTypeSpinner.selectedItemPosition == 0) null else RequestType.values()[(requestTypeSpinner.selectedItemPosition - 1)]
+                if (requestTypeSpinner.selectedItemPosition == 0) null else RequestType.values()[(requestTypeSpinner.selectedItemPosition)]
             presenter.onReportConfirm(
                 model = modelEditText.text.toString(),
                 brand = brandEditText.text.toString(),
