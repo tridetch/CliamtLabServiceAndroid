@@ -261,7 +261,7 @@ class MapActivity : AppCompatActivity(), MapView, OnMapReadyCallback {
         requestInfoCard.dateTextView.text =
             SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.date))
         requestInfoCard.officeTitleNameTextView.text = request.office
-        requestInfoCard.equipmentTextView.text = request.equipmentId
+        requestInfoCard.equipmentTextView.text = request.equipment
         requestInfoCard.phoneNumber.text = "8${request.clientInfo?.phone}"
         requestInfoCard.addressTextView.text = request.address
         requestInfoCard.descriptionTextView.text = request.description

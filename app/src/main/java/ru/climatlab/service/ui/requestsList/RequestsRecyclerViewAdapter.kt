@@ -61,7 +61,7 @@ class RequestsRecyclerViewAdapter(
             itemView.container.setCardBackgroundColor(color)
             itemView.clientFullNameTextView.text = request.clientInfo?.fullName()
             itemView.officeTitleNameTextView.text = request.office
-            itemView.equipmentTextView.text = request.equipmentId
+            itemView.equipmentTextView.text = request.equipment
             itemView.descriptionTextView.text = request.description
             itemView.commentTextView.text = request.comment
             itemView.moreTextView.text = request.clientInfo?.comment

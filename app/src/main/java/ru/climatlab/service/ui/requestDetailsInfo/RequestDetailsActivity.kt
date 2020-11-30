@@ -57,7 +57,7 @@ class RequestDetailsActivity : BaseActivity(), RequestDetailsView {
         }
         clientFullNameTextView.text = request.clientInfo?.fullName()
         descriptionTextView.text = request.description
-        equipmentTextView.text = request.equipmentId
+        equipmentTextView.text = request.equipment
         addressTextView.text = request.address
         phoneNumber.text = request.clientInfo?.phone
         dateTextView.text = SimpleDateFormat("dd.MM hh:mm", Locale.getDefault()).format(Date(request.date))
