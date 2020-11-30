@@ -10,6 +10,7 @@ import ru.climatlab.service.data.model.*
 import ru.climatlab.service.ui.BasePresenter
 import java.io.File
 import java.util.*
+import java.util.regex.Pattern
 
 @InjectViewState
 class RequestReportPresenter : BasePresenter<RequestReportView>() {
@@ -24,7 +25,10 @@ class RequestReportPresenter : BasePresenter<RequestReportView>() {
     private val userInfo: CurrentUserResponse? = PreferencesRepository.getCurrentUserInfo()
 
     fun onAttach(requestId: String) {
-        val cachedRequest = ClimatLabRepositoryProvider.instance.getRequest(requestId)
+        val cachedRequest = with(ClimatLabRepositoryProvider.instance.getRequest(requestId)){
+            val list = this?.equipment?.split(regex = Pattern.compile("/"), limit = 2 )
+            this?.copy(boilerBrand = list?.getOrNull(0)?:"", boilerModel = list?.getOrNull(1)?:"")
+        }
         if (cachedRequest == null) {
             viewState.showRequestNotFoundError()
         } else {

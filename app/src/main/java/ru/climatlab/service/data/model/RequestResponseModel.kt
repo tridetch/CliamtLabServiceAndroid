@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class RequestResponseModel(
     @SerializedName("id") val id: String,
     @SerializedName("client") val clientId: String?,
-    @SerializedName("equipment") val equipmentId: String?,
+    @SerializedName("equipment") val equipment: String?,
     @SerializedName("boilerBrand") val boilerBrand: String?,
     @SerializedName("boilerModel") val boilerModel: String?,
     @SerializedName("date_start") private val _date: Long,

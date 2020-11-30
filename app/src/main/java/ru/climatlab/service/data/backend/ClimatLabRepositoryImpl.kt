@@ -115,7 +115,7 @@ private fun RequestResponseModel.mapToRequest(): Request {
         id = id,
         comment = comment ?: "",
         date = date,
-        equipmentId = equipmentId ?: "",
+        equipment = equipment ?: "",
         boilerBrand = boilerBrand ?: "",
         boilerModel = boilerModel ?: "",
         status = status ?: RequestStatus.Cancelled,

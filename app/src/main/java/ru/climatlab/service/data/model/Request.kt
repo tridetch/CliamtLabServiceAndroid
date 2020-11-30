@@ -6,7 +6,7 @@ package ru.climatlab.service.data.model
 data class Request(
     val id: String,
     val date: Long,
-    val equipmentId: String,
+    val equipment: String,
     val boilerBrand: String,
     val boilerModel: String,
     val type: RequestType,
